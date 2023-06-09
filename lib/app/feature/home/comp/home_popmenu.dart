@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/authentication/riverpod/auth_prov.dart';
-import '../../routes.dart';
+import '../../../core/authentication/riverpod/auth_prov.dart';
+import '../../../routes.dart';
 
 class HomePopMenu extends ConsumerWidget {
   const HomePopMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authChNotProvider);
     return PopupMenuButton(
       offset: Offset.fromDirection(120.0, 70.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -30,16 +31,21 @@ class HomePopMenu extends ConsumerWidget {
               label: const Text('Sair'),
               onPressed: () {
                 Navigator.pop(context);
+                // TODO
+                // Como resolver isto profissionalmente.
                 ref.read(logoutProvider);
+                ref.read(authChNotProvider.notifier).logout();
               },
               icon: const Icon(Icons.exit_to_app),
             ),
           ),
         ];
       },
-      child: const Tooltip(
+      child: Tooltip(
         message: 'Click para ver opções',
-        child: Icon(Icons.settings),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: UserPhoto(url: auth.user?.userProfile?.photo)),
       ),
     );
   }

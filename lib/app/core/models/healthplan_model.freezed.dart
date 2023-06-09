@@ -39,6 +39,8 @@ abstract class $HealthPlanModelCopyWith<$Res> {
       String? code,
       DateTime? due,
       String? description});
+
+  $HealthPlanTypeModelCopyWith<$Res>? get healthPlanType;
 }
 
 /// @nodoc
@@ -83,6 +85,18 @@ class _$HealthPlanModelCopyWithImpl<$Res, $Val extends HealthPlanModel>
               as String?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $HealthPlanTypeModelCopyWith<$Res>? get healthPlanType {
+    if (_value.healthPlanType == null) {
+      return null;
+    }
+
+    return $HealthPlanTypeModelCopyWith<$Res>(_value.healthPlanType!, (value) {
+      return _then(_value.copyWith(healthPlanType: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -99,6 +113,9 @@ abstract class _$$_HealthPlanModelCopyWith<$Res>
       String? code,
       DateTime? due,
       String? description});
+
+  @override
+  $HealthPlanTypeModelCopyWith<$Res>? get healthPlanType;
 }
 
 /// @nodoc

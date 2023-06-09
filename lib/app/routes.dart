@@ -8,8 +8,8 @@ import 'feature/error/error_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
-import 'feature/user_profile/edit/user_profile_edit_page.dart';
-import 'home/home_page.dart';
+import 'feature/user_profile/save/user_profile_edit_page.dart';
+import 'feature/home/home_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigator =

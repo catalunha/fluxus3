@@ -73,7 +73,7 @@ class _UserLoginPageState extends ConsumerState<UserLoginPage>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            'Informações para acesso ao',
+                            'Bem vindo ao',
                           ),
                           const Text(
                             'Fluxus 3',

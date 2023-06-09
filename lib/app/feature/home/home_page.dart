@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/authentication/riverpod/auth_prov.dart';
-import '../feature/utils/app_mixin_loader.dart';
-import '../feature/utils/app_mixin_messages.dart';
+import '../../core/authentication/riverpod/auth_prov.dart';
+import '../utils/app_mixin_loader.dart';
+import '../utils/app_mixin_messages.dart';
 import 'comp/home_popmenu.dart';
 
 class HomePage extends ConsumerWidget with Loader, Messages {

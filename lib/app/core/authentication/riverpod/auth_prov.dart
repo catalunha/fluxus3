@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data/b4a/b4a_exception.dart';
@@ -7,16 +8,22 @@ import 'auth_state.dart';
 
 part 'auth_prov.g.dart';
 
-final authChNotProvider = Provider<AuthChNot>((ref) {
+// @riverpod
+// AuthChNot authChNot(AuthChNotRef ref) {
+//   return AuthChNot();
+// }
+
+final authChNotProvider = ChangeNotifierProvider<AuthChNot>((ref) {
   return AuthChNot();
 });
 
+// @Riverpod(keepAlive: true, dependencies: [authChNotProvider])
 @riverpod
 void logout(LogoutRef ref) {
   final repository = ref.read(userRepositoryProvider);
   repository.logout();
-  final authChNot = ref.read(authChNotProvider);
-  authChNot.logout();
+  // final authChNot = ref.watch(authChNotProvider);
+  // authChNot.logout();
 }
 
 // final authStatusStProv = StateProvider<AuthStatus>((ref) => AuthStatus.unknown);
