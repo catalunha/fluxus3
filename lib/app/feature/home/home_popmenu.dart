@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/authentication/riverpod/auth_prov.dart';
-import '../../../routes.dart';
+import '../../core/authentication/riverpod/auth_prov.dart';
+import '../../routes.dart';
 
 class HomePopMenu extends ConsumerWidget {
   const HomePopMenu({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class HomePopMenu extends ConsumerWidget {
               label: const Text('Editar perfil'),
               onPressed: () {
                 Navigator.pop(context);
-                context.goNamed(AppPage.userProfileEdit.name);
+                context.goNamed(AppPage.userProfileSave.name);
               },
               icon: const Icon(Icons.person_outline_outlined),
             ),

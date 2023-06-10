@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserProfileModel {
   String get id => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
   List<String> get access =>
@@ -51,6 +52,7 @@ abstract class $UserProfileModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String userName,
       String email,
       bool isActive,
       List<String> access,
@@ -85,6 +87,7 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
   @override
   $Res call({
     Object? id = null,
+    Object? userName = null,
     Object? email = null,
     Object? isActive = null,
     Object? access = null,
@@ -106,6 +109,10 @@ class _$UserProfileModelCopyWithImpl<$Res, $Val extends UserProfileModel>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -197,6 +204,7 @@ abstract class _$$_UserProfileModelCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String userName,
       String email,
       bool isActive,
       List<String> access,
@@ -230,6 +238,7 @@ class __$$_UserProfileModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? userName = null,
     Object? email = null,
     Object? isActive = null,
     Object? access = null,
@@ -251,6 +260,10 @@ class __$$_UserProfileModelCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -325,6 +338,7 @@ class __$$_UserProfileModelCopyWithImpl<$Res>
 class _$_UserProfileModel implements _UserProfileModel {
   _$_UserProfileModel(
       {required this.id,
+      required this.userName,
       required this.email,
       required this.isActive,
       required final List<String> access,
@@ -348,6 +362,8 @@ class _$_UserProfileModel implements _UserProfileModel {
 
   @override
   final String id;
+  @override
+  final String userName;
   @override
   final String email;
   @override
@@ -418,7 +434,7 @@ class _$_UserProfileModel implements _UserProfileModel {
 
   @override
   String toString() {
-    return 'UserProfileModel(id: $id, email: $email, isActive: $isActive, access: $access, nickname: $nickname, name: $name, cpf: $cpf, register: $register, phone: $phone, photo: $photo, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, offices: $offices, expertises: $expertises, procedures: $procedures)';
+    return 'UserProfileModel(id: $id, userName: $userName, email: $email, isActive: $isActive, access: $access, nickname: $nickname, name: $name, cpf: $cpf, register: $register, phone: $phone, photo: $photo, isFemale: $isFemale, birthday: $birthday, address: $address, region: $region, offices: $offices, expertises: $expertises, procedures: $procedures)';
   }
 
   @override
@@ -427,6 +443,8 @@ class _$_UserProfileModel implements _UserProfileModel {
         (other.runtimeType == runtimeType &&
             other is _$_UserProfileModel &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
@@ -456,6 +474,7 @@ class _$_UserProfileModel implements _UserProfileModel {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      userName,
       email,
       isActive,
       const DeepCollectionEquality().hash(_access),
@@ -483,6 +502,7 @@ class _$_UserProfileModel implements _UserProfileModel {
 abstract class _UserProfileModel implements UserProfileModel {
   factory _UserProfileModel(
       {required final String id,
+      required final String userName,
       required final String email,
       required final bool isActive,
       required final List<String> access,
@@ -502,6 +522,8 @@ abstract class _UserProfileModel implements UserProfileModel {
 
   @override
   String get id;
+  @override
+  String get userName;
   @override
   String get email;
   @override

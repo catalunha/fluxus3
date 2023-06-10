@@ -80,6 +80,7 @@ class UserB4a {
         if (userProfileModel != null) {
           userModel = UserModel(
             id: parseUser.objectId!,
+            userName: parseUser.username!,
             email: parseUser.emailAddress!,
             userProfile: userProfileModel,
           );
@@ -150,6 +151,7 @@ class UserB4a {
         if (userProfileModel != null) {
           UserModel userModel = UserModel(
             id: parseUser.objectId!,
+            userName: parseUser.username!,
             email: parseUser.emailAddress!,
             userProfile: userProfileModel,
           );

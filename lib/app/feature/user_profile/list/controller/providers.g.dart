@@ -6,13 +6,13 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileListHash() => r'0c4f5d1a90f71d00bed30ed8cb2b5b091bba222f';
+String _$userProfileListHash() => r'a46cac1a3754d00d00e8ad1d34ebcb9c7872f917';
 
-/// See also [UserProfileList].
-@ProviderFor(UserProfileList)
+/// See also [userProfileList].
+@ProviderFor(userProfileList)
 final userProfileListProvider =
     AutoDisposeFutureProvider<List<UserProfileModel>>.internal(
-  UserProfileList,
+  userProfileList,
   name: r'userProfileListProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null

@@ -7,18 +7,21 @@ import '../entity/user_profile_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class UserProfileB4a {
-  Future<List<UserProfileModel>> list({
-    required QueryBuilder<ParseObject> query,
+  Future<List<UserProfileModel>> list(
+    QueryBuilder<ParseObject> query, {
     Pagination? pagination,
-    Map<String,List<String>>? cols,
+    Map<String, List<String>> cols = const {},
   }) async {
     if (pagination != null) {
       query.setAmountToSkip((pagination.page - 1) * pagination.limit);
       query.setLimit(pagination.limit);
     }
-    cols.containsKey(key)
-    query.keysToReturn(cols);
-    query.includeObject(pointers);
+    if (cols.containsKey('${UserProfileEntity.className}.cols')) {
+      query.keysToReturn(cols['${UserProfileEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${UserProfileEntity.className}.pointers')) {
+      query.includeObject(cols['${UserProfileEntity.className}.pointers']!);
+    }
 
     ParseResponse? response;
     try {
@@ -44,17 +47,17 @@ class UserProfileB4a {
 
   Future<UserProfileModel?> readById(
     String id, [
-    List<String> cols = const [],
-    List<String> pointers = const [],
+    Map<String, List<String>> cols = const {},
   ]) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
-    if (cols.isNotEmpty) query.keysToReturn(cols);
-    if (pointers.isEmpty) {
-      query.includeObject(['region']);
-    } else {
-      query.includeObject(pointers);
+
+    if (cols.containsKey('${UserProfileEntity.className}.cols')) {
+      query.keysToReturn(cols['${UserProfileEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${UserProfileEntity.className}.pointers')) {
+      query.includeObject(cols['${UserProfileEntity.className}.pointers']!);
     }
 
     query.first();

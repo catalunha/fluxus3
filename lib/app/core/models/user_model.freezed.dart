@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserModel {
   String get id => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   UserProfileModel? get userProfile => throw _privateConstructorUsedError;
 
@@ -30,7 +31,11 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({String id, String email, UserProfileModel? userProfile});
+  $Res call(
+      {String id,
+      String userName,
+      String email,
+      UserProfileModel? userProfile});
 
   $UserProfileModelCopyWith<$Res>? get userProfile;
 }
@@ -49,6 +54,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @override
   $Res call({
     Object? id = null,
+    Object? userName = null,
     Object? email = null,
     Object? userProfile = freezed,
   }) {
@@ -56,6 +62,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -88,7 +98,11 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       __$$_UserModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String email, UserProfileModel? userProfile});
+  $Res call(
+      {String id,
+      String userName,
+      String email,
+      UserProfileModel? userProfile});
 
   @override
   $UserProfileModelCopyWith<$Res>? get userProfile;
@@ -106,6 +120,7 @@ class __$$_UserModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? userName = null,
     Object? email = null,
     Object? userProfile = freezed,
   }) {
@@ -113,6 +128,10 @@ class __$$_UserModelCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -129,10 +148,16 @@ class __$$_UserModelCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_UserModel implements _UserModel {
-  _$_UserModel({required this.id, required this.email, this.userProfile});
+  _$_UserModel(
+      {required this.id,
+      required this.userName,
+      required this.email,
+      this.userProfile});
 
   @override
   final String id;
+  @override
+  final String userName;
   @override
   final String email;
   @override
@@ -140,7 +165,7 @@ class _$_UserModel implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, userProfile: $userProfile)';
+    return 'UserModel(id: $id, userName: $userName, email: $email, userProfile: $userProfile)';
   }
 
   @override
@@ -149,13 +174,16 @@ class _$_UserModel implements _UserModel {
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.userProfile, userProfile) ||
                 other.userProfile == userProfile));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, userProfile);
+  int get hashCode =>
+      Object.hash(runtimeType, id, userName, email, userProfile);
 
   @JsonKey(ignore: true)
   @override
@@ -167,11 +195,14 @@ class _$_UserModel implements _UserModel {
 abstract class _UserModel implements UserModel {
   factory _UserModel(
       {required final String id,
+      required final String userName,
       required final String email,
       final UserProfileModel? userProfile}) = _$_UserModel;
 
   @override
   String get id;
+  @override
+  String get userName;
   @override
   String get email;
   @override

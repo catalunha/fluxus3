@@ -103,7 +103,7 @@ class AttendanceEntity {
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null
           ? await UserProfileEntity()
-              .toModel(parseObject.get(AttendanceEntity.professional), cols)
+              .toModel(parseObject.get(AttendanceEntity.professional))
           : null,
       procedure: parseObject.get(AttendanceEntity.procedure) != null
           ? ProcedureEntity()

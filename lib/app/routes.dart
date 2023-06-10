@@ -8,6 +8,7 @@ import 'feature/error/error_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
+import 'feature/user_profile/list/user_profile_list_page.dart';
 import 'feature/user_profile/save/user_profile_edit_page.dart';
 import 'feature/home/home_page.dart';
 
@@ -75,10 +76,19 @@ final goRouterProv = Provider<GoRouter>(
           ),
           routes: [
             GoRoute(
-              path: AppPage.userProfileEdit.path,
-              name: AppPage.userProfileEdit.name,
+              path: AppPage.userProfileSave.path,
+              name: AppPage.userProfileSave.name,
               builder: (context, state) {
                 return UserProfileEditPage(
+                  key: state.pageKey,
+                );
+              },
+            ),
+            GoRoute(
+              path: AppPage.userProfileList.path,
+              name: AppPage.userProfileList.name,
+              builder: (context, state) {
+                return UserProfileListPage(
                   key: state.pageKey,
                 );
               },
@@ -98,12 +108,10 @@ final goRouterProv = Provider<GoRouter>(
 /splash
 /login
 /login/registerEmail
-/home (com levels)
-/home/userProfile/edit
-/home/tasks
-/home/tasks/calcStart
-/home/tasks/calcStart/calcs[1...100]
-/home/tasks/calcStart/calcs/calcReport
+/home
+/home/userProfileSave
+/home/userProfileList
+
 */
 
 enum AppPage {
@@ -111,7 +119,8 @@ enum AppPage {
   login('/login', 'login'),
   registerEmail('registerEmail', 'registerEmail'),
   home('/home', 'home'),
-  userProfileEdit('userProfile/edit', 'userProfileEdit');
+  userProfileSave('userProfileSave', 'userProfileSave'),
+  userProfileList('userProfileList', 'userProfileList');
 
   final String path;
   final String name;

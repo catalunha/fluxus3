@@ -9,16 +9,17 @@ class UserProfileRepository {
 
   UserProfileRepository();
   Future<List<UserProfileModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination, [
-    List<String> cols = const [],
-    List<String> pointers = const [],
-  ]) =>
-      userProfileB4a.list(query, pagination, cols, pointers);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) =>
+      userProfileB4a.list(query, pagination: pagination, cols: cols);
   Future<String> update(UserProfileModel userProfileModel) =>
       userProfileB4a.update(userProfileModel);
-  Future<UserProfileModel?> readById(String id,
-          [List<String> cols = const []]) =>
+  Future<UserProfileModel?> readById(
+    String id, [
+    Map<String, List<String>> cols = const {},
+  ]) =>
       userProfileB4a.readById(id, cols);
   // Future<UserProfileModel?> readByCPF(String? value) =>
   //     userProfileB4a.readByCPF(value);

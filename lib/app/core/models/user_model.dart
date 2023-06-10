@@ -8,6 +8,7 @@ part 'user_model.freezed.dart';
 abstract class UserModel with _$UserModel {
   factory UserModel({
     required String id,
+    required String userName,
     required String email,
     UserProfileModel? userProfile,
   }) = _UserModel;

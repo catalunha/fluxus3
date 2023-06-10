@@ -11,6 +11,7 @@ part 'user_profile_model.freezed.dart';
 abstract class UserProfileModel with _$UserProfileModel {
   factory UserProfileModel({
     required String id,
+    required String userName,
     required String email,
     required bool isActive,
     required List<String> access, //admin, sec, prof, fin

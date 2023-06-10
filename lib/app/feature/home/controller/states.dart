@@ -1,3 +1,0 @@
-// List<LevelModel>
-
-// selected LevelModel

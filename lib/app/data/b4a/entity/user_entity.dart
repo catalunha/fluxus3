@@ -7,12 +7,14 @@ class UserEntity {
   static const String className = '_User';
   // Nome do campo local = no Database
   static const String id = 'objectId';
-  static const String email = 'username';
+  static const String userName = 'username';
+  static const String email = 'email';
   static const String userProfile = 'userProfile';
 
   Future<UserModel> toModel(ParseObject parseUser) async {
     return UserModel(
       id: parseUser.objectId!,
+      userName: parseUser.get(UserEntity.userName),
       email: parseUser.get(UserEntity.email),
       userProfile: parseUser.get(UserEntity.userProfile) != null
           ? await UserProfileEntity()

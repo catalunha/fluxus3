@@ -13,6 +13,7 @@ class UserProfileEntity {
   static const String className = 'UserProfile';
 
   static const String id = 'objectId';
+  static const String userName = 'userName';
   static const String email = 'email';
   static const String nickname = 'nickname';
   static const String name = 'name';
@@ -34,11 +35,11 @@ class UserProfileEntity {
 
   Future<UserProfileModel> toModel(
     ParseObject parseObject, [
-    List<String> cols = const [],
+    Map<String, List<String>> cols = const {},
   ]) async {
     //+++ get office
     List<OfficeModel> officeList = [];
-    if (cols.contains('offices')) {
+    if (cols.containsKey('${OfficeEntity.className}.cols')) {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
@@ -55,7 +56,7 @@ class UserProfileEntity {
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
 
-    if (cols.contains('expertises')) {
+    if (cols.containsKey('${ExpertiseEntity.className}.cols')) {
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
@@ -72,7 +73,7 @@ class UserProfileEntity {
     //+++ get procedure
     List<ProcedureModel> procedureList = [];
 
-    if (cols.contains('procedures')) {
+    if (cols.containsKey('${ProcedureEntity.className}.cols')) {
       QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,
@@ -89,6 +90,7 @@ class UserProfileEntity {
     //--- get procedure
     UserProfileModel model = UserProfileModel(
       id: parseObject.objectId!,
+      userName: parseObject.get(UserProfileEntity.userName),
       email: parseObject.get(UserProfileEntity.email),
       nickname: parseObject.get(UserProfileEntity.nickname),
       name: parseObject.get(UserProfileEntity.name),
