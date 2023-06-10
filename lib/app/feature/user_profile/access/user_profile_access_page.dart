@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/models/expertise_model.dart';
@@ -10,12 +11,15 @@ import '../../../core/models/procedure_model.dart';
 import '../../expertise/select/expertise_select_page.dart';
 import '../../office/select/office_select_page.dart';
 import '../../procedure/select/procedure_select_page.dart';
+import '../../utils/app_mixin_loader.dart';
+import '../../utils/app_mixin_messages.dart';
 import '../../utils/app_photo_show.dart';
 import '../../utils/app_text_title_value.dart';
 import 'access_mark.dart';
 import 'controller/providers.dart';
+import 'controller/states.dart';
 
-class UserProfileAccessPage extends ConsumerWidget {
+class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
   final String userProfileId;
   UserProfileAccessPage({
     Key? key,
@@ -25,9 +29,31 @@ class UserProfileAccessPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final model = ref.watch(userProfileAccessProvider(id: userProfileId));
+    ref.listen<UserProfileAccessSaveStatus>(userProfileAccessSaveStatusProvider,
+        (previous, next) async {
+      if (next == UserProfileAccessSaveStatus.error) {
+        hideLoader(context);
+        final error = ref.read(userProfileAccessSaveErrorProvider);
+        showMessageError(context, error);
+      }
+      if (next == UserProfileAccessSaveStatus.success) {
+        hideLoader(context); //sai do Dialog do loading
+        context.pop(); //sai da pagina
+      }
+      if (next == UserProfileAccessSaveStatus.loading) {
+        showLoader(context);
+      }
+    });
+
+    final model = ref.watch(userProfileAccessReadProvider(id: userProfileId));
     return Scaffold(
       appBar: AppBar(title: const Text('Atualizar este usuário')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ref.read(userProfileAccessSaveProvider.notifier).submitForm();
+        },
+        child: const Icon(Icons.cloud_upload),
+      ),
       body: model.when(
         data: (data) {
           log('tem data');

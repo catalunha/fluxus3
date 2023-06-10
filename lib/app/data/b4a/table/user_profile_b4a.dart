@@ -31,7 +31,7 @@ class UserProfileB4a {
       List<UserProfileModel> listTemp = <UserProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await UserProfileEntity().toModel(element, cols));
+          listTemp.add(await UserProfileEntity().toModel(element, cols: cols));
         }
         return listTemp;
       } else {
@@ -48,9 +48,9 @@ class UserProfileB4a {
   }
 
   Future<UserProfileModel?> readById(
-    String id, [
+    String id, {
     Map<String, List<String>> cols = const {},
-  ]) async {
+  }) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
@@ -69,7 +69,7 @@ class UserProfileB4a {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return UserProfileEntity().toModel(response.results!.first, cols);
+        return UserProfileEntity().toModel(response.results!.first, cols: cols);
       }
       return null;
       // throw B4aException(

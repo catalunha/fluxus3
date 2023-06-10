@@ -17,10 +17,10 @@ class UserProfileRepository {
   Future<String> update(UserProfileModel userProfileModel) =>
       userProfileB4a.update(userProfileModel);
   Future<UserProfileModel?> readById(
-    String id, [
+    String id, {
     Map<String, List<String>> cols = const {},
-  ]) =>
-      userProfileB4a.readById(id, cols);
+  }) =>
+      userProfileB4a.readById(id, cols: cols);
   // Future<UserProfileModel?> readByCPF(String? value) =>
   //     userProfileB4a.readByCPF(value);
   Future<void> updateRelationOffices(
