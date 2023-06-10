@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/models/office_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
 import 'states.dart';
@@ -13,9 +14,9 @@ FutureOr<UserProfileModel> userProfileAccess(UserProfileAccessRef ref,
   final userProfile =
       await ref.read(userProfileRepositoryProvider).readById(id);
   if (userProfile != null) {
-    ref.read(isActiveProvider.notifier).state = userProfile.isActive;
+    ref.watch(isActiveProvider.notifier).state = userProfile.isActive;
     for (var access in userProfile.access) {
-      ref.read(accessStateProvider.notifier).update(access.toAccessStatus);
+      ref.watch(accessStateProvider.notifier).update(access.toAccessStatus);
     }
     return userProfile;
   } else {
@@ -24,12 +25,33 @@ FutureOr<UserProfileModel> userProfileAccess(UserProfileAccessRef ref,
   }
 }
 
-final isActiveProvider = StateProvider<bool>((ref) {
-  return false;
-});
+final isActiveProvider = StateProvider.autoDispose<bool>(
+  (ref) {
+    return false;
+  },
+  name: 'isActiveProvider',
+);
 
-// @riverpod
-@Riverpod(keepAlive: true)
+@riverpod
+class OfficeSelected extends _$OfficeSelected {
+  @override
+  List<OfficeModel> build() {
+    return [];
+  }
+
+  void update(OfficeModel model) {
+    int index = state.indexWhere((value) => value.id == model.id);
+    if (index >= 0) {
+      List<OfficeModel> temp = [...state];
+      temp.removeAt(index);
+      state = [...temp];
+    } else {
+      state = [...state, model];
+    }
+  }
+}
+
+@riverpod
 class AccessState extends _$AccessState {
   @override
   List<AccessStatus> build() {

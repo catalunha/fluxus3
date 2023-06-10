@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/models/office_model.dart';
+import '../../../routes.dart';
 import '../../utils/app_photo_show.dart';
 import '../../utils/app_text_title_value.dart';
 import 'access_mark.dart';
@@ -67,7 +70,48 @@ class UserProfileAccessPage extends ConsumerWidget {
                         AccessMark(access: 'fin'),
                       ],
                     ),
-                    
+                    const Text('Selecione os cargos'),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              List<OfficeModel>? result = await context
+                                  .pushNamed(AppPage.officeSelect.name,
+                                      extra: false) as List<OfficeModel>?;
+                              if (result != null) {
+                                for (var element in result) {
+                                  ref
+                                      .read(officeSelectedProvider.notifier)
+                                      .update(element);
+                                }
+                              }
+                            },
+                            icon: const Icon(Icons.search)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: ref
+                              .watch(officeSelectedProvider)
+                              .map(
+                                (e) => Row(
+                                  children: [
+                                    Text('${e.name}'),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        ref
+                                            .read(
+                                                officeSelectedProvider.notifier)
+                                            .update(e);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        const SizedBox(width: 15)
+                      ],
+                    ),
                   ],
                 ),
               ),

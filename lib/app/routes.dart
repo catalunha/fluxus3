@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
+import 'feature/office/select/office_select_page.dart';
 import 'feature/region/select/region_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
@@ -141,6 +142,17 @@ final goRouterProv = Provider<GoRouter>(
                 );
               },
             ),
+            GoRoute(
+              path: AppPage.officeSelect.path,
+              name: AppPage.officeSelect.name,
+              builder: (context, state) {
+                final isSingleValue = state.extra as bool;
+                return OfficeSelectPage(
+                  key: state.pageKey,
+                  isSingleValue: isSingleValue,
+                );
+              },
+            ),
           ],
         ),
       ],
@@ -164,6 +176,7 @@ final goRouterProv = Provider<GoRouter>(
 
 /home/userProfileSelect
 /home/regionSelect
+/home/officeSelect
 
 */
 
@@ -171,13 +184,16 @@ enum AppPage {
   splash('/', 'splash'),
   login('/login', 'login'),
   registerEmail('registerEmail', 'registerEmail'),
+
   home('/home', 'home'),
   userProfileSave('userProfileSave', 'userProfileSave'),
   userProfileList('userProfileList', 'userProfileList'),
   userProfileView('userProfileView/:id', 'userProfileView'),
   userProfileAccess('userProfileAccess/:id', 'userProfileAccess'),
+
   userProfileSelect('userProfileSelect', 'userProfileSelect'),
-  regionSelect('regionSelect', 'regionSelect');
+  regionSelect('regionSelect', 'regionSelect'),
+  officeSelect('officeSelect', 'officeSelect');
 
   final String path;
   final String name;

@@ -6,7 +6,7 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileAccessHash() => r'0fd441e29fe5a7337c4c9de9e0805fb0dc0c565b';
+String _$userProfileAccessHash() => r'196cb32f0e71a8b8f511703250ab082e00a1b66c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -111,12 +111,28 @@ class UserProfileAccessProvider
   }
 }
 
-String _$accessStateHash() => r'c30b11e590b870133ba1de57592557ddb4526257';
+String _$officeSelectedHash() => r'2b4a0c74fb4276abc53d94c42d57a4d72afe6a17';
+
+/// See also [OfficeSelected].
+@ProviderFor(OfficeSelected)
+final officeSelectedProvider =
+    AutoDisposeNotifierProvider<OfficeSelected, List<OfficeModel>>.internal(
+  OfficeSelected.new,
+  name: r'officeSelectedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$officeSelectedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$OfficeSelected = AutoDisposeNotifier<List<OfficeModel>>;
+String _$accessStateHash() => r'6abae2092f2629d56bf4b1617f0c61e54369b45a';
 
 /// See also [AccessState].
 @ProviderFor(AccessState)
 final accessStateProvider =
-    NotifierProvider<AccessState, List<AccessStatus>>.internal(
+    AutoDisposeNotifierProvider<AccessState, List<AccessStatus>>.internal(
   AccessState.new,
   name: r'accessStateProvider',
   debugGetCreateSourceHash:
@@ -125,5 +141,5 @@ final accessStateProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$AccessState = Notifier<List<AccessStatus>>;
+typedef _$AccessState = AutoDisposeNotifier<List<AccessStatus>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
