@@ -127,7 +127,6 @@ class UserProfileViewPage extends ConsumerWidget {
         },
         error: (error, stackTrace) {
           log('tem error');
-
           log('Erro em Lista de usuarios');
           log('$error');
           log('$stackTrace');

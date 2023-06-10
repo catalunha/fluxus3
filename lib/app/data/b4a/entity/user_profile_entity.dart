@@ -15,6 +15,9 @@ class UserProfileEntity {
   static const String id = 'objectId';
   static const String userName = 'userName';
   static const String email = 'email';
+  static const String access = 'access';
+  static const String isActive = 'isActive';
+
   static const String nickname = 'nickname';
   static const String name = 'name';
   static const String cpf = 'cpf';
@@ -22,10 +25,8 @@ class UserProfileEntity {
   static const String phone = 'phone';
   static const String photo = 'photo';
   static const String isFemale = 'isFemale';
-  static const String isActive = 'isActive';
   static const String birthday = 'birthday';
   static const String address = 'address';
-  static const String access = 'access';
 
   static const String region = 'region';
 

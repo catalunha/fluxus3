@@ -11,6 +11,7 @@ import 'feature/user/register/email/user_register_email.page.dart';
 import 'feature/user_profile/list/user_profile_list_page.dart';
 import 'feature/user_profile/save/user_profile_edit_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/user_profile/select/user_profile_select_page.dart';
 import 'feature/user_profile/view/user_profile_view_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
@@ -86,26 +87,38 @@ final goRouterProv = Provider<GoRouter>(
               },
             ),
             GoRoute(
-                path: AppPage.userProfileList.path,
-                name: AppPage.userProfileList.name,
-                builder: (context, state) {
-                  return UserProfileListPage(
-                    key: state.pageKey,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: AppPage.userProfileView.path,
-                    name: AppPage.userProfileView.name,
-                    builder: (context, state) {
-                      final id = state.pathParameters['id'] as String;
-                      return UserProfileViewPage(
-                        key: state.pageKey,
-                        userProfileId: id,
-                      );
-                    },
-                  ),
-                ]),
+              path: AppPage.userProfileList.path,
+              name: AppPage.userProfileList.name,
+              builder: (context, state) {
+                return UserProfileListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.userProfileView.path,
+                  name: AppPage.userProfileView.name,
+                  builder: (context, state) {
+                    final id = state.pathParameters['id'] as String;
+                    return UserProfileViewPage(
+                      key: state.pageKey,
+                      userProfileId: id,
+                    );
+                  },
+                ),
+                GoRoute(
+                  path: AppPage.userProfileSelect.path,
+                  name: AppPage.userProfileSelect.name,
+                  builder: (context, state) {
+                    final isSingleValue = state.extra as bool;
+                    return UserProfileSelectPage(
+                      key: state.pageKey,
+                      isSingleValue: isSingleValue,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -134,7 +147,8 @@ enum AppPage {
   home('/home', 'home'),
   userProfileSave('userProfileSave', 'userProfileSave'),
   userProfileList('userProfileList', 'userProfileList'),
-  userProfileView('userProfileView/:id', 'userProfileView');
+  userProfileView('userProfileView/:id', 'userProfileView'),
+  userProfileSelect('userProfileSelect', 'userProfileSelect');
 
   final String path;
   final String name;
