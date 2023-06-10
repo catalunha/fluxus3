@@ -32,102 +32,17 @@ class UserProfileEntity {
   static const String expertises = 'expertises';
   static const String procedures = 'procedures';
 
-  static List<String> selectedCols(List<String> cols) {
-    return cols.map((e) => '${UserProfileEntity.className}.$e').toList();
-  }
-
-  static final List<String> singleCols = [
-    UserProfileEntity.email,
-    UserProfileEntity.nickname,
-    UserProfileEntity.name,
-    UserProfileEntity.cpf,
-    UserProfileEntity.register,
-    UserProfileEntity.phone,
-    UserProfileEntity.photo,
-    UserProfileEntity.isFemale,
-    UserProfileEntity.isActive,
-    UserProfileEntity.birthday,
-    UserProfileEntity.address,
-    UserProfileEntity.access,
-    UserProfileEntity.region,
-    UserProfileEntity.offices,
-    UserProfileEntity.expertises,
-    UserProfileEntity.procedures,
-  ].map((e) => '${UserProfileEntity.className}.$e').toList();
-  static final List<String> pointerCols = [
-    UserProfileEntity.region,
-  ].map((e) => '${UserProfileEntity.className}.$e').toList();
-
-  static final List<String> relationCols = [
-    UserProfileEntity.offices,
-    UserProfileEntity.expertises,
-    UserProfileEntity.procedures,
-  ].map((e) => '${UserProfileEntity.className}.$e').toList();
-
-  // static final List<String> allCols = [
-  //   ...UserProfileEntity.singleCols,
-  //   ...UserProfileEntity.pointerCols,
-  //   ...UserProfileEntity.relationCols
-  // ];
-  static List<String> filterSingleCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (UserProfileEntity.singleCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${UserProfileEntity.className}.', ''))
-        .toList();
-  }
-
-  static List<String> filterPointerCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (UserProfileEntity.pointerCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${UserProfileEntity.className}.', ''))
-        .toList();
-  }
-
-  static List<String> filterRelationCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (UserProfileEntity.relationCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${UserProfileEntity.className}.', ''))
-        .toList();
-  }
-
   Future<UserProfileModel> toModel(
     ParseObject parseObject, [
     List<String> cols = const [],
   ]) async {
     //+++ get office
     List<OfficeModel> officeList = [];
-    // if (cols.contains('offices')) {
-    if (cols.contains(
-        '${UserProfileEntity.className}.${UserProfileEntity.offices}')) {
+    if (cols.contains('offices')) {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
           UserProfileEntity.className, parseObject.objectId!);
-      List<String> colsOffices = cols
-          .where((e) => e.startsWith('${OfficeEntity.className}.'))
-          .toList();
-      print('colsOffices: $colsOffices');
-      queryOffice.keysToReturn([
-        ...OfficeEntity.filterSingleCols(colsOffices),
-        ...OfficeEntity.filterPointerCols(colsOffices),
-        ...OfficeEntity.filterRelationCols(colsOffices)
-      ]);
-      queryOffice.includeObject(OfficeEntity.filterPointerCols(colsOffices));
       final ParseResponse parseResponse = await queryOffice.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
@@ -140,23 +55,11 @@ class UserProfileEntity {
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
 
-    // if (cols.contains('expertises')) {
-    if (cols.contains(
-        '${UserProfileEntity.className}.${UserProfileEntity.expertises}')) {
+    if (cols.contains('expertises')) {
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
           UserProfileEntity.className, parseObject.objectId!);
-      List<String> colsExpertises = cols
-          .where((e) => e.startsWith('${ExpertiseEntity.className}.'))
-          .toList();
-      queryExpertise.keysToReturn([
-        ...ExpertiseEntity.filterSingleCols(colsExpertises),
-        ...ExpertiseEntity.filterPointerCols(colsExpertises),
-        ...ExpertiseEntity.filterRelationCols(colsExpertises)
-      ]);
-      queryExpertise
-          .includeObject(ExpertiseEntity.filterPointerCols(colsExpertises));
       final ParseResponse parseResponse = await queryExpertise.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
@@ -169,24 +72,12 @@ class UserProfileEntity {
     //+++ get procedure
     List<ProcedureModel> procedureList = [];
 
-    // if (cols.contains('procedures')) {
-    if (cols.contains(
-        '${UserProfileEntity.className}.${UserProfileEntity.procedures}')) {
+    if (cols.contains('procedures')) {
       QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,
           UserProfileEntity.className, parseObject.objectId!);
-      List<String> colsProcedures = cols
-          .where((e) => e.startsWith('${ProcedureEntity.className}.'))
-          .toList();
-      queryProcedure.keysToReturn([
-        ...ProcedureEntity.filterSingleCols(colsProcedures),
-        ...ProcedureEntity.filterPointerCols(colsProcedures),
-        ...ProcedureEntity.filterRelationCols(colsProcedures)
-      ]);
-      queryProcedure
-          .includeObject(ProcedureEntity.filterPointerCols(colsProcedures));
-      // queryProcedure.includeObject(['expertise']);
+      queryProcedure.includeObject(['expertise']);
       final ParseResponse parseResponse = await queryProcedure.query();
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {

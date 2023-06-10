@@ -7,31 +7,22 @@ import '../entity/user_profile_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class UserProfileB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination, [
-    List<String> cols = const [],
-  ]) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    query.keysToReturn([
-      ...UserProfileEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(UserProfileEntity.filterPointerCols(cols));
+  Future<List<UserProfileModel>> list({
+    required QueryBuilder<ParseObject> query,
+    Pagination? pagination,
+    Map<String,List<String>>? cols,
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    cols.containsKey(key)
+    query.keysToReturn(cols);
+    query.includeObject(pointers);
 
-    return query;
-  }
-
-  Future<List<UserProfileModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination, [
-    List<String> cols = const [],
-  ]) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination, cols);
     ParseResponse? response;
     try {
-      response = await query2.query();
+      response = await query.query();
       List<UserProfileModel> listTemp = <UserProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
@@ -51,16 +42,20 @@ class UserProfileB4a {
     }
   }
 
-  Future<UserProfileModel?> readById(String id,
-      [List<String> cols = const []]) async {
+  Future<UserProfileModel?> readById(
+    String id, [
+    List<String> cols = const [],
+    List<String> pointers = const [],
+  ]) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
-    print('readById: $cols');
-    query.keysToReturn([
-      ...UserProfileEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(UserProfileEntity.filterPointerCols(cols));
+    if (cols.isNotEmpty) query.keysToReturn(cols);
+    if (pointers.isEmpty) {
+      query.includeObject(['region']);
+    } else {
+      query.includeObject(pointers);
+    }
 
     query.first();
     try {

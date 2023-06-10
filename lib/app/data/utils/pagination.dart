@@ -1,6 +1,6 @@
 class Pagination {
   int page = 1;
-  int limit = 1;
+  int limit = 100;
   Pagination({this.page = 1, this.limit = 1});
 
   @override
