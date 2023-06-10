@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/routes.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../core/models/region_model.dart';
+import '../../region/select/region_select_page.dart';
 import '../../utils/app_import_image.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
@@ -173,8 +173,13 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                       children: [
                         IconButton(
                           onPressed: () async {
-                            RegionModel? result = await context.pushNamed(
-                                AppPage.regionSelect.name) as RegionModel?;
+                            RegionModel? result = await Navigator.of(context)
+                                .push<RegionModel>(MaterialPageRoute(
+                              builder: (context) {
+                                return const RegionSelectPage();
+                              },
+                            ));
+
                             if (result != null) {
                               log('$result');
                               ref.read(regionSelectedProvider.notifier).state =

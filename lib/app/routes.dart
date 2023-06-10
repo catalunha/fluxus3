@@ -5,8 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
-import 'feature/office/select/office_select_page.dart';
-import 'feature/region/select/region_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -14,7 +12,6 @@ import 'feature/user_profile/access/user_profile_access_page.dart';
 import 'feature/user_profile/list/user_profile_list_page.dart';
 import 'feature/user_profile/save/user_profile_edit_page.dart';
 import 'feature/home/home_page.dart';
-import 'feature/user_profile/select/user_profile_select_page.dart';
 import 'feature/user_profile/view/user_profile_view_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
@@ -122,37 +119,6 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
-            GoRoute(
-              path: AppPage.userProfileSelect.path,
-              name: AppPage.userProfileSelect.name,
-              builder: (context, state) {
-                final isSingleValue = state.extra as bool;
-                return UserProfileSelectPage(
-                  key: state.pageKey,
-                  isSingleValue: isSingleValue,
-                );
-              },
-            ),
-            GoRoute(
-              path: AppPage.regionSelect.path,
-              name: AppPage.regionSelect.name,
-              builder: (context, state) {
-                return RegionSelectPage(
-                  key: state.pageKey,
-                );
-              },
-            ),
-            GoRoute(
-              path: AppPage.officeSelect.path,
-              name: AppPage.officeSelect.name,
-              builder: (context, state) {
-                final isSingleValue = state.extra as bool;
-                return OfficeSelectPage(
-                  key: state.pageKey,
-                  isSingleValue: isSingleValue,
-                );
-              },
-            ),
           ],
         ),
       ],
@@ -174,9 +140,6 @@ final goRouterProv = Provider<GoRouter>(
 /home/userProfileList/userProfileView
 /home/userProfileList/userProfileAccess
 
-/home/userProfileSelect
-/home/regionSelect
-/home/officeSelect
 
 */
 
@@ -189,11 +152,7 @@ enum AppPage {
   userProfileSave('userProfileSave', 'userProfileSave'),
   userProfileList('userProfileList', 'userProfileList'),
   userProfileView('userProfileView/:id', 'userProfileView'),
-  userProfileAccess('userProfileAccess/:id', 'userProfileAccess'),
-
-  userProfileSelect('userProfileSelect', 'userProfileSelect'),
-  regionSelect('regionSelect', 'regionSelect'),
-  officeSelect('officeSelect', 'officeSelect');
+  userProfileAccess('userProfileAccess/:id', 'userProfileAccess');
 
   final String path;
   final String name;

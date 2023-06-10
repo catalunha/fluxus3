@@ -2,11 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/models/expertise_model.dart';
 import '../../../core/models/office_model.dart';
-import '../../../routes.dart';
+import '../../expertise/select/expertise_select_page.dart';
+import '../../office/select/office_select_page.dart';
 import '../../utils/app_photo_show.dart';
 import '../../utils/app_text_title_value.dart';
 import 'access_mark.dart';
@@ -71,17 +72,71 @@ class UserProfileAccessPage extends ConsumerWidget {
                       ],
                     ),
                     const Text('Selecione os cargos'),
+                    Row(children: [
+                      IconButton(
+                          onPressed: () async {
+                            List<OfficeModel>? result =
+                                await Navigator.of(context)
+                                    .push<List<OfficeModel>?>(MaterialPageRoute(
+                              builder: (context) {
+                                return const OfficeSelectPage(
+                                  isSingleValue: false,
+                                );
+                              },
+                            ));
+
+                            if (result != null) {
+                              for (var element in result) {
+                                ref
+                                    .read(officeSelectedProvider.notifier)
+                                    .update(element);
+                              }
+                            }
+                          },
+                          icon: const Icon(Icons.search)),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: ref
+                            .watch(officeSelectedProvider)
+                            .map(
+                              (e) => Row(
+                                children: [
+                                  Text('${e.name}'),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () {
+                                      ref
+                                          .read(officeSelectedProvider.notifier)
+                                          .update(e);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ]),
+                    const SizedBox(width: 15),
+                    const Text('Selecione as especialidades'),
                     Row(
                       children: [
                         IconButton(
                             onPressed: () async {
-                              List<OfficeModel>? result = await context
-                                  .pushNamed(AppPage.officeSelect.name,
-                                      extra: false) as List<OfficeModel>?;
+                              List<ExpertiseModel>? result =
+                                  await Navigator.of(context)
+                                      .push<List<ExpertiseModel>?>(
+                                          MaterialPageRoute(
+                                builder: (context) {
+                                  return const ExpertiseSelectPage(
+                                    isSingleValue: false,
+                                  );
+                                },
+                              ));
+
                               if (result != null) {
                                 for (var element in result) {
                                   ref
-                                      .read(officeSelectedProvider.notifier)
+                                      .read(expertiseSelectedProvider.notifier)
                                       .update(element);
                                 }
                               }
@@ -90,7 +145,7 @@ class UserProfileAccessPage extends ConsumerWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: ref
-                              .watch(officeSelectedProvider)
+                              .watch(expertiseSelectedProvider)
                               .map(
                                 (e) => Row(
                                   children: [
@@ -99,8 +154,8 @@ class UserProfileAccessPage extends ConsumerWidget {
                                       icon: const Icon(Icons.delete),
                                       onPressed: () {
                                         ref
-                                            .read(
-                                                officeSelectedProvider.notifier)
+                                            .read(expertiseSelectedProvider
+                                                .notifier)
                                             .update(e);
                                       },
                                     ),
@@ -109,7 +164,6 @@ class UserProfileAccessPage extends ConsumerWidget {
                               )
                               .toList(),
                         ),
-                        const SizedBox(width: 15)
                       ],
                     ),
                   ],

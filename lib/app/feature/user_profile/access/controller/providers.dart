@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/office_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
@@ -43,6 +44,25 @@ class OfficeSelected extends _$OfficeSelected {
     int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
       List<OfficeModel> temp = [...state];
+      temp.removeAt(index);
+      state = [...temp];
+    } else {
+      state = [...state, model];
+    }
+  }
+}
+
+@riverpod
+class ExpertiseSelected extends _$ExpertiseSelected {
+  @override
+  List<ExpertiseModel> build() {
+    return [];
+  }
+
+  void update(ExpertiseModel model) {
+    int index = state.indexWhere((value) => value.id == model.id);
+    if (index >= 0) {
+      List<ExpertiseModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

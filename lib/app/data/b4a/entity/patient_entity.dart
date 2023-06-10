@@ -152,7 +152,7 @@ class PatientEntity {
       isFemale: parseObject.get(PatientEntity.isFemale),
       birthday: parseObject.get<DateTime>(PatientEntity.birthday)?.toLocal(),
       region: parseObject.get(PatientEntity.region) != null
-          ? RegionEntity().toModel(parseObject.get(PatientEntity.region), cols)
+          ? RegionEntity().toModel(parseObject.get(PatientEntity.region))
           : null,
       family: familyList,
       healthPlans: healthPlanList,

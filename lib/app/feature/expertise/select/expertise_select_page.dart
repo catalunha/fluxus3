@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller/providers.dart';
-import 'office_obj.dart';
+import 'expertise_obj.dart';
 
-class OfficeSelectPage extends ConsumerWidget {
+class ExpertiseSelectPage extends ConsumerWidget {
   final bool isSingleValue;
 
-  const OfficeSelectPage({super.key, this.isSingleValue = true});
+  const ExpertiseSelectPage({super.key, this.isSingleValue = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(officeSelectProvider);
+    final list = ref.watch(expertiseSelectProvider);
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('Selecione ${isSingleValue ? 'um cargo' : 'alguns cargos'}'),
+        title: Text(
+            'Selecione ${isSingleValue ? 'uma especialidade' : 'algumas especialidades'}'),
       ),
       body: list.when(
         data: (data) {
@@ -25,7 +25,7 @@ class OfficeSelectPage extends ConsumerWidget {
             itemCount: data.length,
             itemBuilder: (context, index) {
               final level = data[index];
-              return OfficeObj(
+              return ExpertiseObj(
                 model: level,
                 isSingleValue: isSingleValue,
               );
@@ -50,7 +50,7 @@ class OfficeSelectPage extends ConsumerWidget {
         visible: !isSingleValue,
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pop(ref.watch(officeSelectedProvider));
+            Navigator.of(context).pop(ref.watch(expertiseSelectedProvider));
           },
           child: const Icon(Icons.send),
         ),

@@ -127,6 +127,22 @@ final officeSelectedProvider =
 );
 
 typedef _$OfficeSelected = AutoDisposeNotifier<List<OfficeModel>>;
+String _$expertiseSelectedHash() => r'180f8b53a181bca3c4a01d9fc9dbb3caa7f4fa52';
+
+/// See also [ExpertiseSelected].
+@ProviderFor(ExpertiseSelected)
+final expertiseSelectedProvider = AutoDisposeNotifierProvider<ExpertiseSelected,
+    List<ExpertiseModel>>.internal(
+  ExpertiseSelected.new,
+  name: r'expertiseSelectedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$expertiseSelectedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ExpertiseSelected = AutoDisposeNotifier<List<ExpertiseModel>>;
 String _$accessStateHash() => r'6abae2092f2629d56bf4b1617f0c61e54369b45a';
 
 /// See also [AccessState].

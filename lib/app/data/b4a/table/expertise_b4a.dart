@@ -7,26 +7,29 @@ import '../entity/expertise_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class ExpertiseB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    return query;
-  }
-
   Future<List<ExpertiseModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${ExpertiseEntity.className}.cols')) {
+      query.keysToReturn(cols['${ExpertiseEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${ExpertiseEntity.className}.pointers')) {
+      query.includeObject(cols['${ExpertiseEntity.className}.pointers']!);
+    }
+
     ParseResponse? parseResponse;
     try {
-      parseResponse = await query2.query();
+      parseResponse = await query.query();
       List<ExpertiseModel> listTemp = <ExpertiseModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
-          listTemp.add(ExpertiseEntity().toModel(element, cols));
+          listTemp.add(ExpertiseEntity().toModel(element));
         }
         return listTemp;
       } else {
