@@ -6,12 +6,11 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$expertiseSelectHash() => r'72285fb8785d5dba5ab88ade309069351e8d1171';
+String _$expertiseSelectHash() => r'e82b8acf7d1c3c15def8685bce4a502c04725f74';
 
 /// See also [expertiseSelect].
 @ProviderFor(expertiseSelect)
-final expertiseSelectProvider =
-    AutoDisposeFutureProvider<List<ExpertiseModel>>.internal(
+final expertiseSelectProvider = FutureProvider<List<ExpertiseModel>>.internal(
   expertiseSelect,
   name: r'expertiseSelectProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,7 +20,7 @@ final expertiseSelectProvider =
   allTransitiveDependencies: null,
 );
 
-typedef ExpertiseSelectRef = AutoDisposeFutureProviderRef<List<ExpertiseModel>>;
+typedef ExpertiseSelectRef = FutureProviderRef<List<ExpertiseModel>>;
 String _$expertiseSelectedHash() => r'8d7a751307d2f0ea8b9ce8ebf81cc1a7f6dcbf42';
 
 /// See also [ExpertiseSelected].

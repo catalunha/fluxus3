@@ -7,23 +7,27 @@ import '../entity/procedure_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class ProcedureB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    query.includeObject(['expertise']);
-    return query;
-  }
-
   Future<List<ProcedureModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${ProcedureEntity.className}.cols')) {
+      query.keysToReturn(cols['${ProcedureEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${ProcedureEntity.className}.pointers')) {
+      query.includeObject(cols['${ProcedureEntity.className}.pointers']!);
+    } else {
+      query.includeObject(['expertise']);
+    }
+
     ParseResponse? parseResponse;
     try {
-      parseResponse = await query2.query();
+      parseResponse = await query.query();
       List<ProcedureModel> listTemp = <ProcedureModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {

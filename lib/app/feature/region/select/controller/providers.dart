@@ -7,7 +7,7 @@ import '../../../../data/b4a/entity/region_entity.dart';
 
 part 'providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<RegionModel>> regionSelect(RegionSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(RegionEntity.className));

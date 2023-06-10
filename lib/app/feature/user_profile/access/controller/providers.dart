@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/expertise_model.dart';
 import '../../../../core/models/office_model.dart';
+import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
 import 'states.dart';
@@ -63,6 +64,25 @@ class ExpertiseSelected extends _$ExpertiseSelected {
     int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
       List<ExpertiseModel> temp = [...state];
+      temp.removeAt(index);
+      state = [...temp];
+    } else {
+      state = [...state, model];
+    }
+  }
+}
+
+@riverpod
+class ProcedureSelected extends _$ProcedureSelected {
+  @override
+  List<ProcedureModel> build() {
+    return [];
+  }
+
+  void update(ProcedureModel model) {
+    int index = state.indexWhere((value) => value.id == model.id);
+    if (index >= 0) {
+      List<ProcedureModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

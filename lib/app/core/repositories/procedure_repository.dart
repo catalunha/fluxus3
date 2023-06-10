@@ -9,10 +9,11 @@ class ProcedureRepository {
 
   ProcedureRepository();
   Future<List<ProcedureModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      apiB4a.list(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.list(query, pagination: pagination, cols: cols);
   Future<String> update(ProcedureModel model) => apiB4a.update(model);
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

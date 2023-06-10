@@ -143,6 +143,22 @@ final expertiseSelectedProvider = AutoDisposeNotifierProvider<ExpertiseSelected,
 );
 
 typedef _$ExpertiseSelected = AutoDisposeNotifier<List<ExpertiseModel>>;
+String _$procedureSelectedHash() => r'f39d3000e26752a81b511aeb4025789d65642f52';
+
+/// See also [ProcedureSelected].
+@ProviderFor(ProcedureSelected)
+final procedureSelectedProvider = AutoDisposeNotifierProvider<ProcedureSelected,
+    List<ProcedureModel>>.internal(
+  ProcedureSelected.new,
+  name: r'procedureSelectedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$procedureSelectedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ProcedureSelected = AutoDisposeNotifier<List<ProcedureModel>>;
 String _$accessStateHash() => r'6abae2092f2629d56bf4b1617f0c61e54369b45a';
 
 /// See also [AccessState].

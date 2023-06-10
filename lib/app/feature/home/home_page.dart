@@ -33,7 +33,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
           child: Wrap(
             children: [
               HomeModule(
-                title: 'Usuários abc abc abc abc  abc abc abc',
+                title: 'Gerenciar Usuários',
                 icon: Icons.people,
                 color: Colors.black,
                 actions: [

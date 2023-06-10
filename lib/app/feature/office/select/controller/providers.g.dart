@@ -6,12 +6,11 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$officeSelectHash() => r'f226355b42512d66a7d3ffc51f12c1f970bfaada';
+String _$officeSelectHash() => r'a5a086c7c9432b7c3b20aefdfe88833637aae765';
 
 /// See also [officeSelect].
 @ProviderFor(officeSelect)
-final officeSelectProvider =
-    AutoDisposeFutureProvider<List<OfficeModel>>.internal(
+final officeSelectProvider = FutureProvider<List<OfficeModel>>.internal(
   officeSelect,
   name: r'officeSelectProvider',
   debugGetCreateSourceHash:
@@ -20,7 +19,7 @@ final officeSelectProvider =
   allTransitiveDependencies: null,
 );
 
-typedef OfficeSelectRef = AutoDisposeFutureProviderRef<List<OfficeModel>>;
+typedef OfficeSelectRef = FutureProviderRef<List<OfficeModel>>;
 String _$officeSelectedHash() => r'd63687112c76b93b7ed61e555400b4f2b2e25055';
 
 /// See also [OfficeSelected].

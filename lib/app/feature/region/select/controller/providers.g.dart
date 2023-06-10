@@ -6,12 +6,11 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$regionSelectHash() => r'9d314b6f6e45409803f82b9d9f0c28a6ec2f0f60';
+String _$regionSelectHash() => r'54e67c3a3aba5b3fc1b31d16d5df60d2c5b1accd';
 
 /// See also [regionSelect].
 @ProviderFor(regionSelect)
-final regionSelectProvider =
-    AutoDisposeFutureProvider<List<RegionModel>>.internal(
+final regionSelectProvider = FutureProvider<List<RegionModel>>.internal(
   regionSelect,
   name: r'regionSelectProvider',
   debugGetCreateSourceHash:
@@ -20,7 +19,7 @@ final regionSelectProvider =
   allTransitiveDependencies: null,
 );
 
-typedef RegionSelectRef = AutoDisposeFutureProviderRef<List<RegionModel>>;
+typedef RegionSelectRef = FutureProviderRef<List<RegionModel>>;
 String _$regionSelectedHash() => r'961c9d16b44de359e7d58642ae983d3250261921';
 
 /// See also [RegionSelected].

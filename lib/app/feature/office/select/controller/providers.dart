@@ -7,7 +7,7 @@ import '../../../../data/b4a/entity/office_entity.dart';
 
 part 'providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 FutureOr<List<OfficeModel>> officeSelect(OfficeSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));

@@ -6,8 +6,10 @@ import 'package:intl/intl.dart';
 
 import '../../../core/models/expertise_model.dart';
 import '../../../core/models/office_model.dart';
+import '../../../core/models/procedure_model.dart';
 import '../../expertise/select/expertise_select_page.dart';
 import '../../office/select/office_select_page.dart';
+import '../../procedure/select/procedure_select_page.dart';
 import '../../utils/app_photo_show.dart';
 import '../../utils/app_text_title_value.dart';
 import 'access_mark.dart';
@@ -155,6 +157,56 @@ class UserProfileAccessPage extends ConsumerWidget {
                                       onPressed: () {
                                         ref
                                             .read(expertiseSelectedProvider
+                                                .notifier)
+                                            .update(e);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 15),
+                    const Text('Selecione os procedimentos'),
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              List<ProcedureModel>? result =
+                                  await Navigator.of(context)
+                                      .push<List<ProcedureModel>?>(
+                                          MaterialPageRoute(
+                                builder: (context) {
+                                  return const ProcedureSelectPage(
+                                    isSingleValue: false,
+                                  );
+                                },
+                              ));
+
+                              if (result != null) {
+                                for (var element in result) {
+                                  ref
+                                      .read(procedureSelectedProvider.notifier)
+                                      .update(element);
+                                }
+                              }
+                            },
+                            icon: const Icon(Icons.search)),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: ref
+                              .watch(procedureSelectedProvider)
+                              .map(
+                                (e) => Row(
+                                  children: [
+                                    Text('${e.name}'),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        ref
+                                            .read(procedureSelectedProvider
                                                 .notifier)
                                             .update(e);
                                       },

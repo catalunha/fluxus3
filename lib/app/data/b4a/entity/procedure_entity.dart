@@ -12,66 +12,6 @@ class ProcedureEntity {
   static const String cost = 'cost';
   static const String expertise = 'expertise';
 
-  static List<String> selectedCols(List<String> cols) {
-    return cols.map((e) => '${ProcedureEntity.className}.$e').toList();
-  }
-
-  static final List<String> singleCols = [
-    ProcedureEntity.code,
-    ProcedureEntity.name,
-    ProcedureEntity.cost,
-    ProcedureEntity.expertise,
-  ].map((e) => '${ProcedureEntity.className}.$e').toList();
-
-  static final List<String> pointerCols = [
-    ProcedureEntity.expertise,
-  ].map((e) => '${ProcedureEntity.className}.$e').toList();
-
-  static final List<String> relationCols =
-      [].map((e) => '${ProcedureEntity.className}.$e').toList();
-
-  // static final List<String> allCols = [
-  //   ...ProcedureEntity.singleCols,
-  //   ...ProcedureEntity.pointerCols,
-  //   ...ProcedureEntity.relationCols
-  // ];
-
-  static List<String> filterSingleCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (ProcedureEntity.singleCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${ProcedureEntity.className}.', ''))
-        .toList();
-  }
-
-  static List<String> filterPointerCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (ProcedureEntity.pointerCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${ProcedureEntity.className}.', ''))
-        .toList();
-  }
-
-  static List<String> filterRelationCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (ProcedureEntity.relationCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${ProcedureEntity.className}.', ''))
-        .toList();
-  }
-
   ProcedureModel toModel(ParseObject parseObject) {
     ProcedureModel model = ProcedureModel(
       id: parseObject.objectId!,

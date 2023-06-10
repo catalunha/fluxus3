@@ -137,9 +137,8 @@ final goRouterProv = Provider<GoRouter>(
 /home
 /home/userProfileSave
 /home/userProfileList
-/home/userProfileList/userProfileView
-/home/userProfileList/userProfileAccess
-
+/home/userProfileList/userProfileView/:id
+/home/userProfileList/userProfileAccess/:id
 
 */
 
