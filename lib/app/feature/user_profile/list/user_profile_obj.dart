@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluxus3/app/routes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/models/user_profile_model.dart';
 import '../../utils/app_launch.dart';
@@ -64,6 +66,8 @@ class UserProfileObj extends StatelessWidget {
                             //   '/model/view',
                             //   arguments: model,
                             // );
+                            context.goNamed(AppPage.userProfileView.name,
+                                pathParameters: {"id": model.id});
                           },
                           icon: const Icon(
                             Icons.assignment_ind_outlined,

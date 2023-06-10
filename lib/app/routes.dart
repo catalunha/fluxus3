@@ -11,6 +11,7 @@ import 'feature/user/register/email/user_register_email.page.dart';
 import 'feature/user_profile/list/user_profile_list_page.dart';
 import 'feature/user_profile/save/user_profile_edit_page.dart';
 import 'feature/home/home_page.dart';
+import 'feature/user_profile/view/user_profile_view_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigator =
@@ -85,14 +86,26 @@ final goRouterProv = Provider<GoRouter>(
               },
             ),
             GoRoute(
-              path: AppPage.userProfileList.path,
-              name: AppPage.userProfileList.name,
-              builder: (context, state) {
-                return UserProfileListPage(
-                  key: state.pageKey,
-                );
-              },
-            ),
+                path: AppPage.userProfileList.path,
+                name: AppPage.userProfileList.name,
+                builder: (context, state) {
+                  return UserProfileListPage(
+                    key: state.pageKey,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: AppPage.userProfileView.path,
+                    name: AppPage.userProfileView.name,
+                    builder: (context, state) {
+                      final id = state.pathParameters['id'] as String;
+                      return UserProfileViewPage(
+                        key: state.pageKey,
+                        userProfileId: id,
+                      );
+                    },
+                  ),
+                ]),
           ],
         ),
       ],
@@ -120,7 +133,8 @@ enum AppPage {
   registerEmail('registerEmail', 'registerEmail'),
   home('/home', 'home'),
   userProfileSave('userProfileSave', 'userProfileSave'),
-  userProfileList('userProfileList', 'userProfileList');
+  userProfileList('userProfileList', 'userProfileList'),
+  userProfileView('userProfileView/:id', 'userProfileView');
 
   final String path;
   final String name;

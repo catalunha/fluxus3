@@ -67,10 +67,11 @@ class UserProfileB4a {
       if (response.success && response.results != null) {
         return UserProfileEntity().toModel(response.results!.first, cols);
       }
-      throw B4aException(
-        'Perfil do usuário não encontrado.',
-        where: 'UserProfileRepositoryB4a.readById()',
-      );
+      return null;
+      // throw B4aException(
+      //   'Perfil do usuário não encontrado.',
+      //   where: 'UserProfileRepositoryB4a.readById()',
+      // );
     } catch (e) {
       print(e);
       rethrow;
