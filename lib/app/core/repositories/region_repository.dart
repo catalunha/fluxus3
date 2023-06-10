@@ -9,10 +9,11 @@ class RegionRepository {
 
   RegionRepository();
   Future<List<RegionModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      secretaryB4a.list(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) =>
+      secretaryB4a.list(query, pagination: pagination, cols: cols);
   Future<String> update(RegionModel model) => secretaryB4a.update(model);
   Future<bool> delete(String modelId) => secretaryB4a.delete(modelId);
 }

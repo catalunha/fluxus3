@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluxus3/app/routes.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/authentication/riverpod/auth_prov.dart';
+import '../../../core/models/region_model.dart';
 import '../../utils/app_import_image.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
@@ -36,8 +40,8 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
   final dateFormat = DateFormat('dd/MM/y');
   @override
   void initState() {
-    super.initState();
     final user = ref.read(authChNotProvider).user;
+    super.initState();
     _nameTec.text = user?.userProfile?.name ?? "";
     _nicknameTec.text = user?.userProfile?.nickname ?? "";
     _phoneTec.text = user?.userProfile?.phone ?? "";
@@ -46,6 +50,11 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
     _registerTec.text = user?.userProfile?.register ?? "";
     isFemale = user?.userProfile?.isFemale ?? true;
     _birthday = user?.userProfile?.birthday;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("WidgetsBinding1");
+      ref.read(regionSelectedProvider.notifier).state =
+          user?.userProfile?.region;
+    });
   }
 
   @override
@@ -74,6 +83,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
     });
 
     final user = ref.read(authChNotProvider).user;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar seu perfil'),
@@ -159,28 +169,42 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                       value: isFemale,
                     ),
                     const Text('Selecione a região *'),
-                    // Row(
-                    //   children: [
-                    //     IconButton(
-                    //         onPressed: () async {
-                    //           var contextTemp =
-                    //               context.read<UserProfileSaveBloc>();
-                    //           RegionModel? result = await Navigator.of(context)
-                    //               .pushNamed('/region/select') as RegionModel?;
-                    //           if (result != null) {
-                    //             contextTemp
-                    //                 .add(UserProfileSaveEventAddRegion(result));
-                    //           }
-                    //         },
-                    //         icon: const Icon(Icons.search)),
-                    //     BlocBuilder<UserProfileSaveBloc, UserProfileSaveState>(
-                    //       builder: (context, state) {
-                    //         return Text(
-                    //             '${state.region?.uf}. ${state.region?.city}. ${state.region?.name}');
-                    //       },
-                    //     ),
-                    //   ],
-                    // ),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            RegionModel? result = await context.pushNamed(
+                                AppPage.regionSelect.name) as RegionModel?;
+                            if (result != null) {
+                              log('$result');
+                              ref.read(regionSelectedProvider.notifier).state =
+                                  result;
+                              // contextTemp
+                              //     .add(UserProfileSaveEventAddRegion(result));
+                            } else {
+                              ref.read(regionSelectedProvider.notifier).state =
+                                  null;
+                            }
+                          },
+                          icon: const Icon(Icons.search),
+                        ),
+                        if (ref.watch(regionSelectedProvider) != null)
+                          Flexible(
+                            child: Text(
+                              '${ref.watch(regionSelectedProvider)?.uf}-${ref.watch(regionSelectedProvider)?.city}-${ref.watch(regionSelectedProvider)?.name}',
+                              softWrap: true,
+                            ),
+                          ),
+                        if (ref.watch(regionSelectedProvider) != null)
+                          IconButton(
+                              onPressed: () {
+                                ref
+                                    .read(regionSelectedProvider.notifier)
+                                    .state = null;
+                              },
+                              icon: const Icon(Icons.delete))
+                      ],
+                    ),
                     const SizedBox(height: 5),
                     AppImportImage(
                       label:

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
+import 'feature/region/select/region_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -106,18 +107,27 @@ final goRouterProv = Provider<GoRouter>(
                     );
                   },
                 ),
-                GoRoute(
-                  path: AppPage.userProfileSelect.path,
-                  name: AppPage.userProfileSelect.name,
-                  builder: (context, state) {
-                    final isSingleValue = state.extra as bool;
-                    return UserProfileSelectPage(
-                      key: state.pageKey,
-                      isSingleValue: isSingleValue,
-                    );
-                  },
-                ),
               ],
+            ),
+            GoRoute(
+              path: AppPage.userProfileSelect.path,
+              name: AppPage.userProfileSelect.name,
+              builder: (context, state) {
+                final isSingleValue = state.extra as bool;
+                return UserProfileSelectPage(
+                  key: state.pageKey,
+                  isSingleValue: isSingleValue,
+                );
+              },
+            ),
+            GoRoute(
+              path: AppPage.regionSelect.path,
+              name: AppPage.regionSelect.name,
+              builder: (context, state) {
+                return RegionSelectPage(
+                  key: state.pageKey,
+                );
+              },
             ),
           ],
         ),
@@ -138,6 +148,8 @@ final goRouterProv = Provider<GoRouter>(
 /home/userProfileSave
 /home/userProfileList
 
+/home/userProfileSelect
+
 */
 
 enum AppPage {
@@ -148,7 +160,8 @@ enum AppPage {
   userProfileSave('userProfileSave', 'userProfileSave'),
   userProfileList('userProfileList', 'userProfileList'),
   userProfileView('userProfileView/:id', 'userProfileView'),
-  userProfileSelect('userProfileSelect', 'userProfileSelect');
+  userProfileSelect('userProfileSelect', 'userProfileSelect'),
+  regionSelect('regionSelect', 'regionSelect');
 
   final String path;
   final String name;

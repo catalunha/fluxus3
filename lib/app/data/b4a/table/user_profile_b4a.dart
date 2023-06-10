@@ -21,6 +21,8 @@ class UserProfileB4a {
     }
     if (cols.containsKey('${UserProfileEntity.className}.pointers')) {
       query.includeObject(cols['${UserProfileEntity.className}.pointers']!);
+    } else {
+      query.includeObject(['region']);
     }
 
     ParseResponse? response;
@@ -58,6 +60,8 @@ class UserProfileB4a {
     }
     if (cols.containsKey('${UserProfileEntity.className}.pointers')) {
       query.includeObject(cols['${UserProfileEntity.className}.pointers']!);
+    } else {
+      query.includeObject(['region']);
     }
 
     query.first();

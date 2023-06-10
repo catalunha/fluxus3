@@ -5,7 +5,7 @@ import 'user_profile_entity.dart';
 
 class UserEntity {
   static const String className = '_User';
-  // Nome do campo local = no Database
+  // Nome do campo App = no Database
   static const String id = 'objectId';
   static const String userName = 'username';
   static const String email = 'email';

@@ -5,7 +5,7 @@ import 'expertise_entity.dart';
 
 class ProcedureEntity {
   static const String className = 'Procedure';
-  // Nome do campo local =  no Database
+  // Nome do campo App =  no Database
   static const String id = 'objectId';
   static const String code = 'code';
   static const String name = 'name';

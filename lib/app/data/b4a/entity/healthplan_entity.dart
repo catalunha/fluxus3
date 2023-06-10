@@ -5,7 +5,7 @@ import 'healthplantype_entity.dart';
 
 class HealthPlanEntity {
   static const String className = 'HealthPlan';
-  // Nome do campo local =  no Database
+  // Nome do campo App =  no Database
   static const String id = 'objectId';
   static const String code = 'code';
   static const String due = 'due';
