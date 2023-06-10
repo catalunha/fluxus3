@@ -52,9 +52,8 @@ class UserProfileObj extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            // Navigator.of(context).pushNamed(
-                            //     '/model/access',
-                            //     arguments: model);
+                            context.goNamed(AppPage.userProfileAccess.name,
+                                pathParameters: {"id": model.id});
                           },
                           icon: const Icon(
                             Icons.edit,
@@ -62,10 +61,6 @@ class UserProfileObj extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            // Navigator.of(context).pushNamed(
-                            //   '/model/view',
-                            //   arguments: model,
-                            // );
                             context.goNamed(AppPage.userProfileView.name,
                                 pathParameters: {"id": model.id});
                           },

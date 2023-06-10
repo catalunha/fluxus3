@@ -9,6 +9,7 @@ import 'feature/region/select/region_select_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
+import 'feature/user_profile/access/user_profile_access_page.dart';
 import 'feature/user_profile/list/user_profile_list_page.dart';
 import 'feature/user_profile/save/user_profile_edit_page.dart';
 import 'feature/home/home_page.dart';
@@ -107,6 +108,17 @@ final goRouterProv = Provider<GoRouter>(
                     );
                   },
                 ),
+                GoRoute(
+                  path: AppPage.userProfileAccess.path,
+                  name: AppPage.userProfileAccess.name,
+                  builder: (context, state) {
+                    final id = state.pathParameters['id'] as String;
+                    return UserProfileAccessPage(
+                      key: state.pageKey,
+                      userProfileId: id,
+                    );
+                  },
+                ),
               ],
             ),
             GoRoute(
@@ -147,8 +159,11 @@ final goRouterProv = Provider<GoRouter>(
 /home
 /home/userProfileSave
 /home/userProfileList
+/home/userProfileList/userProfileView
+/home/userProfileList/userProfileAccess
 
 /home/userProfileSelect
+/home/regionSelect
 
 */
 
@@ -160,6 +175,7 @@ enum AppPage {
   userProfileSave('userProfileSave', 'userProfileSave'),
   userProfileList('userProfileList', 'userProfileList'),
   userProfileView('userProfileView/:id', 'userProfileView'),
+  userProfileAccess('userProfileAccess/:id', 'userProfileAccess'),
   userProfileSelect('userProfileSelect', 'userProfileSelect'),
   regionSelect('regionSelect', 'regionSelect');
 

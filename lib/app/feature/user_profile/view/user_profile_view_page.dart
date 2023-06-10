@@ -20,7 +20,7 @@ class UserProfileViewPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final model = ref.watch(userProfileViewProvider(id: userProfileId));
     return Scaffold(
-      appBar: AppBar(title: const Text('Dados desta pessoa')),
+      appBar: AppBar(title: const Text('Dados deste usuário')),
       body: model.when(
         data: (data) {
           log('tem data');

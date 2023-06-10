@@ -7,22 +7,24 @@ import '../entity/office_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class OfficeB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    return query;
-  }
-
   Future<List<OfficeModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${OfficeEntity.className}.cols')) {
+      query.keysToReturn(cols['${OfficeEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${OfficeEntity.className}.pointers')) {
+      query.includeObject(cols['${OfficeEntity.className}.pointers']!);
+    }
     ParseResponse? parseResponse;
     try {
-      parseResponse = await query2.query();
+      parseResponse = await query.query();
       List<OfficeModel> listTemp = <OfficeModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {

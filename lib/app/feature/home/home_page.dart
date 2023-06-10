@@ -4,7 +4,6 @@ import 'package:fluxus3/app/routes.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/authentication/riverpod/auth_prov.dart';
-import '../../core/models/user_profile_model.dart';
 import '../utils/app_mixin_loader.dart';
 import '../utils/app_mixin_messages.dart';
 import 'home_module.dart';
@@ -44,19 +43,6 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     },
                     icon: const Icon(Icons.list),
                   ),
-                  IconButton(
-                    onPressed: () async {
-                      final List<UserProfileModel>? a = await context.pushNamed(
-                          AppPage.userProfileSelect.name,
-                          extra: false) as List<UserProfileModel>?;
-                      if (a != null) {
-                        print(a);
-                      } else {
-                        print('return canceled');
-                      }
-                    },
-                    icon: const Icon(Icons.check),
-                  )
                 ],
               )
             ],
