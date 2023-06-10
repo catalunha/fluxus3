@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,7 +32,8 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
   final _addressTec = TextEditingController();
   final _registerTec = TextEditingController();
   bool isFemale = true;
-  DateTime _birthday = DateTime.now();
+  DateTime? _birthday = DateTime.now();
+  final dateFormat = DateFormat('dd/MM/y');
   @override
   void initState() {
     super.initState();
@@ -44,7 +45,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
     _addressTec.text = user?.userProfile?.address ?? "";
     _registerTec.text = user?.userProfile?.register ?? "";
     isFemale = user?.userProfile?.isFemale ?? true;
-    _birthday = user?.userProfile?.birthday ?? DateTime.now();
+    _birthday = user?.userProfile?.birthday;
   }
 
   @override
@@ -191,16 +192,49 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                       maxWidthImage: 100,
                     ),
                     const SizedBox(height: 5),
-                    const Text('Aniversário'),
-                    SizedBox(
-                      width: 300,
-                      height: 100,
-                      child: CupertinoDatePicker(
-                        initialDateTime: _birthday,
-                        mode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (DateTime newDate) {
-                          _birthday = newDate;
-                        },
+                    // SizedBox(
+                    //   width: 300,
+                    //   height: 100,
+                    //   child: CupertinoDatePicker(
+                    //     initialDateTime: _birthday,
+                    //     mode: CupertinoDatePickerMode.date,
+                    //     onDateTimeChanged: (DateTime newDate) {
+                    //       _birthday = newDate;
+                    //     },
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Aniversário:'),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () async {
+                              DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year - 100),
+                                lastDate: DateTime.now(),
+                              );
+                              if (newDate == null) {
+                                setState(() {
+                                  _birthday = null;
+                                });
+                              } else {
+                                setState(() {
+                                  _birthday = newDate;
+                                });
+                              }
+                            },
+                            child: const Icon(Icons.date_range),
+                          ),
+                          const SizedBox(width: 10),
+                          Text(_birthday != null
+                              ? dateFormat.format(_birthday!)
+                              : "Não informado"),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 70),

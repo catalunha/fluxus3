@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
@@ -28,6 +29,14 @@ class _AppState extends ConsumerState<App> {
       routerDelegate: goRouterProvIW.routerDelegate,
       title: 'RepeatAndLearn',
       theme: ThemeData.dark(useMaterial3: true),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
     );
   }
 }

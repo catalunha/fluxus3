@@ -41,14 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  awesome_notifications:
-    dependency: transitive
-    description:
-      name: awesome_notifications
-      sha256: "2b430c75cc879d6cfd52bb6eb2b5c1591ed425347816408cdcbd3f6916bba14c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.4+1"
   boolean_selector:
     dependency: transitive
     description:
@@ -310,6 +302,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -468,10 +465,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.0"
   io:
     dependency: transitive
     description:
@@ -604,10 +601,10 @@ packages:
     dependency: "direct main"
     description:
       name: parse_server_sdk_flutter
-      sha256: "84218af34b20b442e683d7ed1bc41ae067b929e33624b9cf6996a149645110eb"
+      sha256: f9b2c0d60f029177149484ee0a09247402f777bbfcc0a47ab1d4e4e2bb01405c
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "5.0.1"
   path:
     dependency: transitive
     description:
