@@ -7,6 +7,8 @@ import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
+import 'feature/healthplantype/list/healthplantype_list_page.dart';
+import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/office/list/office_list_page.dart';
 import 'feature/office/save/office_save_page.dart';
 import 'feature/procedure/list/procedure_list_page.dart';
@@ -263,6 +265,28 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+              path: AppPage.healthPlanTypeList.path,
+              name: AppPage.healthPlanTypeList.name,
+              builder: (context, state) {
+                return HealthPlanTypeListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.healthPlanTypeSave.path,
+                  name: AppPage.healthPlanTypeSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return HealthPlanTypeSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -311,7 +335,9 @@ enum AppPage {
   roomList('roomList', 'roomList'),
   roomSave('roomSave', 'roomSave'),
   statusList('statusList', 'statusList'),
-  statusSave('statusSave', 'statusSave');
+  statusSave('statusSave', 'statusSave'),
+  healthPlanTypeList('healthPlanTypeList', 'healthPlanTypeList'),
+  healthPlanTypeSave('healthPlanTypeSave', 'healthPlanTypeSave');
 
   final String path;
   final String name;

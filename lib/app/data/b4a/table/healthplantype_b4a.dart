@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/healthplantype_model.dart';
@@ -7,22 +9,24 @@ import '../entity/healthplantype_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class HealthPlanTypeB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    return query;
-  }
-
   Future<List<HealthPlanTypeModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${HealthPlanTypeEntity.className}.cols')) {
+      query.keysToReturn(cols['${HealthPlanTypeEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${HealthPlanTypeEntity.className}.pointers')) {
+      query.includeObject(cols['${HealthPlanTypeEntity.className}.pointers']!);
+    }
     ParseResponse? parseResponse;
     try {
-      parseResponse = await query2.query();
+      parseResponse = await query.query();
       List<HealthPlanTypeModel> listTemp = <HealthPlanTypeModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
@@ -41,6 +45,37 @@ class HealthPlanTypeB4a {
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
+    }
+  }
+
+  Future<HealthPlanTypeModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(HealthPlanTypeEntity.className));
+    query.whereEqualTo(HealthPlanTypeEntity.id, id);
+
+    if (cols.containsKey('${HealthPlanTypeEntity.className}.cols')) {
+      query.keysToReturn(cols['${HealthPlanTypeEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${HealthPlanTypeEntity.className}.pointers')) {
+      query.includeObject(cols['${HealthPlanTypeEntity.className}.pointers']!);
+    }
+
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return HealthPlanTypeEntity()
+            .toModel(response.results!.first, cols: cols);
+      }
+      return null;
+    } catch (e, st) {
+      log('$e');
+      log('$st');
+      rethrow;
     }
   }
 

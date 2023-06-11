@@ -122,6 +122,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
+              ),
+              HomeModule(
+                title: 'Tipos de Planos de Saúde',
+                icon: Icons.credit_card_rounded,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.healthPlanTypeList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
               )
             ],
           ),
