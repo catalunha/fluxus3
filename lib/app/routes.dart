@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
+import 'feature/office/list/office_list_page.dart';
+import 'feature/office/save/office_save_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -119,6 +121,27 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+                path: AppPage.officeList.path,
+                name: AppPage.officeList.name,
+                builder: (context, state) {
+                  return OfficeListPage(
+                    key: state.pageKey,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: AppPage.officeSave.path,
+                    name: AppPage.officeSave.name,
+                    builder: (context, state) {
+                      final id = state.extra as String?;
+                      return OfficeSavePage(
+                        key: state.pageKey,
+                        id: id,
+                      );
+                    },
+                  ),
+                ]),
           ],
         ),
       ],
@@ -151,7 +174,9 @@ enum AppPage {
   userProfileSave('userProfileSave', 'userProfileSave'),
   userProfileList('userProfileList', 'userProfileList'),
   userProfileView('userProfileView/:id', 'userProfileView'),
-  userProfileAccess('userProfileAccess/:id', 'userProfileAccess');
+  userProfileAccess('userProfileAccess/:id', 'userProfileAccess'),
+  officeList('officeList', 'officeList'),
+  officeSave('officeSave', 'officeSave');
 
   final String path;
   final String name;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/office_model.dart';
@@ -43,6 +45,36 @@ class OfficeB4a {
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
+    }
+  }
+
+  Future<OfficeModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
+    query.whereEqualTo(OfficeEntity.id, id);
+
+    if (cols.containsKey('${OfficeEntity.className}.cols')) {
+      query.keysToReturn(cols['${OfficeEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${OfficeEntity.className}.pointers')) {
+      query.includeObject(cols['${OfficeEntity.className}.pointers']!);
+    }
+
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return OfficeEntity().toModel(response.results!.first, cols: cols);
+      }
+      return null;
+    } catch (e, st) {
+      log('$e');
+      log('$st');
+      rethrow;
     }
   }
 

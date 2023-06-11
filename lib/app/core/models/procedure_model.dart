@@ -11,6 +11,8 @@ abstract class ProcedureModel with _$ProcedureModel {
     ExpertiseModel? expertise,
     String? code,
     String? name,
+    String? description,
     double? cost,
+    double? costProf,
   }) = _ProcedureModel;
 }

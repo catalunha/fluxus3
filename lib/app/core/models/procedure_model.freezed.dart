@@ -20,7 +20,9 @@ mixin _$ProcedureModel {
   ExpertiseModel? get expertise => throw _privateConstructorUsedError;
   String? get code => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   double? get cost => throw _privateConstructorUsedError;
+  double? get costProf => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProcedureModelCopyWith<ProcedureModel> get copyWith =>
@@ -38,7 +40,9 @@ abstract class $ProcedureModelCopyWith<$Res> {
       ExpertiseModel? expertise,
       String? code,
       String? name,
-      double? cost});
+      String? description,
+      double? cost,
+      double? costProf});
 
   $ExpertiseModelCopyWith<$Res>? get expertise;
 }
@@ -60,7 +64,9 @@ class _$ProcedureModelCopyWithImpl<$Res, $Val extends ProcedureModel>
     Object? expertise = freezed,
     Object? code = freezed,
     Object? name = freezed,
+    Object? description = freezed,
     Object? cost = freezed,
+    Object? costProf = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -79,9 +85,17 @@ class _$ProcedureModelCopyWithImpl<$Res, $Val extends ProcedureModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       cost: freezed == cost
           ? _value.cost
           : cost // ignore: cast_nullable_to_non_nullable
+              as double?,
+      costProf: freezed == costProf
+          ? _value.costProf
+          : costProf // ignore: cast_nullable_to_non_nullable
               as double?,
     ) as $Val);
   }
@@ -112,7 +126,9 @@ abstract class _$$_ProcedureModelCopyWith<$Res>
       ExpertiseModel? expertise,
       String? code,
       String? name,
-      double? cost});
+      String? description,
+      double? cost,
+      double? costProf});
 
   @override
   $ExpertiseModelCopyWith<$Res>? get expertise;
@@ -133,7 +149,9 @@ class __$$_ProcedureModelCopyWithImpl<$Res>
     Object? expertise = freezed,
     Object? code = freezed,
     Object? name = freezed,
+    Object? description = freezed,
     Object? cost = freezed,
+    Object? costProf = freezed,
   }) {
     return _then(_$_ProcedureModel(
       id: freezed == id
@@ -152,9 +170,17 @@ class __$$_ProcedureModelCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       cost: freezed == cost
           ? _value.cost
           : cost // ignore: cast_nullable_to_non_nullable
+              as double?,
+      costProf: freezed == costProf
+          ? _value.costProf
+          : costProf // ignore: cast_nullable_to_non_nullable
               as double?,
     ));
   }
@@ -163,7 +189,14 @@ class __$$_ProcedureModelCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ProcedureModel implements _ProcedureModel {
-  _$_ProcedureModel({this.id, this.expertise, this.code, this.name, this.cost});
+  _$_ProcedureModel(
+      {this.id,
+      this.expertise,
+      this.code,
+      this.name,
+      this.description,
+      this.cost,
+      this.costProf});
 
   @override
   final String? id;
@@ -174,11 +207,15 @@ class _$_ProcedureModel implements _ProcedureModel {
   @override
   final String? name;
   @override
+  final String? description;
+  @override
   final double? cost;
+  @override
+  final double? costProf;
 
   @override
   String toString() {
-    return 'ProcedureModel(id: $id, expertise: $expertise, code: $code, name: $name, cost: $cost)';
+    return 'ProcedureModel(id: $id, expertise: $expertise, code: $code, name: $name, description: $description, cost: $cost, costProf: $costProf)';
   }
 
   @override
@@ -191,11 +228,16 @@ class _$_ProcedureModel implements _ProcedureModel {
                 other.expertise == expertise) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.cost, cost) || other.cost == cost));
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.cost, cost) || other.cost == cost) &&
+            (identical(other.costProf, costProf) ||
+                other.costProf == costProf));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, expertise, code, name, cost);
+  int get hashCode => Object.hash(
+      runtimeType, id, expertise, code, name, description, cost, costProf);
 
   @JsonKey(ignore: true)
   @override
@@ -210,7 +252,9 @@ abstract class _ProcedureModel implements ProcedureModel {
       final ExpertiseModel? expertise,
       final String? code,
       final String? name,
-      final double? cost}) = _$_ProcedureModel;
+      final String? description,
+      final double? cost,
+      final double? costProf}) = _$_ProcedureModel;
 
   @override
   String? get id;
@@ -221,7 +265,11 @@ abstract class _ProcedureModel implements ProcedureModel {
   @override
   String? get name;
   @override
+  String? get description;
+  @override
   double? get cost;
+  @override
+  double? get costProf;
   @override
   @JsonKey(ignore: true)
   _$$_ProcedureModelCopyWith<_$_ProcedureModel> get copyWith =>

@@ -44,6 +44,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
+              ),
+              HomeModule(
+                title: 'Cargos',
+                icon: Icons.people,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.officeList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
               )
             ],
           ),

@@ -6,7 +6,7 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileViewHash() => r'fb9fcb0c592d79626e72e11eefa6a55ad897a175';
+String _$officeReadHash() => r'e6cf469e3798472d15dea950ed215ad25db7cb09';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,29 +29,29 @@ class _SystemHash {
   }
 }
 
-typedef UserProfileViewRef = AutoDisposeFutureProviderRef<UserProfileModel>;
+typedef OfficeReadRef = AutoDisposeFutureProviderRef<OfficeModel?>;
 
-/// See also [userProfileView].
-@ProviderFor(userProfileView)
-const userProfileViewProvider = UserProfileViewFamily();
+/// See also [officeRead].
+@ProviderFor(officeRead)
+const officeReadProvider = OfficeReadFamily();
 
-/// See also [userProfileView].
-class UserProfileViewFamily extends Family<AsyncValue<UserProfileModel>> {
-  /// See also [userProfileView].
-  const UserProfileViewFamily();
+/// See also [officeRead].
+class OfficeReadFamily extends Family<AsyncValue<OfficeModel?>> {
+  /// See also [officeRead].
+  const OfficeReadFamily();
 
-  /// See also [userProfileView].
-  UserProfileViewProvider call({
-    required String id,
+  /// See also [officeRead].
+  OfficeReadProvider call({
+    required String? id,
   }) {
-    return UserProfileViewProvider(
+    return OfficeReadProvider(
       id: id,
     );
   }
 
   @override
-  UserProfileViewProvider getProviderOverride(
-    covariant UserProfileViewProvider provider,
+  OfficeReadProvider getProviderOverride(
+    covariant OfficeReadProvider provider,
   ) {
     return call(
       id: provider.id,
@@ -70,36 +70,35 @@ class UserProfileViewFamily extends Family<AsyncValue<UserProfileModel>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'userProfileViewProvider';
+  String? get name => r'officeReadProvider';
 }
 
-/// See also [userProfileView].
-class UserProfileViewProvider
-    extends AutoDisposeFutureProvider<UserProfileModel> {
-  /// See also [userProfileView].
-  UserProfileViewProvider({
+/// See also [officeRead].
+class OfficeReadProvider extends AutoDisposeFutureProvider<OfficeModel?> {
+  /// See also [officeRead].
+  OfficeReadProvider({
     required this.id,
   }) : super.internal(
-          (ref) => userProfileView(
+          (ref) => officeRead(
             ref,
             id: id,
           ),
-          from: userProfileViewProvider,
-          name: r'userProfileViewProvider',
+          from: officeReadProvider,
+          name: r'officeReadProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$userProfileViewHash,
-          dependencies: UserProfileViewFamily._dependencies,
+                  : _$officeReadHash,
+          dependencies: OfficeReadFamily._dependencies,
           allTransitiveDependencies:
-              UserProfileViewFamily._allTransitiveDependencies,
+              OfficeReadFamily._allTransitiveDependencies,
         );
 
-  final String id;
+  final String? id;
 
   @override
   bool operator ==(Object other) {
-    return other is UserProfileViewProvider && other.id == id;
+    return other is OfficeReadProvider && other.id == id;
   }
 
   @override
@@ -110,4 +109,20 @@ class UserProfileViewProvider
     return _SystemHash.finish(hash);
   }
 }
+
+String _$officeFormHash() => r'b55ff31c29056344e4ac317e1393d6c799be2d2c';
+
+/// See also [OfficeForm].
+@ProviderFor(OfficeForm)
+final officeFormProvider =
+    AutoDisposeNotifierProvider<OfficeForm, OfficeFormState>.internal(
+  OfficeForm.new,
+  name: r'officeFormProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$officeFormHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$OfficeForm = AutoDisposeNotifier<OfficeFormState>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
