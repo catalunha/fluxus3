@@ -109,6 +109,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
+              ),
+              HomeModule(
+                title: 'Status',
+                icon: Icons.start,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.statusList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
               )
             ],
           ),

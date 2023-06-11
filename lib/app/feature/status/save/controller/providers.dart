@@ -1,22 +1,22 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/feature/room/save/controller/states.dart';
+import 'package:fluxus3/app/feature/status/save/controller/states.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/models/room_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../list/controller/providers.dart';
 
 part 'providers.g.dart';
 
 @riverpod
-FutureOr<RoomModel?> roomRead(RoomReadRef ref, {required String? id}) async {
+FutureOr<StatusModel?> statusRead(StatusReadRef ref,
+    {required String? id}) async {
   if (id != null) {
-    final room = await ref.read(roomRepositoryProvider).readById(id);
-    if (room != null) {
-      ref.watch(roomFormProvider.notifier).setModel(room);
-      ref.watch(roomIsActiveProvider.notifier).set(room.isActive ?? false);
-      return room;
+    final status = await ref.read(statusRepositoryProvider).readById(id);
+    if (status != null) {
+      ref.watch(statusFormProvider.notifier).setModel(status);
+      return status;
     }
   }
   return null;
@@ -27,69 +27,54 @@ FutureOr<RoomModel?> roomRead(RoomReadRef ref, {required String? id}) async {
 }
 
 @riverpod
-class RoomIsActive extends _$RoomIsActive {
+class StatusForm extends _$StatusForm {
   @override
-  bool build() {
-    return false;
+  StatusFormState build() {
+    return StatusFormState();
   }
 
-  void toggle() {
-    state = !state;
-  }
-
-  void set(bool value) {
-    state = value;
-  }
-}
-
-@riverpod
-class RoomForm extends _$RoomForm {
-  @override
-  RoomFormState build() {
-    return RoomFormState();
-  }
-
-  void setModel(RoomModel? model) {
+  void setModel(StatusModel? model) {
     state = state.copyWith(model: model);
   }
 
-  Future<void> submitForm({required String name}) async {
-    state = state.copyWith(status: RoomFormStatus.loading);
+  Future<void> submitForm(
+      {required String name, required String description}) async {
+    state = state.copyWith(status: StatusFormStatus.loading);
     try {
-      RoomModel? roomTemp;
+      StatusModel? statusTemp;
       if (state.model != null) {
-        roomTemp = state.model!.copyWith(
+        statusTemp = state.model!.copyWith(
           name: name,
-          isActive: ref.read(roomIsActiveProvider),
+          description: description,
         );
       } else {
-        roomTemp = RoomModel(
+        statusTemp = StatusModel(
           name: name,
-          isActive: ref.read(roomIsActiveProvider),
+          description: description,
         );
       }
-      await ref.read(roomRepositoryProvider).update(roomTemp);
-      ref.invalidate(roomListProvider);
-      state = state.copyWith(status: RoomFormStatus.success);
+      await ref.read(statusRepositoryProvider).update(statusTemp);
+      ref.invalidate(statusListProvider);
+      state = state.copyWith(status: StatusFormStatus.success);
     } catch (e, st) {
       log('$e');
       log('$st');
       state = state.copyWith(
-          status: RoomFormStatus.error, error: 'Erro em editar cargo');
+          status: StatusFormStatus.error, error: 'Erro em editar cargo');
     }
   }
 
   Future<void> delete() async {
-    state = state.copyWith(status: RoomFormStatus.loading);
+    state = state.copyWith(status: StatusFormStatus.loading);
     try {
-      await ref.read(roomRepositoryProvider).delete(state.model!.id!);
-      ref.invalidate(roomListProvider);
-      state = state.copyWith(status: RoomFormStatus.success);
+      await ref.read(statusRepositoryProvider).delete(state.model!.id!);
+      ref.invalidate(statusListProvider);
+      state = state.copyWith(status: StatusFormStatus.success);
     } catch (e, st) {
       log('$e');
       log('$st');
       state = state.copyWith(
-          status: RoomFormStatus.error, error: 'Erro em editar cargo');
+          status: StatusFormStatus.error, error: 'Erro em editar cargo');
     }
   }
 }

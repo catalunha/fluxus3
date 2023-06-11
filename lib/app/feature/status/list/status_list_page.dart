@@ -6,21 +6,21 @@ import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';
 import 'controller/providers.dart';
-import 'room_obj.dart';
+import 'status_obj.dart';
 
-class RoomListPage extends ConsumerWidget {
-  const RoomListPage({super.key});
+class StatusListPage extends ConsumerWidget {
+  const StatusListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(roomListProvider);
+    final list = ref.watch(statusListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de salas'),
+        title: const Text('Lista de status'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.goNamed(AppPage.roomSave.name, extra: null);
+          context.goNamed(AppPage.statusSave.name, extra: null);
         },
         child: const Icon(Icons.add),
       ),
@@ -29,7 +29,7 @@ class RoomListPage extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             final level = data[index];
-            return RoomObj(
+            return StatusObj(
               model: level,
             );
           },

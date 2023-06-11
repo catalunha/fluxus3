@@ -8,7 +8,10 @@ class StatusEntity {
   static const String name = 'name';
   static const String description = 'description';
 
-  StatusModel toModel(ParseObject parseObject) {
+  StatusModel toModel(
+    ParseObject parseObject, {
+    Map<String, List<String>> cols = const {},
+  }) {
     StatusModel model = StatusModel(
       id: parseObject.objectId!,
       name: parseObject.get(StatusEntity.name),

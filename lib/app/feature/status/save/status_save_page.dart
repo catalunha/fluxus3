@@ -12,51 +12,54 @@ import '../../utils/app_textformfield.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
-class RoomSavePage extends ConsumerStatefulWidget {
+class StatusSavePage extends ConsumerStatefulWidget {
   final String? id;
-  const RoomSavePage({
+  const StatusSavePage({
     super.key,
     required this.id,
   });
 
   @override
-  ConsumerState<RoomSavePage> createState() => _RoomSavePageState();
+  ConsumerState<StatusSavePage> createState() => _StatusSavePageState();
 }
 
-class _RoomSavePageState extends ConsumerState<RoomSavePage>
+class _StatusSavePageState extends ConsumerState<StatusSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _nameTec = TextEditingController();
+  final _descriptionTec = TextEditingController();
   bool firstTime = true;
   @override
   void initState() {
     super.initState();
     _nameTec.text = "";
+    _descriptionTec.text = "";
   }
 
   @override
   void dispose() {
     _nameTec.dispose();
+    _descriptionTec.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<RoomFormState>(roomFormProvider, (previous, next) async {
-      if (next.status == RoomFormStatus.error) {
+    ref.listen<StatusFormState>(statusFormProvider, (previous, next) async {
+      if (next.status == StatusFormStatus.error) {
         hideLoader(context);
         showMessageError(context, next.error);
       }
-      if (next.status == RoomFormStatus.success) {
+      if (next.status == StatusFormStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         context.pop(); //sai da pagina
       }
-      if (next.status == RoomFormStatus.loading) {
+      if (next.status == StatusFormStatus.loading) {
         showLoader(context);
       }
     });
 
-    final roomRead = ref.watch(roomReadProvider(id: widget.id));
+    final statusRead = ref.watch(statusReadProvider(id: widget.id));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar'),
@@ -65,16 +68,20 @@ class _RoomSavePageState extends ConsumerState<RoomSavePage>
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            ref.read(roomFormProvider.notifier).submitForm(name: _nameTec.text);
+            ref.read(statusFormProvider.notifier).submitForm(
+                  name: _nameTec.text,
+                  description: _descriptionTec.text,
+                );
           }
         },
         child: const Icon(Icons.cloud_upload),
       ),
-      body: roomRead.when(
+      body: statusRead.when(
         data: (data) {
           if (data != null && firstTime) {
-            final formState = ref.read(roomFormProvider);
+            final formState = ref.read(statusFormProvider);
             _nameTec.text = formState.model?.name ?? '';
+            _descriptionTec.text = formState.model?.description ?? '';
           }
           firstTime = false;
           return Center(
@@ -92,18 +99,17 @@ class _RoomSavePageState extends ConsumerState<RoomSavePage>
                           validator: Validatorless.required(
                               'Esta informação é obrigatória'),
                         ),
-                        SwitchListTile(
-                          title: const Text('A sala esta disponível ?'),
-                          value: ref.watch(roomIsActiveProvider),
-                          onChanged: (value) {
-                            ref.read(roomIsActiveProvider.notifier).toggle();
-                          },
+                        AppTextFormField(
+                          label: '* Descrição',
+                          controller: _descriptionTec,
+                          validator: Validatorless.required(
+                              'Esta informação é obrigatória'),
                         ),
                         const SizedBox(height: 15),
                         AppDelete(
                           isVisible: data != null,
                           action: () {
-                            ref.read(roomFormProvider.notifier).delete();
+                            ref.read(statusFormProvider.notifier).delete();
                           },
                         ),
                         const SizedBox(height: 70),
@@ -117,7 +123,7 @@ class _RoomSavePageState extends ConsumerState<RoomSavePage>
         },
         error: (error, stackTrace) {
           log('tem error');
-          log('Erro em Lista de usuarios');
+          log('Erro em Lista de status');
           log('$error');
           log('$stackTrace');
           return Center(

@@ -6,7 +6,7 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$roomReadHash() => r'4136eac4b3b5549d2812c138ecfbb82bc23d67c1';
+String _$statusReadHash() => r'bf3b93379da95c4cf0e608f9aa8eeb168ff63144';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,29 +29,29 @@ class _SystemHash {
   }
 }
 
-typedef RoomReadRef = AutoDisposeFutureProviderRef<RoomModel?>;
+typedef StatusReadRef = AutoDisposeFutureProviderRef<StatusModel?>;
 
-/// See also [roomRead].
-@ProviderFor(roomRead)
-const roomReadProvider = RoomReadFamily();
+/// See also [statusRead].
+@ProviderFor(statusRead)
+const statusReadProvider = StatusReadFamily();
 
-/// See also [roomRead].
-class RoomReadFamily extends Family<AsyncValue<RoomModel?>> {
-  /// See also [roomRead].
-  const RoomReadFamily();
+/// See also [statusRead].
+class StatusReadFamily extends Family<AsyncValue<StatusModel?>> {
+  /// See also [statusRead].
+  const StatusReadFamily();
 
-  /// See also [roomRead].
-  RoomReadProvider call({
+  /// See also [statusRead].
+  StatusReadProvider call({
     required String? id,
   }) {
-    return RoomReadProvider(
+    return StatusReadProvider(
       id: id,
     );
   }
 
   @override
-  RoomReadProvider getProviderOverride(
-    covariant RoomReadProvider provider,
+  StatusReadProvider getProviderOverride(
+    covariant StatusReadProvider provider,
   ) {
     return call(
       id: provider.id,
@@ -70,34 +70,35 @@ class RoomReadFamily extends Family<AsyncValue<RoomModel?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'roomReadProvider';
+  String? get name => r'statusReadProvider';
 }
 
-/// See also [roomRead].
-class RoomReadProvider extends AutoDisposeFutureProvider<RoomModel?> {
-  /// See also [roomRead].
-  RoomReadProvider({
+/// See also [statusRead].
+class StatusReadProvider extends AutoDisposeFutureProvider<StatusModel?> {
+  /// See also [statusRead].
+  StatusReadProvider({
     required this.id,
   }) : super.internal(
-          (ref) => roomRead(
+          (ref) => statusRead(
             ref,
             id: id,
           ),
-          from: roomReadProvider,
-          name: r'roomReadProvider',
+          from: statusReadProvider,
+          name: r'statusReadProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$roomReadHash,
-          dependencies: RoomReadFamily._dependencies,
-          allTransitiveDependencies: RoomReadFamily._allTransitiveDependencies,
+                  : _$statusReadHash,
+          dependencies: StatusReadFamily._dependencies,
+          allTransitiveDependencies:
+              StatusReadFamily._allTransitiveDependencies,
         );
 
   final String? id;
 
   @override
   bool operator ==(Object other) {
-    return other is RoomReadProvider && other.id == id;
+    return other is StatusReadProvider && other.id == id;
   }
 
   @override
@@ -109,34 +110,19 @@ class RoomReadProvider extends AutoDisposeFutureProvider<RoomModel?> {
   }
 }
 
-String _$roomIsActiveHash() => r'1360090ec64d08513de2a8549d787433dac5cb08';
+String _$statusFormHash() => r'6b50879dbf1fb83f64d5b52c31ea89bb7d5ca299';
 
-/// See also [RoomIsActive].
-@ProviderFor(RoomIsActive)
-final roomIsActiveProvider =
-    AutoDisposeNotifierProvider<RoomIsActive, bool>.internal(
-  RoomIsActive.new,
-  name: r'roomIsActiveProvider',
+/// See also [StatusForm].
+@ProviderFor(StatusForm)
+final statusFormProvider =
+    AutoDisposeNotifierProvider<StatusForm, StatusFormState>.internal(
+  StatusForm.new,
+  name: r'statusFormProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$roomIsActiveHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$statusFormHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$RoomIsActive = AutoDisposeNotifier<bool>;
-String _$roomFormHash() => r'ff8b4efacd1117be7728960f9769650cf8f9c55f';
-
-/// See also [RoomForm].
-@ProviderFor(RoomForm)
-final roomFormProvider =
-    AutoDisposeNotifierProvider<RoomForm, RoomFormState>.internal(
-  RoomForm.new,
-  name: r'roomFormProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$roomFormHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$RoomForm = AutoDisposeNotifier<RoomFormState>;
+typedef _$StatusForm = AutoDisposeNotifier<StatusFormState>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

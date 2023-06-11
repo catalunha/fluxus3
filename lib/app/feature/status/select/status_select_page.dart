@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller/providers.dart';
-import 'room_obj.dart';
+import 'status_obj.dart';
 
-class RoomSelectPage extends ConsumerWidget {
+class StatusSelectPage extends ConsumerWidget {
   final bool isSingleValue;
 
-  const RoomSelectPage({super.key, this.isSingleValue = true});
+  const StatusSelectPage({super.key, this.isSingleValue = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(roomSelectProvider);
+    final list = ref.watch(statusSelectProvider);
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('Selecione ${isSingleValue ? 'um cargo' : 'alguns cargos'}'),
+            Text('Selecione ${isSingleValue ? 'um status' : 'alguns status'}'),
       ),
       body: list.when(
         data: (data) {
@@ -25,7 +25,7 @@ class RoomSelectPage extends ConsumerWidget {
             itemCount: data.length,
             itemBuilder: (context, index) {
               final level = data[index];
-              return RoomObj(
+              return StatusObj(
                 model: level,
                 isSingleValue: isSingleValue,
               );
@@ -33,11 +33,11 @@ class RoomSelectPage extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          log('Erro em Lista de usuarios');
+          log('Erro em Lista de status');
           log('$error');
           log('$stackTrace');
           return const Center(
-            child: Text('Erro em Lista de usuarios'),
+            child: Text('Erro em Lista de status'),
           );
         },
         loading: () {
@@ -50,7 +50,7 @@ class RoomSelectPage extends ConsumerWidget {
         visible: !isSingleValue,
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pop(ref.watch(roomSelectedProvider));
+            Navigator.of(context).pop(ref.watch(statusSelectedProvider));
           },
           child: const Icon(Icons.send),
         ),

@@ -6,33 +6,34 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$roomSelectHash() => r'b30aa740128c66e3016a0fff106e2f458594616b';
+String _$statusSelectHash() => r'18bbe2ab287a5aebfee5ae4f8b2f072328ff792a';
 
-/// See also [roomSelect].
-@ProviderFor(roomSelect)
-final roomSelectProvider = FutureProvider<List<RoomModel>>.internal(
-  roomSelect,
-  name: r'roomSelectProvider',
+/// See also [statusSelect].
+@ProviderFor(statusSelect)
+final statusSelectProvider = FutureProvider<List<StatusModel>>.internal(
+  statusSelect,
+  name: r'statusSelectProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$roomSelectHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$statusSelectHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef RoomSelectRef = FutureProviderRef<List<RoomModel>>;
-String _$roomSelectedHash() => r'1f14e75736ac234ebd1d17a80e137a9d453b1408';
+typedef StatusSelectRef = FutureProviderRef<List<StatusModel>>;
+String _$statusSelectedHash() => r'f73ee5befc19c1355c0b0ad47d991f7ec19cb647';
 
-/// See also [RoomSelected].
-@ProviderFor(RoomSelected)
-final roomSelectedProvider =
-    AutoDisposeNotifierProvider<RoomSelected, List<RoomModel>>.internal(
-  RoomSelected.new,
-  name: r'roomSelectedProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$roomSelectedHash,
+/// See also [StatusSelected].
+@ProviderFor(StatusSelected)
+final statusSelectedProvider =
+    AutoDisposeNotifierProvider<StatusSelected, List<StatusModel>>.internal(
+  StatusSelected.new,
+  name: r'statusSelectedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$statusSelectedHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$RoomSelected = AutoDisposeNotifier<List<RoomModel>>;
+typedef _$StatusSelected = AutoDisposeNotifier<List<StatusModel>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

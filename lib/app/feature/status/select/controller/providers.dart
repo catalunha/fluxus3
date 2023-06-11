@@ -2,31 +2,31 @@ import 'package:fluxus3/app/core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/models/room_model.dart';
-import '../../../../data/b4a/entity/room_entity.dart';
+import '../../../../core/models/status_model.dart';
+import '../../../../data/b4a/entity/status_entity.dart';
 
 part 'providers.g.dart';
 
 @Riverpod(keepAlive: true)
-FutureOr<List<RoomModel>> roomSelect(RoomSelectRef ref) async {
+FutureOr<List<StatusModel>> statusSelect(StatusSelectRef ref) async {
   QueryBuilder<ParseObject> query =
-      QueryBuilder<ParseObject>(ParseObject(RoomEntity.className));
+      QueryBuilder<ParseObject>(ParseObject(StatusEntity.className));
   query.orderByDescending('name');
-  final list = await ref.read(roomRepositoryProvider).list(query);
+  final list = await ref.read(statusRepositoryProvider).list(query);
   return list;
 }
 
 @riverpod
-class RoomSelected extends _$RoomSelected {
+class StatusSelected extends _$StatusSelected {
   @override
-  List<RoomModel> build() {
+  List<StatusModel> build() {
     return [];
   }
 
-  void toggle(RoomModel model) {
+  void toggle(StatusModel model) {
     int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<RoomModel> temp = [...state];
+      List<StatusModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

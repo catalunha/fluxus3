@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/models/room_model.dart';
+import '../../../core/models/status_model.dart';
 import '../../../routes.dart';
 import '../../utils/app_text_title_value.dart';
 
-class RoomObj extends StatelessWidget {
-  final RoomModel model;
-  const RoomObj({Key? key, required this.model}) : super(key: key);
+class StatusObj extends StatelessWidget {
+  final StatusModel model;
+  const StatusObj({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +23,15 @@ class RoomObj extends StatelessWidget {
               value: model.name,
             ),
             AppTextTitleValue(
-              title: 'Disponível: ',
-              value: model.isActive ?? true ? "Sim" : "Não",
+              title: 'Descrição: ',
+              value: model.description,
             ),
             Center(
               child: Wrap(children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    context.goNamed(AppPage.roomSave.name, extra: model.id);
+                    context.goNamed(AppPage.statusSave.name, extra: model.id);
                   },
                 ),
               ]),
