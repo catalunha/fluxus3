@@ -47,7 +47,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
               ),
               HomeModule(
                 title: 'Cargos',
-                icon: Icons.people,
+                icon: Icons.power_input_sharp,
                 color: Colors.black,
                 actions: [
                   IconButton(
