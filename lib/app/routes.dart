@@ -7,6 +7,8 @@ import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
 import 'feature/office/list/office_list_page.dart';
 import 'feature/office/save/office_save_page.dart';
+import 'feature/procedure/list/procedure_list_page.dart';
+import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -122,26 +124,49 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-                path: AppPage.officeList.path,
-                name: AppPage.officeList.name,
-                builder: (context, state) {
-                  return OfficeListPage(
-                    key: state.pageKey,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: AppPage.officeSave.path,
-                    name: AppPage.officeSave.name,
-                    builder: (context, state) {
-                      final id = state.extra as String?;
-                      return OfficeSavePage(
-                        key: state.pageKey,
-                        id: id,
-                      );
-                    },
-                  ),
-                ]),
+              path: AppPage.officeList.path,
+              name: AppPage.officeList.name,
+              builder: (context, state) {
+                return OfficeListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.officeSave.path,
+                  name: AppPage.officeSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return OfficeSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppPage.procedureList.path,
+              name: AppPage.procedureList.name,
+              builder: (context, state) {
+                return ProcedureListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.procedureSave.path,
+                  name: AppPage.procedureSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return ProcedureSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -162,6 +187,10 @@ final goRouterProv = Provider<GoRouter>(
 /home/userProfileList
 /home/userProfileList/userProfileView/:id
 /home/userProfileList/userProfileAccess/:id
+/home/officeList
+/home/officeList/officeSave
+/home/procedureList
+/home/procedureList/procedureSave
 
 */
 
@@ -176,7 +205,9 @@ enum AppPage {
   userProfileView('userProfileView/:id', 'userProfileView'),
   userProfileAccess('userProfileAccess/:id', 'userProfileAccess'),
   officeList('officeList', 'officeList'),
-  officeSave('officeSave', 'officeSave');
+  officeSave('officeSave', 'officeSave'),
+  procedureList('procedureList', 'procedureList'),
+  procedureSave('procedureSave', 'procedureSave');
 
   final String path;
   final String name;

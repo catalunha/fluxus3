@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/procedure_model.dart';
@@ -46,6 +48,38 @@ class ProcedureB4a {
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
+    }
+  }
+
+  Future<ProcedureModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
+    query.whereEqualTo(ProcedureEntity.id, id);
+
+    if (cols.containsKey('${ProcedureEntity.className}.cols')) {
+      query.keysToReturn(cols['${ProcedureEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${ProcedureEntity.className}.pointers')) {
+      query.includeObject(cols['${ProcedureEntity.className}.pointers']!);
+    } else {
+      query.includeObject(['expertise']);
+    }
+
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return ProcedureEntity().toModel(response.results!.first, cols: cols);
+      }
+      return null;
+    } catch (e, st) {
+      log('$e');
+      log('$st');
+      rethrow;
     }
   }
 

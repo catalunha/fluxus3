@@ -13,3 +13,8 @@
       ]
     },
 ```
+
+
+# Duvidas Riverpod
+* Como aplicar ProviderScope para evitar rebuild de lista
+* Como preencher campos em statefull widget com AsyncValue

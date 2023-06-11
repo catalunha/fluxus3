@@ -57,6 +57,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
+              ),
+              HomeModule(
+                title: 'Procedimentos',
+                icon: Icons.construction_sharp,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.procedureList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
               )
             ],
           ),

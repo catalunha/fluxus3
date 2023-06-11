@@ -14,7 +14,10 @@ class ProcedureEntity {
   static const String costProf = 'costProf';
   static const String expertise = 'expertise';
 
-  ProcedureModel toModel(ParseObject parseObject) {
+  ProcedureModel toModel(
+    ParseObject parseObject, {
+    Map<String, List<String>> cols = const {},
+  }) {
     ProcedureModel model = ProcedureModel(
       id: parseObject.objectId!,
       code: parseObject.get(ProcedureEntity.code),

@@ -14,6 +14,14 @@ class ProcedureRepository {
     Map<String, List<String>> cols = const {},
   }) =>
       apiB4a.list(query, pagination: pagination, cols: cols);
+
+  Future<ProcedureModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.readById(id, cols: cols);
+
   Future<String> update(ProcedureModel model) => apiB4a.update(model);
+
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }
