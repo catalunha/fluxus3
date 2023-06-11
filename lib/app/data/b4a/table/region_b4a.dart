@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/region_model.dart';
@@ -44,6 +46,36 @@ class RegionB4a {
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
+    }
+  }
+
+  Future<RegionModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(RegionEntity.className));
+    query.whereEqualTo(RegionEntity.id, id);
+
+    if (cols.containsKey('${RegionEntity.className}.cols')) {
+      query.keysToReturn(cols['${RegionEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${RegionEntity.className}.pointers')) {
+      query.includeObject(cols['${RegionEntity.className}.pointers']!);
+    }
+
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return RegionEntity().toModel(response.results!.first, cols: cols);
+      }
+      return null;
+    } catch (e, st) {
+      log('$e');
+      log('$st');
+      rethrow;
     }
   }
 

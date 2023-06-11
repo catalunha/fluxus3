@@ -6,7 +6,7 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$procedureListHash() => r'7dccc143bd4cdfd34a2b0ac5bef8a615d6288576';
+String _$procedureListHash() => r'e360f3b5da8cb36584b1d7a0269a216e4ebef93d';
 
 /// See also [procedureList].
 @ProviderFor(procedureList)

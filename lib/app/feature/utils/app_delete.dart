@@ -17,7 +17,7 @@ class AppDelete extends StatelessWidget {
                   context: context,
                   builder: (context) {
                     return const AlertDialog(
-                      title: Text('Para apagar prescione por mais tempo!'),
+                      title: Text('Para apagar pressione por mais tempo!'),
                     );
                   },
                 );

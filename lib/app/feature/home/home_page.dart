@@ -70,6 +70,32 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
+              ),
+              HomeModule(
+                title: 'Especialidades',
+                icon: Icons.folder_special,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.expertiseList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
+              ),
+              HomeModule(
+                title: 'Região',
+                icon: Icons.bubble_chart_outlined,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.regionList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
               )
             ],
           ),

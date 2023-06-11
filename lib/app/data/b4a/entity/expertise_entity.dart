@@ -8,8 +8,9 @@ class ExpertiseEntity {
   static const String name = 'name';
 
   ExpertiseModel toModel(
-    ParseObject parseObject,
-  ) {
+    ParseObject parseObject, {
+    Map<String, List<String>> cols = const {},
+  }) {
     ExpertiseModel model = ExpertiseModel(
       id: parseObject.objectId!,
       name: parseObject.get(ExpertiseEntity.name),

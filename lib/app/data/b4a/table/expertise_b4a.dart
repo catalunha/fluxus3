@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/expertise_model.dart';
@@ -44,6 +46,36 @@ class ExpertiseB4a {
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
+    }
+  }
+
+  Future<ExpertiseModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
+    query.whereEqualTo(ExpertiseEntity.id, id);
+
+    if (cols.containsKey('${ExpertiseEntity.className}.cols')) {
+      query.keysToReturn(cols['${ExpertiseEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${ExpertiseEntity.className}.pointers')) {
+      query.includeObject(cols['${ExpertiseEntity.className}.pointers']!);
+    }
+
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return ExpertiseEntity().toModel(response.results!.first, cols: cols);
+      }
+      return null;
+    } catch (e, st) {
+      log('$e');
+      log('$st');
+      rethrow;
     }
   }
 

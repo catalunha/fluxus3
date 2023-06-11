@@ -6,21 +6,18 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileListHash() => r'cac7d42ca8bcf2e8c5fff67f1a9d98073acb6d81';
+String _$regionListHash() => r'f06bb786044f8d9c15a92aaa73a6ae642e7188e6';
 
-/// See also [userProfileList].
-@ProviderFor(userProfileList)
-final userProfileListProvider =
-    AutoDisposeFutureProvider<List<UserProfileModel>>.internal(
-  userProfileList,
-  name: r'userProfileListProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userProfileListHash,
+/// See also [regionList].
+@ProviderFor(regionList)
+final regionListProvider = FutureProvider<List<RegionModel>>.internal(
+  regionList,
+  name: r'regionListProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$regionListHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UserProfileListRef
-    = AutoDisposeFutureProviderRef<List<UserProfileModel>>;
+typedef RegionListRef = FutureProviderRef<List<RegionModel>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

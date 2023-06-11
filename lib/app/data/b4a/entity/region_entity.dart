@@ -10,7 +10,10 @@ class RegionEntity {
   static const String city = 'city';
   static const String name = 'name';
 
-  RegionModel toModel(ParseObject parseObject) {
+  RegionModel toModel(
+    ParseObject parseObject, {
+    Map<String, List<String>> cols = const {},
+  }) {
     RegionModel model = RegionModel(
         id: parseObject.objectId!,
         uf: parseObject.get(RegionEntity.uf),

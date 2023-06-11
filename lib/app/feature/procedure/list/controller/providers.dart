@@ -11,6 +11,6 @@ part 'providers.g.dart';
 FutureOr<List<ProcedureModel>> procedureList(ProcedureListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
-  query.orderByDescending('name');
+  query.orderByAscending('name');
   return await ref.read(procedureRepositoryProvider).list(query);
 }

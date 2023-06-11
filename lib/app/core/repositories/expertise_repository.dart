@@ -14,6 +14,13 @@ class ExpertiseRepository {
     Map<String, List<String>> cols = const {},
   }) =>
       apiB4a.list(query, pagination: pagination, cols: cols);
+
+  Future<ExpertiseModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.readById(id, cols: cols);
+
   Future<String> update(ExpertiseModel model) => apiB4a.update(model);
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

@@ -5,7 +5,7 @@ import '../../data/utils/pagination.dart';
 import '../models/region_model.dart';
 
 class RegionRepository {
-  final RegionB4a secretaryB4a = RegionB4a();
+  final RegionB4a apiB4a = RegionB4a();
 
   RegionRepository();
   Future<List<RegionModel>> list(
@@ -13,7 +13,14 @@ class RegionRepository {
     Pagination? pagination,
     Map<String, List<String>> cols = const {},
   }) =>
-      secretaryB4a.list(query, pagination: pagination, cols: cols);
-  Future<String> update(RegionModel model) => secretaryB4a.update(model);
-  Future<bool> delete(String modelId) => secretaryB4a.delete(modelId);
+      apiB4a.list(query, pagination: pagination, cols: cols);
+
+  Future<RegionModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.readById(id, cols: cols);
+
+  Future<String> update(RegionModel model) => apiB4a.update(model);
+  Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

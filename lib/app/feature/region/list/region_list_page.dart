@@ -6,21 +6,21 @@ import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';
 import 'controller/providers.dart';
-import 'office_obj.dart';
+import 'region_obj.dart';
 
-class OfficeListPage extends ConsumerWidget {
-  const OfficeListPage({super.key});
+class RegionListPage extends ConsumerWidget {
+  const RegionListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(officeListProvider);
+    final list = ref.watch(regionListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de cargos'),
+        title: const Text('Lista de regiões'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.goNamed(AppPage.officeSave.name, extra: null);
+          context.goNamed(AppPage.regionSave.name, extra: null);
         },
         child: const Icon(Icons.add),
       ),
@@ -29,17 +29,17 @@ class OfficeListPage extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             final level = data[index];
-            return OfficeObj(
+            return RegionObj(
               model: level,
             );
           },
         );
       }, error: (error, stackTrace) {
-        log('Erro em Lista de cargos');
+        log('Erro em Lista de regiões');
         log('$error');
         log('$stackTrace');
         return const Center(
-          child: Text('Erro em Lista de cargos'),
+          child: Text('Erro em Lista de regiões'),
         );
       }, loading: () {
         return const Center(

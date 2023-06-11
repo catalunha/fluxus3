@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/models/office_model.dart';
+import '../../../core/models/region_model.dart';
 import '../../../routes.dart';
 import '../../utils/app_text_title_value.dart';
 
-class OfficeObj extends StatelessWidget {
-  final OfficeModel model;
-  const OfficeObj({Key? key, required this.model}) : super(key: key);
+class RegionObj extends StatelessWidget {
+  final RegionModel model;
+  const RegionObj({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,14 @@ class OfficeObj extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppTextTitleValue(
+              title: 'UF: ',
+              value: model.uf,
+            ),
+            AppTextTitleValue(
+              title: 'Cidade: ',
+              value: model.city,
+            ),
+            AppTextTitleValue(
               title: 'Nome: ',
               value: model.name,
             ),
@@ -27,7 +35,7 @@ class OfficeObj extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    context.goNamed(AppPage.officeSave.name, extra: model.id);
+                    context.goNamed(AppPage.regionSave.name, extra: model.id);
                   },
                 ),
               ]),

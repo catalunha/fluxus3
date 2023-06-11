@@ -11,6 +11,6 @@ part 'providers.g.dart';
 FutureOr<List<UserProfileModel>> userProfileList(UserProfileListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
-  query.orderByDescending('name');
+  query.orderByAscending('name');
   return await ref.read(userProfileRepositoryProvider).list(query);
 }

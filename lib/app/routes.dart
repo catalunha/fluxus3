@@ -5,10 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/error/error_page.dart';
+import 'feature/expertise/list/expertise_list_page.dart';
+import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/office/list/office_list_page.dart';
 import 'feature/office/save/office_save_page.dart';
 import 'feature/procedure/list/procedure_list_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
+import 'feature/region/list/region_list_page.dart';
+import 'feature/region/save/region_save_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -167,6 +171,50 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+              path: AppPage.expertiseList.path,
+              name: AppPage.expertiseList.name,
+              builder: (context, state) {
+                return ExpertiseListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.expertiseSave.path,
+                  name: AppPage.expertiseSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return ExpertiseSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppPage.regionList.path,
+              name: AppPage.regionList.name,
+              builder: (context, state) {
+                return RegionListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.regionSave.path,
+                  name: AppPage.regionSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return RegionSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -207,7 +255,11 @@ enum AppPage {
   officeList('officeList', 'officeList'),
   officeSave('officeSave', 'officeSave'),
   procedureList('procedureList', 'procedureList'),
-  procedureSave('procedureSave', 'procedureSave');
+  procedureSave('procedureSave', 'procedureSave'),
+  expertiseList('expertiseList', 'expertiseList'),
+  expertiseSave('expertiseSave', 'expertiseSave'),
+  regionList('regionList', 'regionList'),
+  regionSave('regionSave', 'regionSave');
 
   final String path;
   final String name;
