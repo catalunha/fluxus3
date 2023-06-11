@@ -7,7 +7,7 @@ part of 'providers.dart';
 // **************************************************************************
 
 String _$userProfileAccessReadHash() =>
-    r'3562e0302611943d411899ef26776a691bf365c6';
+    r'498d964e369001184362b5542a846d7be983ae35';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -113,6 +113,38 @@ class UserProfileAccessReadProvider
   }
 }
 
+String _$userProfileAccessCurrentModelHash() =>
+    r'100eb2c4b3e8c105aedd9968855a1f91ef1eb436';
+
+/// See also [UserProfileAccessCurrentModel].
+@ProviderFor(UserProfileAccessCurrentModel)
+final userProfileAccessCurrentModelProvider = AutoDisposeNotifierProvider<
+    UserProfileAccessCurrentModel, UserProfileModel?>.internal(
+  UserProfileAccessCurrentModel.new,
+  name: r'userProfileAccessCurrentModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userProfileAccessCurrentModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UserProfileAccessCurrentModel
+    = AutoDisposeNotifier<UserProfileModel?>;
+String _$isActive2Hash() => r'd44a7b2673ca0b6f611007243d46dc044d5b71df';
+
+/// See also [IsActive2].
+@ProviderFor(IsActive2)
+final isActive2Provider = AutoDisposeNotifierProvider<IsActive2, bool>.internal(
+  IsActive2.new,
+  name: r'isActive2Provider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$isActive2Hash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IsActive2 = AutoDisposeNotifier<bool>;
 String _$officesOriginalHash() => r'a1257a8c55185b02a86454e9771f1d6bf4e55dbf';
 
 /// See also [OfficesOriginal].
@@ -229,7 +261,7 @@ final accessStateProvider =
 
 typedef _$AccessState = AutoDisposeNotifier<List<AccessStatus>>;
 String _$userProfileAccessSaveHash() =>
-    r'5ded17d1aa677f0dc4cad48c4d991b97e99f3b29';
+    r'b738eb7036eac9082b5d4b175fd5bfa01912daae';
 
 /// See also [UserProfileAccessSave].
 @ProviderFor(UserProfileAccessSave)

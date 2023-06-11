@@ -84,10 +84,13 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                     ),
                     CheckboxListTile(
                       title: const Text("* Liberar acesso ?"),
-                      value: ref.watch(isActiveProvider),
+                      value: ref.watch(isActive2Provider),
                       onChanged: (value) {
-                        ref.watch(isActiveProvider.notifier).state =
-                            value ?? false;
+                        // ref.read(isActiveProvider.notifier).state =
+                        //     value ?? false;
+                        ref
+                            .read(isActive2Provider.notifier)
+                            .set(value ?? false);
                       },
                     ),
                     const Text('Marque as opções de acesso para este usuário.'),

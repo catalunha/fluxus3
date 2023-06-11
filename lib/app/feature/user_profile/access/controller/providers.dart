@@ -29,8 +29,8 @@ FutureOr<UserProfileModel> userProfileAccessRead(UserProfileAccessReadRef ref,
     ]
   });
   if (userProfile != null) {
-    ref.watch(isActiveProvider.notifier).state = userProfile.isActive;
-    ref.watch(userProfileAccessModelProvider.notifier).state = userProfile;
+    ref.watch(isActive2Provider.notifier).set(userProfile.isActive);
+    ref.watch(userProfileAccessCurrentModelProvider.notifier).set(userProfile);
     for (var access in userProfile.access) {
       ref.watch(accessStateProvider.notifier).update(access.toAccessStatus);
     }
@@ -65,15 +65,39 @@ FutureOr<UserProfileModel> userProfileAccessRead(UserProfileAccessReadRef ref,
   }
 }
 
-final userProfileAccessModelProvider =
-    StateProvider.autoDispose<UserProfileModel?>(
-  (ref) {
-    return null;
-  },
-  name: 'userProfileAccessModelProvider',
-);
+// final userProfileAccessModelProvider =
+//     StateProvider.autoDispose<UserProfileModel?>(
+//   (ref) {
+//     return null;
+//   },
+//   name: 'userProfileAccessModelProvider',
+// );
 
-final isActiveProvider = StateProvider.autoDispose<bool>(
+@riverpod
+class UserProfileAccessCurrentModel extends _$UserProfileAccessCurrentModel {
+  @override
+  UserProfileModel? build() {
+    return null;
+  }
+
+  void set(UserProfileModel value) {
+    state = value;
+  }
+}
+
+@riverpod
+class IsActive2 extends _$IsActive2 {
+  @override
+  bool build() {
+    return false;
+  }
+
+  void set(bool value) {
+    state = value;
+  }
+}
+
+final isActive1Provider = StateProvider.autoDispose<bool>(
   (ref) {
     return false;
   },
@@ -219,9 +243,9 @@ class UserProfileAccessSave extends _$UserProfileAccessSave {
         UserProfileAccessSaveStatus.loading;
     try {
       final repository = ref.read(userProfileRepositoryProvider);
-      final model = ref.read(userProfileAccessModelProvider);
+      final model = ref.read(userProfileAccessCurrentModelProvider);
       UserProfileModel userProfileModel = model!.copyWith(
-        isActive: ref.read(isActiveProvider),
+        isActive: ref.read(isActive2Provider),
         access: ref.read(accessStateProvider).map((e) => e.name).toList(),
         // offices: ref.read(officeSelectedProvider),
         // expertises: ref.read(expertiseSelectedProvider),

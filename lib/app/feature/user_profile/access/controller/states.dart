@@ -13,3 +13,8 @@ extension StringToAccessStatus on String {
 }
 
 enum UserProfileAccessSaveStatus { initial, loading, success, error }
+
+
+// class UserProfileAccessForm{
+//   final UserProfileAccessSaveStatus
+// }
