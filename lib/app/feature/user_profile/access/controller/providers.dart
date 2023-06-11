@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/expertise_model.dart';
@@ -29,8 +28,8 @@ FutureOr<UserProfileModel> userProfileAccessRead(UserProfileAccessReadRef ref,
     ]
   });
   if (userProfile != null) {
-    ref.watch(isActive2Provider.notifier).set(userProfile.isActive);
-    ref.watch(userProfileAccessCurrentModelProvider.notifier).set(userProfile);
+    ref.watch(isActiveProvider.notifier).set(userProfile.isActive);
+    ref.watch(userProfileAccessFormProvider.notifier).setModel(userProfile);
     for (var access in userProfile.access) {
       ref.watch(accessStateProvider.notifier).update(access.toAccessStatus);
     }
@@ -65,28 +64,8 @@ FutureOr<UserProfileModel> userProfileAccessRead(UserProfileAccessReadRef ref,
   }
 }
 
-// final userProfileAccessModelProvider =
-//     StateProvider.autoDispose<UserProfileModel?>(
-//   (ref) {
-//     return null;
-//   },
-//   name: 'userProfileAccessModelProvider',
-// );
-
 @riverpod
-class UserProfileAccessCurrentModel extends _$UserProfileAccessCurrentModel {
-  @override
-  UserProfileModel? build() {
-    return null;
-  }
-
-  void set(UserProfileModel value) {
-    state = value;
-  }
-}
-
-@riverpod
-class IsActive2 extends _$IsActive2 {
+class IsActive extends _$IsActive {
   @override
   bool build() {
     return false;
@@ -97,12 +76,12 @@ class IsActive2 extends _$IsActive2 {
   }
 }
 
-final isActive1Provider = StateProvider.autoDispose<bool>(
-  (ref) {
-    return false;
-  },
-  name: 'isActiveProvider',
-);
+// final isActive1Provider = StateProvider.autoDispose<bool>(
+//   (ref) {
+//     return false;
+//   },
+//   name: 'isActiveProvider',
+// );
 
 @riverpod
 class OfficesOriginal extends _$OfficesOriginal {
@@ -214,73 +193,55 @@ class AccessState extends _$AccessState {
       state = [...state, status];
     }
   }
-
-  // List<String> toString() {
-  //   state.map((e) => e.name).toList();
-  // }
 }
 
-final userProfileAccessSaveStatusProvider =
-    StateProvider.autoDispose<UserProfileAccessSaveStatus>(
-  (ref) => UserProfileAccessSaveStatus.initial,
-  name: 'userProfileAccessSaveStatusProvider',
-);
-
-final userProfileAccessSaveErrorProvider = StateProvider.autoDispose<String>(
-  (ref) => '',
-  name: 'userProfileAccessSaveErrorProvider',
-);
-
 @riverpod
-class UserProfileAccessSave extends _$UserProfileAccessSave {
+class UserProfileAccessForm extends _$UserProfileAccessForm {
   @override
-  build() {
-    return;
+  UserProfileAccessFormState build() {
+    return UserProfileAccessFormState();
+  }
+
+  void setModel(UserProfileModel? model) {
+    state = state.copyWith(model: model);
   }
 
   Future<void> submitForm() async {
-    ref.read(userProfileAccessSaveStatusProvider.notifier).state =
-        UserProfileAccessSaveStatus.loading;
+    state = state.copyWith(status: UserProfileAccessFormStatus.loading);
     try {
       final repository = ref.read(userProfileRepositoryProvider);
-      final model = ref.read(userProfileAccessCurrentModelProvider);
-      UserProfileModel userProfileModel = model!.copyWith(
-        isActive: ref.read(isActive2Provider),
+      UserProfileModel userProfileModel = state.model!.copyWith(
+        isActive: ref.read(isActiveProvider),
         access: ref.read(accessStateProvider).map((e) => e.name).toList(),
-        // offices: ref.read(officeSelectedProvider),
-        // expertises: ref.read(expertiseSelectedProvider),
-        // procedures: ref.read(procedureSelectedProvider),
       );
       await repository.update(userProfileModel);
 
       await _updateRelations(
-        modelId: model.id,
+        modelId: state.model!.id,
         originalList: ref.read(officesOriginalProvider),
         selectedList: ref.read(officesSelectedProvider),
         relationColumn: 'offices',
         relationTable: 'Office',
       );
       await _updateRelations(
-        modelId: model.id,
+        modelId: state.model!.id,
         originalList: ref.read(expertisesOriginalProvider),
         selectedList: ref.read(expertisesSelectedProvider),
         relationColumn: 'expertises',
         relationTable: 'Expertise',
       );
       await _updateRelations(
-        modelId: model.id,
+        modelId: state.model!.id,
         originalList: ref.read(proceduresOriginalProvider),
         selectedList: ref.read(proceduresSelectedProvider),
         relationColumn: 'procedures',
         relationTable: 'Procedure',
       );
-      ref.read(userProfileAccessSaveStatusProvider.notifier).state =
-          UserProfileAccessSaveStatus.success;
+      state = state.copyWith(status: UserProfileAccessFormStatus.success);
     } catch (e) {
-      ref.read(userProfileAccessSaveErrorProvider.notifier).state =
-          'Erro em editar usuario';
-      ref.read(userProfileAccessSaveStatusProvider.notifier).state =
-          UserProfileAccessSaveStatus.error;
+      state = state.copyWith(
+          status: UserProfileAccessFormStatus.error,
+          error: 'Erro em editar usuario');
     }
   }
 

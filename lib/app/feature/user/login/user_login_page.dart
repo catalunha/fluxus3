@@ -40,16 +40,15 @@ class _UserLoginPageState extends ConsumerState<UserLoginPage>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserLoginStatus>(userLoginStatusProvider, (prev, next) {
-      if (next == UserLoginStatus.error) {
+    ref.listen<UserLoginFormState>(userLoginEmailFormProvider, (prev, next) {
+      if (next.status == UserLoginFormStatus.error) {
         hideLoader(context);
-        final error = ref.read(userLoginErrorProvider);
-        showMessageError(context, error);
+        showMessageError(context, next.error);
       }
-      if (next == UserLoginStatus.success) {
+      if (next.status == UserLoginFormStatus.success) {
         hideLoader(context);
       }
-      if (next == UserLoginStatus.loading) {
+      if (next.status == UserLoginFormStatus.loading) {
         showLoader(context);
       }
     });

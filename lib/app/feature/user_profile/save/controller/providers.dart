@@ -12,16 +12,17 @@ import 'states.dart';
 
 part 'providers.g.dart';
 
-final userProfileSaveStatusProvider =
-    StateProvider.autoDispose<UserProfileSaveStatus>(
-  (ref) => UserProfileSaveStatus.initial,
-  name: 'userProfileSaveStatusProvider',
-);
+// @riverpod
+// class XFile extends _$XFile {
+//   @override
+//   XFile? build() {
+//     return null;
+//   }
 
-final userProfileSaveErrorProvider = StateProvider.autoDispose<String>(
-  (ref) => '',
-  name: 'userProfileSaveErrorProvider',
-);
+//   void set(XFile? value) {
+//     state = value;
+//   }
+// }
 
 final xFileProvider = StateProvider.autoDispose<XFile?>(
   (ref) {
@@ -30,18 +31,34 @@ final xFileProvider = StateProvider.autoDispose<XFile?>(
   name: 'xFileProvider',
 );
 
-final regionSelectedProvider = StateProvider.autoDispose<RegionModel?>(
-  (ref) {
+@riverpod
+class RegionSelected extends _$RegionSelected {
+  @override
+  RegionModel? build() {
     return null;
-  },
-  name: 'regionSelectedProvider',
-);
+  }
+
+  void set(RegionModel? value) {
+    state = value;
+  }
+}
+
+// final regionSelectedProvider = StateProvider.autoDispose<RegionModel?>(
+//   (ref) {
+//     return null;
+//   },
+//   name: 'regionSelectedProvider',
+// );
 
 @riverpod
-class UserProfileSave extends _$UserProfileSave {
+class UserProfileSaveForm extends _$UserProfileSaveForm {
   @override
-  bool build() {
-    return false;
+  UserProfileSaveFormState build() {
+    return UserProfileSaveFormState();
+  }
+
+  void setModel(UserProfileModel? model) {
+    state = state.copyWith(model: model);
   }
 
   Future<void> submitForm({
@@ -54,8 +71,8 @@ class UserProfileSave extends _$UserProfileSave {
     bool? isFemale,
     DateTime? birthday,
   }) async {
-    ref.read(userProfileSaveStatusProvider.notifier).state =
-        UserProfileSaveStatus.loading;
+    state = state.copyWith(status: UserProfileSaveFormStatus.loading);
+
     try {
       final repository = ref.read(userProfileRepositoryProvider);
       final auth = ref.read(authChNotProvider);
@@ -84,13 +101,11 @@ class UserProfileSave extends _$UserProfileSave {
         userProfileModel = userProfileModel.copyWith(photo: photoUrl);
       }
       auth.user = auth.user!.copyWith(userProfile: userProfileModel);
-      ref.read(userProfileSaveStatusProvider.notifier).state =
-          UserProfileSaveStatus.success;
+      state = state.copyWith(status: UserProfileSaveFormStatus.success);
     } catch (e) {
-      ref.read(userProfileSaveErrorProvider.notifier).state =
-          'Erro em editar perfil';
-      ref.read(userProfileSaveStatusProvider.notifier).state =
-          UserProfileSaveStatus.error;
+      state = state.copyWith(
+          status: UserProfileSaveFormStatus.error,
+          error: 'Erro em editar perfim');
     }
   }
 }

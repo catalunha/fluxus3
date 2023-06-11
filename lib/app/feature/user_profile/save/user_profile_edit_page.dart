@@ -66,18 +66,17 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserProfileSaveStatus>(userProfileSaveStatusProvider,
+    ref.listen<UserProfileSaveFormState>(userProfileSaveFormProvider,
         (previous, next) async {
-      if (next == UserProfileSaveStatus.error) {
+      if (next.status == UserProfileSaveFormStatus.error) {
         hideLoader(context);
-        final error = ref.read(userProfileSaveErrorProvider);
-        showMessageError(context, error);
+        showMessageError(context, next.error);
       }
-      if (next == UserProfileSaveStatus.success) {
+      if (next.status == UserProfileSaveFormStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         context.pop(); //sai da pagina
       }
-      if (next == UserProfileSaveStatus.loading) {
+      if (next.status == UserProfileSaveFormStatus.loading) {
         showLoader(context);
       }
     });
@@ -93,7 +92,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
         onPressed: () async {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            ref.read(userProfileSaveProvider.notifier).submitForm(
+            ref.read(userProfileSaveFormProvider.notifier).submitForm(
                   name: _nameTec.text,
                   nickname: _nicknameTec.text,
                   cpf: _cpfTec.text,
@@ -182,13 +181,13 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
 
                             if (result != null) {
                               log('$result');
-                              ref.read(regionSelectedProvider.notifier).state =
-                                  result;
-                              // contextTemp
-                              //     .add(UserProfileSaveEventAddRegion(result));
+                              ref
+                                  .read(regionSelectedProvider.notifier)
+                                  .set(result);
                             } else {
-                              ref.read(regionSelectedProvider.notifier).state =
-                                  null;
+                              ref
+                                  .read(regionSelectedProvider.notifier)
+                                  .set(null);
                             }
                           },
                           icon: const Icon(Icons.search),
@@ -205,7 +204,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                               onPressed: () {
                                 ref
                                     .read(regionSelectedProvider.notifier)
-                                    .state = null;
+                                    .set(null);
                               },
                               icon: const Icon(Icons.delete))
                       ],
@@ -216,6 +215,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                           'Click aqui para buscar sua foto, apenas face. Padrão 3x4.',
                       imageUrl: user?.userProfile!.photo,
                       setXFile: (value) =>
+                          // ref.read(xFileProvider.notifier).set(value),
                           ref.read(xFileProvider.notifier).state = value,
                       maxHeightImage: 150,
                       maxWidthImage: 100,

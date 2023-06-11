@@ -29,18 +29,17 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<UserProfileAccessSaveStatus>(userProfileAccessSaveStatusProvider,
+    ref.listen<UserProfileAccessFormState>(userProfileAccessFormProvider,
         (previous, next) async {
-      if (next == UserProfileAccessSaveStatus.error) {
+      if (next.status == UserProfileAccessFormStatus.error) {
         hideLoader(context);
-        final error = ref.read(userProfileAccessSaveErrorProvider);
-        showMessageError(context, error);
+        showMessageError(context, next.error);
       }
-      if (next == UserProfileAccessSaveStatus.success) {
+      if (next.status == UserProfileAccessFormStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         context.pop(); //sai da pagina
       }
-      if (next == UserProfileAccessSaveStatus.loading) {
+      if (next.status == UserProfileAccessFormStatus.loading) {
         showLoader(context);
       }
     });
@@ -50,7 +49,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
       appBar: AppBar(title: const Text('Atualizar este usuário')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(userProfileAccessSaveProvider.notifier).submitForm();
+          ref.read(userProfileAccessFormProvider.notifier).submitForm();
         },
         child: const Icon(Icons.cloud_upload),
       ),
@@ -84,13 +83,9 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                     ),
                     CheckboxListTile(
                       title: const Text("* Liberar acesso ?"),
-                      value: ref.watch(isActive2Provider),
+                      value: ref.watch(isActiveProvider),
                       onChanged: (value) {
-                        // ref.read(isActiveProvider.notifier).state =
-                        //     value ?? false;
-                        ref
-                            .read(isActive2Provider.notifier)
-                            .set(value ?? false);
+                        ref.read(isActiveProvider.notifier).set(value ?? false);
                       },
                     ),
                     const Text('Marque as opções de acesso para este usuário.'),

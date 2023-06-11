@@ -1,8 +1,17 @@
-// Status
-enum UserProfileSaveStatus { initial, loading, success, error }
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// Error
-// String
+import '../../../../core/models/user_profile_model.dart';
 
-// Form com
-// name
+part 'states.freezed.dart';
+
+enum UserProfileSaveFormStatus { initial, loading, success, error }
+
+@freezed
+abstract class UserProfileSaveFormState with _$UserProfileSaveFormState {
+  factory UserProfileSaveFormState({
+    @Default(UserProfileSaveFormStatus.initial)
+    UserProfileSaveFormStatus status,
+    @Default('') String error,
+    UserProfileModel? model,
+  }) = _UserProfileSaveFormState;
+}

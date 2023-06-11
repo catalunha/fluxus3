@@ -32,46 +32,19 @@ class _UserRegisterEmailPageState extends ConsumerState<UserRegisterEmailPage>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserRegisterEmailStatus>(userRegisterEmailStatusProvider,
+    ref.listen<UserRegisterEmailFormState>(userRegisterEmailFormProvider,
         (prev, next) async {
-      if (next == UserRegisterEmailStatus.error) {
+      if (next.status == UserRegisterEmailFormStatus.error) {
         hideLoader(context);
-        final error = ref.read(userRegisterEmailErrorProvider);
-        showMessageError(context, error);
+        showMessageError(context, next.error);
       }
-      if (next == UserRegisterEmailStatus.loading) {
+      if (next.status == UserRegisterEmailFormStatus.loading) {
         showLoader(context);
       }
-      if (next == UserRegisterEmailStatus.success) {
+      if (next.status == UserRegisterEmailFormStatus.success) {
         hideLoader(context);
         var contextTemp = Navigator.of(context);
-        await showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) {
-            return Center(
-              child: Card(
-                color: Colors.green,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Lembre-se de olhar seu email.'),
-                      const Text('Para validar seu cadastro.'),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
-                          child: const Text('Entendi'))
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
+        await alertEmailVerified(context);
         contextTemp.pop();
       }
     });
@@ -145,8 +118,6 @@ class _UserRegisterEmailPageState extends ConsumerState<UserRegisterEmailPage>
                           AppButton(
                             label: 'Cadastrar',
                             onPressed: () {
-                              // context.pop();
-
                               final formValid =
                                   _formKey.currentState?.validate() ?? false;
                               if (formValid) {
@@ -171,6 +142,36 @@ class _UserRegisterEmailPageState extends ConsumerState<UserRegisterEmailPage>
           );
         },
       ),
+    );
+  }
+
+  Future<bool?> alertEmailVerified(BuildContext context) {
+    return showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: Card(
+            color: Colors.green,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Lembre-se de olhar seu email.'),
+                  const Text('Para validar seu cadastro.'),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      child: const Text('Entendi'))
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

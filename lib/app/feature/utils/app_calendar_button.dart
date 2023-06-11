@@ -38,11 +38,11 @@ class AppCalendarButton extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10.0)),
-        child: Column(
+        child: const Column(
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(
                   Icons.today,
                   color: Colors.grey,

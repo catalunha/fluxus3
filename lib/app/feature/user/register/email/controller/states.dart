@@ -1,11 +1,14 @@
-// Status
-enum UserRegisterEmailStatus { initial, loading, success, error }
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// Error
-// String
+part 'states.freezed.dart';
 
+enum UserRegisterEmailFormStatus { initial, loading, success, error }
 
-//Form
-// email
-// password
-// repeat password
+@freezed
+abstract class UserRegisterEmailFormState with _$UserRegisterEmailFormState {
+  factory UserRegisterEmailFormState({
+    @Default(UserRegisterEmailFormStatus.initial)
+    UserRegisterEmailFormStatus status,
+    @Default('') String error,
+  }) = _UserRegisterEmailFormState;
+}

@@ -15,8 +15,8 @@ import 'feature/home/home_page.dart';
 import 'feature/user_profile/view/user_profile_view_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigator = GlobalKey(debugLabel: 'root');
-final GlobalKey<NavigatorState> _shellNavigator =
-    GlobalKey(debugLabel: 'shell');
+// final GlobalKey<NavigatorState> _shellNavigator =
+//     GlobalKey(debugLabel: 'shell');
 
 final goRouterProv = Provider<GoRouter>(
   (ref) {

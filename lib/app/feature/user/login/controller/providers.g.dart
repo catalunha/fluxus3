@@ -7,12 +7,12 @@ part of 'providers.dart';
 // **************************************************************************
 
 String _$userLoginEmailFormHash() =>
-    r'369418f61977cf24103aa0ee1da9df8c8288df92';
+    r'b2918990d0acfcf3333396f91c84ea3f7ddb5b35';
 
 /// See also [UserLoginEmailForm].
 @ProviderFor(UserLoginEmailForm)
-final userLoginEmailFormProvider =
-    AutoDisposeNotifierProvider<UserLoginEmailForm, bool>.internal(
+final userLoginEmailFormProvider = AutoDisposeNotifierProvider<
+    UserLoginEmailForm, UserLoginFormState>.internal(
   UserLoginEmailForm.new,
   name: r'userLoginEmailFormProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,5 +22,5 @@ final userLoginEmailFormProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$UserLoginEmailForm = AutoDisposeNotifier<bool>;
+typedef _$UserLoginEmailForm = AutoDisposeNotifier<UserLoginFormState>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
