@@ -7,7 +7,7 @@ part of 'providers.dart';
 // **************************************************************************
 
 String _$userProfileAccessReadHash() =>
-    r'02bdfdc69568249ea0b64475866f7fc7bbe26a6d';
+    r'3562e0302611943d411899ef26776a691bf365c6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -113,70 +113,106 @@ class UserProfileAccessReadProvider
   }
 }
 
-String _$officeOriginalHash() => r'46f408c09f6a36dfc9b4d7cf54097099f59c9115';
+String _$officesOriginalHash() => r'a1257a8c55185b02a86454e9771f1d6bf4e55dbf';
 
-/// See also [OfficeOriginal].
-@ProviderFor(OfficeOriginal)
-final officeOriginalProvider =
-    AutoDisposeNotifierProvider<OfficeOriginal, List<OfficeModel>>.internal(
-  OfficeOriginal.new,
-  name: r'officeOriginalProvider',
+/// See also [OfficesOriginal].
+@ProviderFor(OfficesOriginal)
+final officesOriginalProvider =
+    AutoDisposeNotifierProvider<OfficesOriginal, List<OfficeModel>>.internal(
+  OfficesOriginal.new,
+  name: r'officesOriginalProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$officeOriginalHash,
+      : _$officesOriginalHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$OfficeOriginal = AutoDisposeNotifier<List<OfficeModel>>;
-String _$officeSelectedHash() => r'2b4a0c74fb4276abc53d94c42d57a4d72afe6a17';
+typedef _$OfficesOriginal = AutoDisposeNotifier<List<OfficeModel>>;
+String _$officesSelectedHash() => r'aea32fc0ee3574f01bd57654e17d6c345be63a93';
 
-/// See also [OfficeSelected].
-@ProviderFor(OfficeSelected)
-final officeSelectedProvider =
-    AutoDisposeNotifierProvider<OfficeSelected, List<OfficeModel>>.internal(
-  OfficeSelected.new,
-  name: r'officeSelectedProvider',
+/// See also [OfficesSelected].
+@ProviderFor(OfficesSelected)
+final officesSelectedProvider =
+    AutoDisposeNotifierProvider<OfficesSelected, List<OfficeModel>>.internal(
+  OfficesSelected.new,
+  name: r'officesSelectedProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$officeSelectedHash,
+      : _$officesSelectedHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$OfficeSelected = AutoDisposeNotifier<List<OfficeModel>>;
-String _$expertiseSelectedHash() => r'180f8b53a181bca3c4a01d9fc9dbb3caa7f4fa52';
+typedef _$OfficesSelected = AutoDisposeNotifier<List<OfficeModel>>;
+String _$expertisesOriginalHash() =>
+    r'09da18758d683d8ab3307e31a782f3e89aae21a0';
 
-/// See also [ExpertiseSelected].
-@ProviderFor(ExpertiseSelected)
-final expertiseSelectedProvider = AutoDisposeNotifierProvider<ExpertiseSelected,
-    List<ExpertiseModel>>.internal(
-  ExpertiseSelected.new,
-  name: r'expertiseSelectedProvider',
+/// See also [ExpertisesOriginal].
+@ProviderFor(ExpertisesOriginal)
+final expertisesOriginalProvider = AutoDisposeNotifierProvider<
+    ExpertisesOriginal, List<ExpertiseModel>>.internal(
+  ExpertisesOriginal.new,
+  name: r'expertisesOriginalProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$expertiseSelectedHash,
+      : _$expertisesOriginalHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ExpertiseSelected = AutoDisposeNotifier<List<ExpertiseModel>>;
-String _$procedureSelectedHash() => r'f39d3000e26752a81b511aeb4025789d65642f52';
+typedef _$ExpertisesOriginal = AutoDisposeNotifier<List<ExpertiseModel>>;
+String _$expertisesSelectedHash() =>
+    r'989cf88a35112d6f6daafa2d9b6a8cd434d0bb87';
 
-/// See also [ProcedureSelected].
-@ProviderFor(ProcedureSelected)
-final procedureSelectedProvider = AutoDisposeNotifierProvider<ProcedureSelected,
-    List<ProcedureModel>>.internal(
-  ProcedureSelected.new,
-  name: r'procedureSelectedProvider',
+/// See also [ExpertisesSelected].
+@ProviderFor(ExpertisesSelected)
+final expertisesSelectedProvider = AutoDisposeNotifierProvider<
+    ExpertisesSelected, List<ExpertiseModel>>.internal(
+  ExpertisesSelected.new,
+  name: r'expertisesSelectedProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$procedureSelectedHash,
+      : _$expertisesSelectedHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ProcedureSelected = AutoDisposeNotifier<List<ProcedureModel>>;
+typedef _$ExpertisesSelected = AutoDisposeNotifier<List<ExpertiseModel>>;
+String _$proceduresOriginalHash() =>
+    r'735e5db4661c9f29d5fc1bdc743bfcf80527f808';
+
+/// See also [ProceduresOriginal].
+@ProviderFor(ProceduresOriginal)
+final proceduresOriginalProvider = AutoDisposeNotifierProvider<
+    ProceduresOriginal, List<ProcedureModel>>.internal(
+  ProceduresOriginal.new,
+  name: r'proceduresOriginalProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$proceduresOriginalHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ProceduresOriginal = AutoDisposeNotifier<List<ProcedureModel>>;
+String _$proceduresSelectedHash() =>
+    r'5abfe23b1e6660cbd42b976773b5a1648cc91011';
+
+/// See also [ProceduresSelected].
+@ProviderFor(ProceduresSelected)
+final proceduresSelectedProvider = AutoDisposeNotifierProvider<
+    ProceduresSelected, List<ProcedureModel>>.internal(
+  ProceduresSelected.new,
+  name: r'proceduresSelectedProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$proceduresSelectedHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ProceduresSelected = AutoDisposeNotifier<List<ProcedureModel>>;
 String _$accessStateHash() => r'6abae2092f2629d56bf4b1617f0c61e54369b45a';
 
 /// See also [AccessState].
@@ -193,7 +229,7 @@ final accessStateProvider =
 
 typedef _$AccessState = AutoDisposeNotifier<List<AccessStatus>>;
 String _$userProfileAccessSaveHash() =>
-    r'cbc84b5e2c969e7c63aa93aa4274f3e8bf3bd38a';
+    r'5ded17d1aa677f0dc4cad48c4d991b97e99f3b29';
 
 /// See also [UserProfileAccessSave].
 @ProviderFor(UserProfileAccessSave)

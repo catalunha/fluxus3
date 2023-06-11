@@ -34,20 +34,28 @@ FutureOr<UserProfileModel> userProfileAccessRead(UserProfileAccessReadRef ref,
     for (var access in userProfile.access) {
       ref.watch(accessStateProvider.notifier).update(access.toAccessStatus);
     }
-    ref.watch(officeOriginalProvider.notifier).set(userProfile.offices ?? []);
+    ref.watch(officesOriginalProvider.notifier).set(userProfile.offices ?? []);
     if (userProfile.offices != null) {
       for (var item in userProfile.offices!) {
-        ref.watch(officeSelectedProvider.notifier).update(item);
+        ref.watch(officesSelectedProvider.notifier).update(item);
       }
     }
+    ref
+        .watch(expertisesOriginalProvider.notifier)
+        .set(userProfile.expertises ?? []);
+
     if (userProfile.expertises != null) {
       for (var item in userProfile.expertises!) {
-        ref.watch(expertiseSelectedProvider.notifier).update(item);
+        ref.watch(expertisesSelectedProvider.notifier).update(item);
       }
     }
+    ref
+        .watch(proceduresOriginalProvider.notifier)
+        .set(userProfile.procedures ?? []);
+
     if (userProfile.procedures != null) {
       for (var item in userProfile.procedures!) {
-        ref.watch(procedureSelectedProvider.notifier).update(item);
+        ref.watch(proceduresSelectedProvider.notifier).update(item);
       }
     }
     return userProfile;
@@ -73,7 +81,7 @@ final isActiveProvider = StateProvider.autoDispose<bool>(
 );
 
 @riverpod
-class OfficeOriginal extends _$OfficeOriginal {
+class OfficesOriginal extends _$OfficesOriginal {
   @override
   List<OfficeModel> build() {
     return [];
@@ -85,7 +93,7 @@ class OfficeOriginal extends _$OfficeOriginal {
 }
 
 @riverpod
-class OfficeSelected extends _$OfficeSelected {
+class OfficesSelected extends _$OfficesSelected {
   @override
   List<OfficeModel> build() {
     return [];
@@ -104,7 +112,19 @@ class OfficeSelected extends _$OfficeSelected {
 }
 
 @riverpod
-class ExpertiseSelected extends _$ExpertiseSelected {
+class ExpertisesOriginal extends _$ExpertisesOriginal {
+  @override
+  List<ExpertiseModel> build() {
+    return [];
+  }
+
+  void set(List<ExpertiseModel> list) {
+    state = list;
+  }
+}
+
+@riverpod
+class ExpertisesSelected extends _$ExpertisesSelected {
   @override
   List<ExpertiseModel> build() {
     return [];
@@ -123,7 +143,19 @@ class ExpertiseSelected extends _$ExpertiseSelected {
 }
 
 @riverpod
-class ProcedureSelected extends _$ProcedureSelected {
+class ProceduresOriginal extends _$ProceduresOriginal {
+  @override
+  List<ProcedureModel> build() {
+    return [];
+  }
+
+  void set(List<ProcedureModel> list) {
+    state = list;
+  }
+}
+
+@riverpod
+class ProceduresSelected extends _$ProceduresSelected {
   @override
   List<ProcedureModel> build() {
     return [];
@@ -197,7 +229,27 @@ class UserProfileAccessSave extends _$UserProfileAccessSave {
       );
       await repository.update(userProfileModel);
 
-      await _updateRelationOffice(model.id);
+      await _updateRelations(
+        modelId: model.id,
+        originalList: ref.read(officesOriginalProvider),
+        selectedList: ref.read(officesSelectedProvider),
+        relationColumn: 'offices',
+        relationTable: 'Office',
+      );
+      await _updateRelations(
+        modelId: model.id,
+        originalList: ref.read(expertisesOriginalProvider),
+        selectedList: ref.read(expertisesSelectedProvider),
+        relationColumn: 'expertises',
+        relationTable: 'Expertise',
+      );
+      await _updateRelations(
+        modelId: model.id,
+        originalList: ref.read(proceduresOriginalProvider),
+        selectedList: ref.read(proceduresSelectedProvider),
+        relationColumn: 'procedures',
+        relationTable: 'Procedure',
+      );
       ref.read(userProfileAccessSaveStatusProvider.notifier).state =
           UserProfileAccessSaveStatus.success;
     } catch (e) {
@@ -208,27 +260,40 @@ class UserProfileAccessSave extends _$UserProfileAccessSave {
     }
   }
 
-  Future<List<OfficeModel>> _updateRelationOffice(String modelId) async {
-    List<OfficeModel> listResult = [];
-    List<OfficeModel> listFinal = [];
-    final officesOriginal = ref.read(officeOriginalProvider);
-    final officesSelected = ref.read(officeSelectedProvider);
+  Future<List<dynamic>> _updateRelations({
+    required String modelId,
+    required List<dynamic> originalList,
+    required List<dynamic> selectedList,
+    required String relationColumn,
+    required String relationTable,
+  }) async {
+    List<dynamic> listResult = [...selectedList];
+    List<dynamic> listFinal = [...originalList];
     final repository = ref.read(userProfileRepositoryProvider);
 
-    listResult.addAll([...officesSelected]);
-    listFinal.addAll([...officesOriginal]);
-    for (var original in officesOriginal) {
-      int index =
-          officesSelected.indexWhere((model) => model.id == original.id);
+    for (var original in originalList) {
+      int index = selectedList.indexWhere((model) => model.id == original.id);
       if (index < 0) {
-        await repository.updateRelationOffices(modelId, [original.id!], false);
+        await repository.updateRelation(
+          objectId: modelId,
+          relationColumn: relationColumn,
+          relationTable: relationTable,
+          ids: [original.id!],
+          add: false,
+        );
         listFinal.removeWhere((element) => element.id == original.id);
       } else {
         listResult.removeWhere((element) => element.id == original.id);
       }
     }
     for (var result in listResult) {
-      await repository.updateRelationOffices(modelId, [result.id!], true);
+      await repository.updateRelation(
+        objectId: modelId,
+        relationColumn: relationColumn,
+        relationTable: relationTable,
+        ids: [result.id!],
+        add: true,
+      );
       listFinal.add(result);
     }
     return listFinal;

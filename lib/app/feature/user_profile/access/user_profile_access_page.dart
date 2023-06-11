@@ -116,7 +116,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                             if (result != null) {
                               for (var element in result) {
                                 ref
-                                    .read(officeSelectedProvider.notifier)
+                                    .read(officesSelectedProvider.notifier)
                                     .update(element);
                               }
                             }
@@ -125,7 +125,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: ref
-                            .watch(officeSelectedProvider)
+                            .watch(officesSelectedProvider)
                             .map(
                               (e) => Row(
                                 children: [
@@ -134,7 +134,8 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                                     icon: const Icon(Icons.delete),
                                     onPressed: () {
                                       ref
-                                          .read(officeSelectedProvider.notifier)
+                                          .read(
+                                              officesSelectedProvider.notifier)
                                           .update(e);
                                     },
                                   ),
@@ -164,7 +165,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                               if (result != null) {
                                 for (var element in result) {
                                   ref
-                                      .read(expertiseSelectedProvider.notifier)
+                                      .read(expertisesSelectedProvider.notifier)
                                       .update(element);
                                 }
                               }
@@ -173,7 +174,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: ref
-                              .watch(expertiseSelectedProvider)
+                              .watch(expertisesSelectedProvider)
                               .map(
                                 (e) => Row(
                                   children: [
@@ -182,7 +183,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                                       icon: const Icon(Icons.delete),
                                       onPressed: () {
                                         ref
-                                            .read(expertiseSelectedProvider
+                                            .read(expertisesSelectedProvider
                                                 .notifier)
                                             .update(e);
                                       },
@@ -214,7 +215,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                               if (result != null) {
                                 for (var element in result) {
                                   ref
-                                      .read(procedureSelectedProvider.notifier)
+                                      .read(proceduresSelectedProvider.notifier)
                                       .update(element);
                                 }
                               }
@@ -223,7 +224,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: ref
-                              .watch(procedureSelectedProvider)
+                              .watch(proceduresSelectedProvider)
                               .map(
                                 (e) => Row(
                                   children: [
@@ -232,7 +233,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                                       icon: const Icon(Icons.delete),
                                       onPressed: () {
                                         ref
-                                            .read(procedureSelectedProvider
+                                            .read(proceduresSelectedProvider
                                                 .notifier)
                                             .update(e);
                                       },

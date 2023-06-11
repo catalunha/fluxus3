@@ -98,7 +98,7 @@ class AttendanceEntity {
 
   Future<AttendanceModel> toModel(ParseObject parseObject,
       [List<String> cols = const []]) async {
-    print('AttendanceEntity.toModel cols $cols');
+    //print('AttendanceEntity.toModel cols $cols');
     AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null

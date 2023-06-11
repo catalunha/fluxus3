@@ -23,16 +23,18 @@ class UserProfileRepository {
       userProfileB4a.readById(id, cols: cols);
   // Future<UserProfileModel?> readByCPF(String? value) =>
   //     userProfileB4a.readByCPF(value);
-  Future<void> updateRelationOffices(
-          String objectId, List<String> ids, bool add) =>
-      userProfileB4a.updateRelationOffices(
-          objectId: objectId, ids: ids, add: add);
-  Future<void> updateRelationExpertises(
-          String objectId, List<String> ids, bool add) =>
-      userProfileB4a.updateRelationExpertises(
-          objectId: objectId, ids: ids, add: add);
-  Future<void> updateRelationProcedures(
-          String objectId, List<String> ids, bool add) =>
-      userProfileB4a.updateRelationProcedures(
-          objectId: objectId, ids: ids, add: add);
+
+  Future<void> updateRelation({
+    required String objectId,
+    required String relationColumn,
+    required String relationTable,
+    required List<String> ids,
+    required bool add,
+  }) =>
+      userProfileB4a.updateRelation(
+          objectId: objectId,
+          relationColumn: relationColumn,
+          relationTable: relationTable,
+          ids: ids,
+          add: add);
 }

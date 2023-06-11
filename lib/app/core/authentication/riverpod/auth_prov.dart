@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -60,13 +62,13 @@ final authCheckFutProvider = FutureProvider<void>((ref) async {
         authChNotProvIR.logout();
       }
     }
-  } on B4aException catch (e) {
-    print('+++ _onAuthenticationEventInitial 8');
-    print(e);
+  } on B4aException {
+    // log('+++ _onAuthenticationEventInitial 8');
+    // log(e);
     authChNotProvIR.status = AuthStatus.databaseError;
   } catch (e) {
-    print('+++ _onAuthenticationEventInitial 9');
-    print(e);
+    //print('+++ _onAuthenticationEventInitial 9');
+    //print(e);
     authChNotProvIR.status = AuthStatus.unauthenticated;
   }
 });

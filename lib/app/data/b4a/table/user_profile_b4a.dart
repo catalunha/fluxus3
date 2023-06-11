@@ -77,7 +77,7 @@ class UserProfileB4a {
       //   where: 'UserProfileRepositoryB4a.readById()',
       // );
     } catch (e) {
-      print(e);
+      //print(e);
       rethrow;
     }
   }
@@ -105,34 +105,19 @@ class UserProfileB4a {
     }
   }
 
-  Future<void> updateRelationOffices(
-      {required String objectId,
-      required List<String> ids,
-      required bool add}) async {
-    final parseObject = UserProfileEntity()
-        .toParseRelationOffices(objectId: objectId, ids: ids, add: add);
-    if (parseObject != null) {
-      await parseObject.save();
-    }
-  }
-
-  Future<void> updateRelationExpertises(
-      {required String objectId,
-      required List<String> ids,
-      required bool add}) async {
-    final parseObject = UserProfileEntity()
-        .toParseRelationExpertises(objectId: objectId, ids: ids, add: add);
-    if (parseObject != null) {
-      await parseObject.save();
-    }
-  }
-
-  Future<void> updateRelationProcedures(
-      {required String objectId,
-      required List<String> ids,
-      required bool add}) async {
-    final parseObject = UserProfileEntity()
-        .toParseRelationProcedures(objectId: objectId, ids: ids, add: add);
+  Future<void> updateRelation({
+    required String objectId,
+    required String relationColumn,
+    required String relationTable,
+    required List<String> ids,
+    required bool add,
+  }) async {
+    final parseObject = UserProfileEntity().toParseRelation(
+        objectId: objectId,
+        relationColumn: relationColumn,
+        relationTable: relationTable,
+        ids: ids,
+        add: add);
     if (parseObject != null) {
       await parseObject.save();
     }

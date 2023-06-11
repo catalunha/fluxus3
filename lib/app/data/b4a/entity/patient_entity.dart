@@ -94,7 +94,7 @@ class PatientEntity {
 
   Future<PatientModel> toModel(ParseObject parseObject,
       [List<String> cols = const []]) async {
-    print('PatientEntity.toModel cols: $cols');
+    //print('PatientEntity.toModel cols: $cols');
     //+++ get family
     List<PatientModel> familyList = [];
     if (cols.contains('${PatientEntity.className}.${PatientEntity.family}')) {

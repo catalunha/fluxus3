@@ -79,7 +79,7 @@ class EventEntity {
     ParseObject parseObject, [
     List<String> cols = const [],
   ]) async {
-    print('PatientEntity.toModel cols: $cols');
+    //print('PatientEntity.toModel cols: $cols');
 
     //+++ get attendance
     List<AttendanceModel> attendanceList = [];

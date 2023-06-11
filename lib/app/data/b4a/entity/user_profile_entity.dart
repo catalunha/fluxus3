@@ -167,97 +167,33 @@ class UserProfileEntity {
     return parseObject;
   }
 
-  ParseObject? toParseRelationOffices({
+  ParseObject? toParseRelation({
     required String objectId,
+    required String relationColumn,
+    required String relationTable,
     required List<String> ids,
     required bool add,
   }) {
     final parseObject = ParseObject(UserProfileEntity.className);
     parseObject.objectId = objectId;
     if (ids.isEmpty) {
-      parseObject.unset(UserProfileEntity.offices);
+      parseObject.unset(relationColumn);
       return parseObject;
     }
     if (add) {
       parseObject.addRelation(
-        UserProfileEntity.offices,
+        relationColumn,
         ids
             .map(
-              (element) =>
-                  ParseObject(OfficeEntity.className)..objectId = element,
+              (element) => ParseObject(relationTable)..objectId = element,
             )
             .toList(),
       );
     } else {
       parseObject.removeRelation(
-          UserProfileEntity.offices,
+          relationColumn,
           ids
-              .map((element) =>
-                  ParseObject(OfficeEntity.className)..objectId = element)
-              .toList());
-    }
-    return parseObject;
-  }
-
-  ParseObject? toParseRelationExpertises({
-    required String objectId,
-    required List<String> ids,
-    required bool add,
-  }) {
-    final parseObject = ParseObject(UserProfileEntity.className);
-    parseObject.objectId = objectId;
-    if (ids.isEmpty) {
-      parseObject.unset(UserProfileEntity.expertises);
-      return parseObject;
-    }
-    if (add) {
-      parseObject.addRelation(
-        UserProfileEntity.expertises,
-        ids
-            .map(
-              (element) =>
-                  ParseObject(ExpertiseEntity.className)..objectId = element,
-            )
-            .toList(),
-      );
-    } else {
-      parseObject.removeRelation(
-          UserProfileEntity.expertises,
-          ids
-              .map((element) =>
-                  ParseObject(ExpertiseEntity.className)..objectId = element)
-              .toList());
-    }
-    return parseObject;
-  }
-
-  ParseObject? toParseRelationProcedures({
-    required String objectId,
-    required List<String> ids,
-    required bool add,
-  }) {
-    final parseObject = ParseObject(UserProfileEntity.className);
-    parseObject.objectId = objectId;
-    if (ids.isEmpty) {
-      parseObject.unset(UserProfileEntity.procedures);
-      return parseObject;
-    }
-    if (add) {
-      parseObject.addRelation(
-        UserProfileEntity.procedures,
-        ids
-            .map(
-              (element) =>
-                  ParseObject(ProcedureEntity.className)..objectId = element,
-            )
-            .toList(),
-      );
-    } else {
-      parseObject.removeRelation(
-          UserProfileEntity.procedures,
-          ids
-              .map((element) =>
-                  ParseObject(ProcedureEntity.className)..objectId = element)
+              .map((element) => ParseObject(relationTable)..objectId = element)
               .toList());
     }
     return parseObject;
