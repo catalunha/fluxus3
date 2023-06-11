@@ -13,6 +13,8 @@ import 'feature/procedure/list/procedure_list_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/region/list/region_list_page.dart';
 import 'feature/region/save/region_save_page.dart';
+import 'feature/room/list/room_list_page.dart';
+import 'feature/room/save/room_save_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/user/login/user_login_page.dart';
 import 'feature/user/register/email/user_register_email.page.dart';
@@ -215,6 +217,28 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+              path: AppPage.roomList.path,
+              name: AppPage.roomList.name,
+              builder: (context, state) {
+                return RoomListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.roomSave.path,
+                  name: AppPage.roomSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return RoomSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -259,7 +283,9 @@ enum AppPage {
   expertiseList('expertiseList', 'expertiseList'),
   expertiseSave('expertiseSave', 'expertiseSave'),
   regionList('regionList', 'regionList'),
-  regionSave('regionSave', 'regionSave');
+  regionSave('regionSave', 'regionSave'),
+  roomList('roomList', 'roomList'),
+  roomSave('roomSave', 'roomSave');
 
   final String path;
   final String name;

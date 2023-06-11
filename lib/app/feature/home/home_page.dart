@@ -96,6 +96,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
+              ),
+              HomeModule(
+                title: 'Sala',
+                icon: Icons.bubble_chart_outlined,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.roomList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
               )
             ],
           ),

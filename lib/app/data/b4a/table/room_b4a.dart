@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/room_model.dart';
@@ -7,22 +9,24 @@ import '../entity/room_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class RoomB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    return query;
-  }
-
   Future<List<RoomModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${RoomEntity.className}.cols')) {
+      query.keysToReturn(cols['${RoomEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${RoomEntity.className}.pointers')) {
+      query.includeObject(cols['${RoomEntity.className}.pointers']!);
+    }
     ParseResponse? parseResponse;
     try {
-      parseResponse = await query2.query();
+      parseResponse = await query.query();
       List<RoomModel> listTemp = <RoomModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
@@ -41,6 +45,36 @@ class RoomB4a {
         originalError:
             '${parseResponse.error!.code} -${parseResponse.error!.message}',
       );
+    }
+  }
+
+  Future<RoomModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
+    QueryBuilder<ParseObject> query =
+        QueryBuilder<ParseObject>(ParseObject(RoomEntity.className));
+    query.whereEqualTo(RoomEntity.id, id);
+
+    if (cols.containsKey('${RoomEntity.className}.cols')) {
+      query.keysToReturn(cols['${RoomEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${RoomEntity.className}.pointers')) {
+      query.includeObject(cols['${RoomEntity.className}.pointers']!);
+    }
+
+    query.first();
+    try {
+      var response = await query.query();
+
+      if (response.success && response.results != null) {
+        return RoomEntity().toModel(response.results!.first, cols: cols);
+      }
+      return null;
+    } catch (e, st) {
+      log('$e');
+      log('$st');
+      rethrow;
     }
   }
 

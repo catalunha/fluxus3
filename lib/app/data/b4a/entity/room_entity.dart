@@ -8,7 +8,10 @@ class RoomEntity {
   static const String name = 'name';
   static const String isActive = 'isActive';
 
-  RoomModel toModel(ParseObject parseObject) {
+  RoomModel toModel(
+    ParseObject parseObject, {
+    Map<String, List<String>> cols = const {},
+  }) {
     RoomModel model = RoomModel(
       id: parseObject.objectId!,
       name: parseObject.get(RoomEntity.name),
