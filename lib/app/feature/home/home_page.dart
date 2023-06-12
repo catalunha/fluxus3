@@ -99,7 +99,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
               ),
               HomeModule(
                 title: 'Sala',
-                icon: Icons.bubble_chart_outlined,
+                icon: Icons.house_sharp,
                 color: Colors.black,
                 actions: [
                   IconButton(
