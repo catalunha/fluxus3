@@ -22,6 +22,9 @@ class PatientB4a {
     if (cols.containsKey('${PatientEntity.className}.pointers')) {
       query.includeObject(cols['${PatientEntity.className}.pointers']!);
     }
+    // else {
+    //   query.includeObject(['region']);
+    // }
     ParseResponse? response;
     try {
       response = await query.query();
@@ -57,6 +60,9 @@ class PatientB4a {
     if (cols.containsKey('${PatientEntity.className}.pointers')) {
       query.includeObject(cols['${PatientEntity.className}.pointers']!);
     }
+    // else {
+    //   query.includeObject(['region']);
+    // }
     query.first();
     try {
       var response = await query.query();

@@ -9,8 +9,8 @@ class PatientEntity {
   static const String className = 'Patient';
   //SingleCols
   static const String id = 'objectId';
-  static const String email = 'email';
   static const String name = 'name';
+  static const String email = 'email';
   static const String nickname = 'nickname';
   static const String cpf = 'cpf';
   static const String phone = 'phone';
@@ -27,10 +27,11 @@ class PatientEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) async {
-    //print('PatientEntity.toModel cols: $cols');
     //+++ get family
     List<PatientModel> familyList = [];
-    if (cols.containsKey('${PatientEntity.className}.cols')) {
+    if (cols.containsKey('${PatientEntity.className}.cols') &&
+        cols['${PatientEntity.className}.cols']!
+            .contains(PatientEntity.family)) {
       QueryBuilder<ParseObject> queryPatient =
           QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
       queryPatient.whereRelatedTo(
@@ -49,15 +50,17 @@ class PatientEntity {
     //--- get family
     //+++ get healthPlan
     List<HealthPlanModel> healthPlanList = [];
-    if (cols.containsKey('${PatientEntity.className}.cols')) {
+    if (cols.containsKey('${PatientEntity.className}.cols') &&
+        cols['${PatientEntity.className}.cols']!
+            .contains(PatientEntity.healthPlans)) {
       QueryBuilder<ParseObject> queryHealthPlanType =
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlanType.whereRelatedTo(PatientEntity.healthPlans,
           PatientEntity.className, parseObject.objectId!);
       queryHealthPlanType.includeObject(['healthPlanType']);
-      final ParseResponse parseResponse = await queryHealthPlanType.query();
-      if (parseResponse.success && parseResponse.results != null) {
-        for (var e in parseResponse.results!) {
+      final ParseResponse parseResponse2 = await queryHealthPlanType.query();
+      if (parseResponse2.success && parseResponse2.results != null) {
+        for (var e in parseResponse2.results!) {
           healthPlanList.add(HealthPlanEntity().toModel(e as ParseObject));
         }
       }
@@ -93,6 +96,9 @@ class PatientEntity {
     }
     if (model.name != null) {
       parseObject.set(PatientEntity.name, model.name);
+    }
+    if (model.email != null) {
+      parseObject.set(PatientEntity.email, model.email);
     }
     if (model.cpf != null) {
       parseObject.set(PatientEntity.cpf, model.cpf);

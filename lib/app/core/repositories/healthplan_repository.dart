@@ -9,10 +9,16 @@ class HealthPlanRepository {
 
   HealthPlanRepository();
   Future<List<HealthPlanModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination,
-  ) =>
-      apiB4a.list(query, pagination);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.list(query, pagination: pagination, cols: cols);
+  Future<HealthPlanModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.readById(id, cols: cols);
   Future<String> update(HealthPlanModel model) => apiB4a.update(model);
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

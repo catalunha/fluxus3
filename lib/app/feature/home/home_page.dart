@@ -33,6 +33,28 @@ class HomePage extends ConsumerWidget with Loader, Messages {
           child: Wrap(
             children: [
               HomeModule(
+                title: 'Pacientes',
+                icon: Icons.personal_injury,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.patientList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                  // IconButton(
+                  //   onPressed: () {
+                  //     context.goNamed(AppPage.patientList.name);
+                  //   },
+                  //   icon: const Icon(Icons.search),
+                  // )
+                ],
+              ),
+              const Divider(
+                height: 10,
+              ),
+              HomeModule(
                 title: 'Gerenciar Usuários',
                 icon: Icons.people,
                 color: Colors.black,
@@ -135,7 +157,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     icon: const Icon(Icons.list),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

@@ -43,13 +43,6 @@ class RegionSelected extends _$RegionSelected {
   }
 }
 
-// final regionSelectedProvider = StateProvider.autoDispose<RegionModel?>(
-//   (ref) {
-//     return null;
-//   },
-//   name: 'regionSelectedProvider',
-// );
-
 @riverpod
 class UserProfileSaveForm extends _$UserProfileSaveForm {
   @override

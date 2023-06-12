@@ -25,14 +25,21 @@ class PatientListPage extends ConsumerWidget {
         child: const Icon(Icons.add),
       ),
       body: list.when(data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            final level = data[index];
-            return PatientObj(
-              model: level,
-            );
-          },
+        return Column(
+          children: [
+            const Text('....'),
+            Flexible(
+              child: ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  final level = data[index];
+                  return PatientObj(
+                    model: level,
+                  );
+                },
+              ),
+            ),
+          ],
         );
       }, error: (error, stackTrace) {
         log('Erro em Lista de pacientes');

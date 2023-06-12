@@ -290,25 +290,26 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-              path: AppPage.patientList.path,
-              name: AppPage.patientList.name,
-              builder: (context, state) {
-                return PatientListPage(
-                  key: state.pageKey,
-                );
-              },
-            ),
-            GoRoute(
-              path: AppPage.patientSave.path,
-              name: AppPage.patientSave.name,
-              builder: (context, state) {
-                final id = state.extra as String?;
-                return PatientSavePage(
-                  key: state.pageKey,
-                  id: id,
-                );
-              },
-            ),
+                path: AppPage.patientList.path,
+                name: AppPage.patientList.name,
+                builder: (context, state) {
+                  return PatientListPage(
+                    key: state.pageKey,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: AppPage.patientSave.path,
+                    name: AppPage.patientSave.name,
+                    builder: (context, state) {
+                      final id = state.extra as String?;
+                      return PatientSavePage(
+                        key: state.pageKey,
+                        id: id,
+                      );
+                    },
+                  ),
+                ]),
           ],
         ),
       ],

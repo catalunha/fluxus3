@@ -22,14 +22,24 @@ class PatientObj extends StatelessWidget {
               title: 'Nome: ',
               value: model.name,
             ),
+            // AppTextTitleValue(
+            //   title: 'É genitora: ',
+            //   value: model.isFemale ?? true ? "Sim" : "Não",
+            // ),
             AppTextTitleValue(
-              title: 'É mulher: ',
-              value: model.isFemale ?? true ? "Sim" : "Não",
+              title: 'Celular: ',
+              value: model.phone,
             ),
             Center(
               child: Wrap(children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    context.goNamed(AppPage.patientSave.name, extra: model.id);
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.assignment_ind_outlined),
                   onPressed: () {
                     context.goNamed(AppPage.patientSave.name, extra: model.id);
                   },
