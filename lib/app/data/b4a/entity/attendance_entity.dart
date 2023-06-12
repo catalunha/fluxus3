@@ -24,80 +24,10 @@ class AttendanceEntity {
   static const String healthPlan = 'healthPlan';
   static const String status = 'status';
 
-  static List<String> selectedCols(List<String> cols) {
-    return cols.map((e) => '${AttendanceEntity.className}.$e').toList();
-  }
-
-  static final List<String> singleCols = [
-    AttendanceEntity.authorizationCode,
-    AttendanceEntity.authorizationDateCreated,
-    AttendanceEntity.authorizationDateLimit,
-    AttendanceEntity.attendance,
-    AttendanceEntity.confirmedPresence,
-    AttendanceEntity.description,
-    AttendanceEntity.professional,
-    AttendanceEntity.procedure,
-    AttendanceEntity.patient,
-    AttendanceEntity.healthPlan,
-    AttendanceEntity.status,
-  ].map((e) => '${AttendanceEntity.className}.$e').toList();
-
-  static final List<String> pointerCols = [
-    AttendanceEntity.professional,
-    AttendanceEntity.procedure,
-    AttendanceEntity.patient,
-    AttendanceEntity.healthPlan,
-    'healthPlan.healthPlanType',
-    AttendanceEntity.status,
-  ].map((e) => '${AttendanceEntity.className}.$e').toList();
-
-  static final List<String> relationCols =
-      [].map((e) => '${AttendanceEntity.className}.$e').toList();
-
-  // static final List<String> allCols = [
-  //   ...AttendanceEntity.singleCols,
-  //   ...AttendanceEntity.pointerCols,
-  //   ...AttendanceEntity.relationCols
-  // ];
-
-  static List<String> filterSingleCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (AttendanceEntity.singleCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${AttendanceEntity.className}.', ''))
-        .toList();
-  }
-
-  static List<String> filterPointerCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (AttendanceEntity.pointerCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${AttendanceEntity.className}.', ''))
-        .toList();
-  }
-
-  static List<String> filterRelationCols(List<String> cols) {
-    List<String> temp = [];
-    for (var col in cols) {
-      if (AttendanceEntity.relationCols.contains(col)) {
-        temp.add(col);
-      }
-    }
-    return temp
-        .map((e) => e.replaceFirst('${AttendanceEntity.className}.', ''))
-        .toList();
-  }
-
-  Future<AttendanceModel> toModel(ParseObject parseObject,
-      [List<String> cols = const []]) async {
+  Future<AttendanceModel> toModel(
+    ParseObject parseObject, {
+    Map<String, List<String>> cols = const {},
+  }) async {
     //print('AttendanceEntity.toModel cols $cols');
     AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
@@ -111,7 +41,7 @@ class AttendanceEntity {
           : null,
       patient: parseObject.get(AttendanceEntity.patient) != null
           ? await PatientEntity()
-              .toModel(parseObject.get(AttendanceEntity.patient), cols)
+              .toModel(parseObject.get(AttendanceEntity.patient), cols: cols)
           : null,
       healthPlan: parseObject.get(AttendanceEntity.healthPlan) != null
           ? HealthPlanEntity()

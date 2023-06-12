@@ -9,17 +9,32 @@ class EventRepository {
 
   EventRepository();
   Future<List<EventModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination, [
-    List<String> cols = const [],
-  ]) =>
-      apiB4a.list(query, pagination, cols);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.list(query, pagination: pagination, cols: cols);
+
   Future<String> update(EventModel userProfileModel) =>
       apiB4a.update(userProfileModel);
-  Future<EventModel?> readById(String id, [List<String> cols = const []]) =>
-      apiB4a.readById(id, cols);
 
-  Future<void> updateRelationAttendances(
-          String objectId, List<String> ids, bool add) =>
-      apiB4a.updateRelationAttendances(objectId: objectId, ids: ids, add: add);
+  Future<EventModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.readById(id, cols: cols);
+
+  Future<void> updateRelation({
+    required String objectId,
+    required String relationColumn,
+    required String relationTable,
+    required List<String> ids,
+    required bool add,
+  }) =>
+      apiB4a.updateRelation(
+          objectId: objectId,
+          relationColumn: relationColumn,
+          relationTable: relationTable,
+          ids: ids,
+          add: add);
 }

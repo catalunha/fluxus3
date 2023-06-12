@@ -9,13 +9,19 @@ class AttendanceRepository {
 
   AttendanceRepository();
   Future<List<AttendanceModel>> list(
-          QueryBuilder<ParseObject> query, Pagination pagination,
-          [List<String> cols = const []]) =>
-      apiB4a.list(query, pagination, cols);
-  Future<AttendanceModel?> readById(String id,
-          [List<String> cols = const []]) =>
-      apiB4a.readById(id, cols);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.list(query, pagination: pagination, cols: cols);
+
+  Future<AttendanceModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) =>
+      apiB4a.readById(id, cols: cols);
 
   Future<String> update(AttendanceModel model) => apiB4a.update(model);
+
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

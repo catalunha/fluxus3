@@ -7,37 +7,45 @@ import '../entity/event_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class EventB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    query.keysToReturn([
-      ...EventEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(EventEntity.filterPointerCols(cols));
+  // Future<QueryBuilder<ParseObject>> getQueryAll(
+  //     QueryBuilder<ParseObject> query, Pagination pagination,
+  //     [List<String> cols = const []]) async {
+  //   query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+  //   query.setLimit(pagination.limit);
+  //   query.keysToReturn([
+  //     ...EventEntity.filterSingleCols(cols),
+  //   ]);
+  //   query.includeObject(EventEntity.filterPointerCols(cols));
 
-    // query.includeObject([
-    //   'room',
-    //   'status',
-    // ]);
-    return query;
-  }
+  //   // query.includeObject([
+  //   //   'room',
+  //   //   'status',
+  //   // ]);
+  //   return query;
+  // }
 
   Future<List<EventModel>> list(
-    QueryBuilder<ParseObject> query,
-    Pagination pagination, [
-    List<String> cols = const [],
-  ]) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination, cols);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${EventEntity.className}.cols')) {
+      query.keysToReturn(cols['${EventEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${EventEntity.className}.pointers')) {
+      query.includeObject(cols['${EventEntity.className}.pointers']!);
+    }
     ParseResponse? response;
     try {
-      response = await query2.query();
+      response = await query.query();
       List<EventModel> listTemp = <EventModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await EventEntity().toModel(element, cols));
+          listTemp.add(await EventEntity().toModel(element, cols: cols));
         }
         return listTemp;
       } else {
@@ -53,22 +61,26 @@ class EventB4a {
     }
   }
 
-  Future<EventModel?> readById(String id,
-      [List<String> cols = const []]) async {
+  Future<EventModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo(EventEntity.id, id);
-    query.keysToReturn([
-      ...EventEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(EventEntity.filterPointerCols(cols));
+    if (cols.containsKey('${EventEntity.className}.cols')) {
+      query.keysToReturn(cols['${EventEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${EventEntity.className}.pointers')) {
+      query.includeObject(cols['${EventEntity.className}.pointers']!);
+    }
     // query.includeObject(['region']);
     query.first();
     try {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return EventEntity().toModel(response.results!.first, cols);
+        return EventEntity().toModel(response.results!.first, cols: cols);
       }
       throw B4aException(
         'Perfil do usuário não encontrado.',
@@ -101,12 +113,19 @@ class EventB4a {
     }
   }
 
-  Future<void> updateRelationAttendances(
-      {required String objectId,
-      required List<String> ids,
-      required bool add}) async {
-    final parseObject = EventEntity()
-        .toParseRelationAttendances(objectId: objectId, ids: ids, add: add);
+  Future<void> updateRelation({
+    required String objectId,
+    required String relationColumn,
+    required String relationTable,
+    required List<String> ids,
+    required bool add,
+  }) async {
+    final parseObject = EventEntity().toParseRelation(
+        objectId: objectId,
+        relationColumn: relationColumn,
+        relationTable: relationTable,
+        ids: ids,
+        add: add);
     if (parseObject != null) {
       await parseObject.save();
     }

@@ -44,7 +44,8 @@ app.*.map.json
 /android/app/release
 
 
-# my files
+# my exclude files
 .vscode/
 .vscode
 docs/deploy.md
+.VSCodeCounter

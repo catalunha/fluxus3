@@ -7,32 +7,28 @@ import '../entity/patient_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class PatientB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-
-    query.keysToReturn([
-      ...PatientEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(PatientEntity.filterPointerCols(cols));
-
-    return query;
-  }
-
   Future<List<PatientModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination, cols);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${PatientEntity.className}.cols')) {
+      query.keysToReturn(cols['${PatientEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${PatientEntity.className}.pointers')) {
+      query.includeObject(cols['${PatientEntity.className}.pointers']!);
+    }
     ParseResponse? response;
     try {
-      response = await query2.query();
+      response = await query.query();
       List<PatientModel> listTemp = <PatientModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
-          listTemp.add(await PatientEntity().toModel(element, cols));
+          listTemp.add(await PatientEntity().toModel(element, cols: cols));
         }
         return listTemp;
       } else {
@@ -48,21 +44,25 @@ class PatientB4a {
     }
   }
 
-  Future<PatientModel?> readById(String id,
-      [List<String> cols = const []]) async {
+  Future<PatientModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
     query.whereEqualTo(PatientEntity.id, id);
-    query.keysToReturn([
-      ...PatientEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(PatientEntity.filterPointerCols(cols));
+    if (cols.containsKey('${PatientEntity.className}.cols')) {
+      query.keysToReturn(cols['${PatientEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${PatientEntity.className}.pointers')) {
+      query.includeObject(cols['${PatientEntity.className}.pointers']!);
+    }
     query.first();
     try {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return PatientEntity().toModel(response.results!.first, cols);
+        return PatientEntity().toModel(response.results!.first, cols: cols);
       }
       throw B4aException(
         'Perfil do usuário não encontrado.',
@@ -95,23 +95,19 @@ class PatientB4a {
     }
   }
 
-  Future<void> updateRelationFamily(
-      {required String objectId,
-      required List<String> ids,
-      required bool add}) async {
-    final parseObject = PatientEntity()
-        .toParseRelationFamily(objectId: objectId, ids: ids, add: add);
-    if (parseObject != null) {
-      await parseObject.save();
-    }
-  }
-
-  Future<void> updateRelationHealthPlans(
-      {required String objectId,
-      required List<String> ids,
-      required bool add}) async {
-    final parseObject = PatientEntity()
-        .toParseRelationHealthPlans(objectId: objectId, ids: ids, add: add);
+  Future<void> updateRelation({
+    required String objectId,
+    required String relationColumn,
+    required String relationTable,
+    required List<String> ids,
+    required bool add,
+  }) async {
+    final parseObject = PatientEntity().toParseRelation(
+        objectId: objectId,
+        relationColumn: relationColumn,
+        relationTable: relationTable,
+        ids: ids,
+        add: add);
     if (parseObject != null) {
       await parseObject.save();
     }

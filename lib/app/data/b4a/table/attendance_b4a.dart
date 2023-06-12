@@ -7,54 +7,59 @@ import '../entity/attendance_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class AttendanceB4a {
-  Future<QueryBuilder<ParseObject>> getQueryAll(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-    query.setLimit(pagination.limit);
-    //print('AttendanceB4a.getQueryAll $cols');
-    query.keysToReturn([
-      ...AttendanceEntity.filterSingleCols(cols),
-    ]);
+  // Future<QueryBuilder<ParseObject>> getQueryAll(
+  //     QueryBuilder<ParseObject> query, Pagination pagination,
+  //     [List<String> cols = const []]) async {
+  //   query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+  //   query.setLimit(pagination.limit);
+  //   //print('AttendanceB4a.getQueryAll $cols');
+  //   query.keysToReturn([
+  //     ...AttendanceEntity.filterSingleCols(cols),
+  //   ]);
 
-    // query.keysToReturn([
-    //   'professional',
-    //   'procedure',
-    //   'patient',
-    //   'healthPlan',
-    //   // 'healthPlan.healthPlanType',
-    // ]);
-    query.includeObject(AttendanceEntity.filterPointerCols(cols));
-    // //print(AttendanceEntity.filterPointerCols(cols));
-    // query.includeObject([
-    //   'professional',
-    //   // 'professional.region',
-    //   'procedure',
-    //   // 'procedure.expertise',
-    //   'patient',
-    //   // 'patient.region',
-    //   'healthPlan',
-    //   'healthPlan.healthPlanType',
-    //   // 'status',
-    // ]);
-    return query;
-  }
+  //   // query.keysToReturn([
+  //   //   'professional',
+  //   //   'procedure',
+  //   //   'patient',
+  //   //   'healthPlan',
+  //   //   // 'healthPlan.healthPlanType',
+  //   // ]);
+  //   query.includeObject(AttendanceEntity.filterPointerCols(cols));
+  //   // //print(AttendanceEntity.filterPointerCols(cols));
+  //   // query.includeObject([
+  //   //   'professional',
+  //   //   // 'professional.region',
+  //   //   'procedure',
+  //   //   // 'procedure.expertise',
+  //   //   'patient',
+  //   //   // 'patient.region',
+  //   //   'healthPlan',
+  //   //   'healthPlan.healthPlanType',
+  //   //   // 'status',
+  //   // ]);
+  //   return query;
+  // }
 
-  Future<AttendanceModel?> readById(String id,
-      [List<String> cols = const []]) async {
+  Future<AttendanceModel?> readById(
+    String id, {
+    Map<String, List<String>> cols = const {},
+  }) async {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     query.whereEqualTo(AttendanceEntity.id, id);
-    query.keysToReturn([
-      ...AttendanceEntity.filterSingleCols(cols),
-    ]);
-    query.includeObject(AttendanceEntity.filterPointerCols(cols));
+
+    if (cols.containsKey('${AttendanceEntity.className}.cols')) {
+      query.keysToReturn(cols['${AttendanceEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${AttendanceEntity.className}.pointers')) {
+      query.includeObject(cols['${AttendanceEntity.className}.pointers']!);
+    }
     query.first();
     try {
       var response = await query.query();
 
       if (response.success && response.results != null) {
-        return AttendanceEntity().toModel(response.results!.first, cols);
+        return AttendanceEntity().toModel(response.results!.first, cols: cols);
       }
       throw B4aException(
         'Perfil do usuário não encontrado.',
@@ -66,17 +71,27 @@ class AttendanceB4a {
   }
 
   Future<List<AttendanceModel>> list(
-      QueryBuilder<ParseObject> query, Pagination pagination,
-      [List<String> cols = const []]) async {
-    QueryBuilder<ParseObject> query2;
-    query2 = await getQueryAll(query, pagination, cols);
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${AttendanceEntity.className}.cols')) {
+      query.keysToReturn(cols['${AttendanceEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${AttendanceEntity.className}.pointers')) {
+      query.includeObject(cols['${AttendanceEntity.className}.pointers']!);
+    }
     ParseResponse? parseResponse;
     try {
-      parseResponse = await query2.query();
+      parseResponse = await query.query();
       List<AttendanceModel> listTemp = <AttendanceModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
-          listTemp.add(await AttendanceEntity().toModel(element, cols));
+          listTemp.add(await AttendanceEntity().toModel(element, cols: cols));
         }
         return listTemp;
       } else {
