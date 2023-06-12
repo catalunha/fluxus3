@@ -11,6 +11,8 @@ import 'feature/healthplantype/list/healthplantype_list_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
 import 'feature/office/list/office_list_page.dart';
 import 'feature/office/save/office_save_page.dart';
+import 'feature/patient/list/patient_list_page.dart';
+import 'feature/patient/save/patient_save_page.dart';
 import 'feature/procedure/list/procedure_list_page.dart';
 import 'feature/procedure/save/procedure_save_page.dart';
 import 'feature/region/list/region_list_page.dart';
@@ -287,6 +289,26 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+              path: AppPage.patientList.path,
+              name: AppPage.patientList.name,
+              builder: (context, state) {
+                return PatientListPage(
+                  key: state.pageKey,
+                );
+              },
+            ),
+            GoRoute(
+              path: AppPage.patientSave.path,
+              name: AppPage.patientSave.name,
+              builder: (context, state) {
+                final id = state.extra as String?;
+                return PatientSavePage(
+                  key: state.pageKey,
+                  id: id,
+                );
+              },
+            ),
           ],
         ),
       ],
@@ -337,7 +359,9 @@ enum AppPage {
   statusList('statusList', 'statusList'),
   statusSave('statusSave', 'statusSave'),
   healthPlanTypeList('healthPlanTypeList', 'healthPlanTypeList'),
-  healthPlanTypeSave('healthPlanTypeSave', 'healthPlanTypeSave');
+  healthPlanTypeSave('healthPlanTypeSave', 'healthPlanTypeSave'),
+  patientList('patientList', 'patientList'),
+  patientSave('patientSave', 'patientSave');
 
   final String path;
   final String name;

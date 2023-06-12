@@ -95,10 +95,10 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                               'Esta informação é obrigatória'),
                         ),
                         SwitchListTile(
-                          title: const Text('A sala esta disponível ?'),
-                          value: ref.watch(patientIsActiveProvider),
+                          title: const Text('É mulher ?'),
+                          value: ref.watch(patientIsFemaleProvider),
                           onChanged: (value) {
-                            ref.read(patientIsActiveProvider.notifier).toggle();
+                            ref.read(patientIsFemaleProvider.notifier).toggle();
                           },
                         ),
                         const SizedBox(height: 15),

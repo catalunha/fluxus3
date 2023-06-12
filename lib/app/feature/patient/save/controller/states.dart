@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../core/models/patient_model.dart';
+
 part 'states.freezed.dart';
 
 enum PatientFormStatus { initial, loading, success, error }

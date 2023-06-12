@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/models/patient_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../list/controller/providers.dart';
+import 'states.dart';
 
 part 'providers.g.dart';
 
@@ -13,10 +15,10 @@ FutureOr<PatientModel?> patientRead(PatientReadRef ref,
   if (id != null) {
     final patient = await ref.read(patientRepositoryProvider).readById(id);
     if (patient != null) {
-      ref.watch(patientFormProvider.notifier).setModel(patient);
-      ref
-          .watch(patientIsActiveProvider.notifier)
-          .set(patient.isActive ?? false);
+      // ref.watch(patientFormProvider.notifier).setModel(patient);
+      // ref
+      //     .watch(patientIsFemaleProvider.notifier)
+      //     .set(patient.isFemale ?? false);
       return patient;
     }
   }
@@ -28,7 +30,7 @@ FutureOr<PatientModel?> patientRead(PatientReadRef ref,
 }
 
 @riverpod
-class PatientIsActive extends _$PatientIsActive {
+class PatientIsFemale extends _$PatientIsFemale {
   @override
   bool build() {
     return false;
@@ -61,12 +63,12 @@ class PatientForm extends _$PatientForm {
       if (state.model != null) {
         patientTemp = state.model!.copyWith(
           name: name,
-          isActive: ref.read(patientIsActiveProvider),
+          isFemale: ref.read(patientIsFemaleProvider),
         );
       } else {
         patientTemp = PatientModel(
           name: name,
-          isActive: ref.read(patientIsActiveProvider),
+          isFemale: ref.read(patientIsFemaleProvider),
         );
       }
       await ref.read(patientRepositoryProvider).update(patientTemp);
@@ -83,7 +85,7 @@ class PatientForm extends _$PatientForm {
   Future<void> delete() async {
     state = state.copyWith(status: PatientFormStatus.loading);
     try {
-      await ref.read(patientRepositoryProvider).delete(state.model!.id!);
+      // await ref.read(patientRepositoryProvider).delete(state.model!.id!);
       ref.invalidate(patientListProvider);
       state = state.copyWith(status: PatientFormStatus.success);
     } catch (e, st) {

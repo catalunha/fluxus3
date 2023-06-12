@@ -49,3 +49,5 @@ app.*.map.json
 .vscode
 docs/deploy.md
 .VSCodeCounter
+*.freezed.dart
+*.g.dart 

@@ -6,7 +6,7 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$patientSelectHash() => r'b30aa740128c66e3016a0fff106e2f458594616b';
+String _$patientSelectHash() => r'906941ea9a71522283cc1a2d288c4b455da6a1d4';
 
 /// See also [patientSelect].
 @ProviderFor(patientSelect)
@@ -21,7 +21,7 @@ final patientSelectProvider = FutureProvider<List<PatientModel>>.internal(
 );
 
 typedef PatientSelectRef = FutureProviderRef<List<PatientModel>>;
-String _$patientSelectedHash() => r'1f14e75736ac234ebd1d17a80e137a9d453b1408';
+String _$patientSelectedHash() => r'0b95c9a18ce466e3591b126059eb6a0cf46f5d1b';
 
 /// See also [PatientSelected].
 @ProviderFor(PatientSelected)

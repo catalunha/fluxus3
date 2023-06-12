@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/models/patient_model.dart';
 import '../../../routes.dart';
 import '../../utils/app_text_title_value.dart';
 
@@ -22,8 +23,8 @@ class PatientObj extends StatelessWidget {
               value: model.name,
             ),
             AppTextTitleValue(
-              title: 'Disponível: ',
-              value: model.isActive ?? true ? "Sim" : "Não",
+              title: 'É mulher: ',
+              value: model.isFemale ?? true ? "Sim" : "Não",
             ),
             Center(
               child: Wrap(children: [

@@ -6,7 +6,7 @@ part of 'providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$patientReadHash() => r'4136eac4b3b5549d2812c138ecfbb82bc23d67c1';
+String _$patientReadHash() => r'c433608a12ca3a3d37161d62b85c000e91537467';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -110,23 +110,23 @@ class PatientReadProvider extends AutoDisposeFutureProvider<PatientModel?> {
   }
 }
 
-String _$patientIsActiveHash() => r'1360090ec64d08513de2a8549d787433dac5cb08';
+String _$patientIsFemaleHash() => r'c99834fc266b56c1b6d5e2976e70c57549d4ec45';
 
-/// See also [PatientIsActive].
-@ProviderFor(PatientIsActive)
-final patientIsActiveProvider =
-    AutoDisposeNotifierProvider<PatientIsActive, bool>.internal(
-  PatientIsActive.new,
-  name: r'patientIsActiveProvider',
+/// See also [PatientIsFemale].
+@ProviderFor(PatientIsFemale)
+final patientIsFemaleProvider =
+    AutoDisposeNotifierProvider<PatientIsFemale, bool>.internal(
+  PatientIsFemale.new,
+  name: r'patientIsFemaleProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$patientIsActiveHash,
+      : _$patientIsFemaleHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PatientIsActive = AutoDisposeNotifier<bool>;
-String _$patientFormHash() => r'ff8b4efacd1117be7728960f9769650cf8f9c55f';
+typedef _$PatientIsFemale = AutoDisposeNotifier<bool>;
+String _$patientFormHash() => r'bf463024a8fd0a3648769b8827b6f99a32d0dc7c';
 
 /// See also [PatientForm].
 @ProviderFor(PatientForm)

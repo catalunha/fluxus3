@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/models/patient_model.dart';
 import 'controller/providers.dart';
 
 class PatientObj extends ConsumerWidget {
