@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/models/room_model.dart';
+import '../../../core/models/attendance_model.dart';
 import '../../../routes.dart';
 import '../../utils/app_text_title_value.dart';
 
-class RoomObj extends StatelessWidget {
-  final RoomModel model;
-  const RoomObj({Key? key, required this.model}) : super(key: key);
+class AttendanceObj extends StatelessWidget {
+  final AttendanceModel model;
+  const AttendanceObj({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +19,16 @@ class RoomObj extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppTextTitleValue(
-              title: 'Nome: ',
-              value: model.name,
-            ),
-            AppTextTitleValue(
-              title: 'Disponível: ',
-              value: model.isActive ?? true ? "Sim" : "Não",
+              title: 'Código da autorização: ',
+              value: model.authorizationCode,
             ),
             Center(
               child: Wrap(children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    context.goNamed(AppPage.roomSave.name, extra: model.id);
+                    context.goNamed(AppPage.attendanceSave.name,
+                        extra: model.id);
                   },
                 ),
               ]),

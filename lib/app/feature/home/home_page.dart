@@ -51,6 +51,25 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   // )
                 ],
               ),
+              HomeModule(
+                title: 'Atendimentos',
+                icon: Icons.book,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.attendanceSave.name);
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.attendanceList.name);
+                    },
+                    icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
               const Divider(
                 height: 10,
               ),

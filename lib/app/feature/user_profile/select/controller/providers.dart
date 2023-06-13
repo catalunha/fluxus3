@@ -20,6 +20,7 @@ FutureOr<List<UserProfileModel>> userProfileSelect(
       UserProfileEntity.isActive,
       UserProfileEntity.access,
       UserProfileEntity.nickname,
+      UserProfileEntity.procedures,
     ]
   });
   return list;

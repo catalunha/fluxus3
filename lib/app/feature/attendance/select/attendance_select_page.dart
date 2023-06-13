@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller/providers.dart';
-import 'room_obj.dart';
+import 'attendance_obj.dart';
 
-class RoomSelectPage extends ConsumerWidget {
+class AttendanceSelectPage extends ConsumerWidget {
   final bool isSingleValue;
 
-  const RoomSelectPage({super.key, this.isSingleValue = true});
+  const AttendanceSelectPage({super.key, this.isSingleValue = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(roomSelectProvider);
+    final list = ref.watch(attendanceSelectProvider);
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('Selecione ${isSingleValue ? 'um cargo' : 'alguns cargos'}'),
+        title: Text(
+            'Selecione ${isSingleValue ? 'um atendimento' : 'alguns atendimentos'}'),
       ),
       body: list.when(
         data: (data) {
@@ -25,7 +25,7 @@ class RoomSelectPage extends ConsumerWidget {
             itemCount: data.length,
             itemBuilder: (context, index) {
               final level = data[index];
-              return RoomObj(
+              return AttendanceObj(
                 model: level,
                 isSingleValue: isSingleValue,
               );
@@ -33,11 +33,11 @@ class RoomSelectPage extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          log('Erro em Lista de usuarios');
+          log('Erro em Lista de atendimentos');
           log('$error');
           log('$stackTrace');
           return const Center(
-            child: Text('Erro em Lista de usuarios'),
+            child: Text('Erro em Lista de atendimentos'),
           );
         },
         loading: () {
@@ -50,7 +50,7 @@ class RoomSelectPage extends ConsumerWidget {
         visible: !isSingleValue,
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pop(ref.watch(roomSelectedProvider));
+            Navigator.of(context).pop(ref.watch(attendanceSelectedProvider));
           },
           child: const Icon(Icons.send),
         ),

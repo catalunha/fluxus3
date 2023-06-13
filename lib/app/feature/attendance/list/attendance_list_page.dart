@@ -6,21 +6,21 @@ import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';
 import 'controller/providers.dart';
-import 'room_obj.dart';
+import 'attendance_obj.dart';
 
-class RoomListPage extends ConsumerWidget {
-  const RoomListPage({super.key});
+class AttendanceListPage extends ConsumerWidget {
+  const AttendanceListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(roomListProvider);
+    final list = ref.watch(attendanceListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de salas'),
+        title: const Text('Lista de Atendimentos'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.goNamed(AppPage.roomSave.name, extra: null);
+          context.goNamed(AppPage.attendanceSave.name, extra: null);
         },
         child: const Icon(Icons.add),
       ),
@@ -29,17 +29,17 @@ class RoomListPage extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             final level = data[index];
-            return RoomObj(
+            return AttendanceObj(
               model: level,
             );
           },
         );
       }, error: (error, stackTrace) {
-        log('Erro em Lista de cargos');
+        log('Erro em Lista de atendimentos');
         log('$error');
         log('$stackTrace');
         return const Center(
-          child: Text('Erro em Lista de cargos'),
+          child: Text('Erro em Lista de atendimentos'),
         );
       }, loading: () {
         return const Center(

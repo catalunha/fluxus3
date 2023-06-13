@@ -1,16 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../core/models/room_model.dart';
+import '../../../../core/models/attendance_model.dart';
 
 part 'states.freezed.dart';
 
-enum RoomFormStatus { initial, loading, success, error }
+enum AttendanceFormStatus { initial, loading, success, error }
 
 @freezed
-abstract class RoomFormState with _$RoomFormState {
-  factory RoomFormState({
-    @Default(RoomFormStatus.initial) RoomFormStatus status,
+abstract class AttendanceFormState with _$AttendanceFormState {
+  factory AttendanceFormState({
+    @Default(AttendanceFormStatus.initial) AttendanceFormStatus status,
     @Default('') String error,
-    RoomModel? model,
-  }) = _RoomFormState;
+    AttendanceModel? model,
+  }) = _AttendanceFormState;
 }

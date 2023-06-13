@@ -53,6 +53,18 @@ class AttendanceB4a {
     }
     if (cols.containsKey('${AttendanceEntity.className}.pointers')) {
       query.includeObject(cols['${AttendanceEntity.className}.pointers']!);
+    } else {
+      query.includeObject([
+        'professional',
+        'professional.region',
+        'procedure',
+        'procedure.expertise',
+        'patient',
+        'patient.region',
+        'healthPlan',
+        'healthPlan.healthPlanType',
+        'status',
+      ]);
     }
     query.first();
     try {

@@ -40,7 +40,9 @@ class UserProfileEntity {
   }) async {
     //+++ get office
     List<OfficeModel> officeList = [];
-    if (cols.containsKey('${UserProfileEntity.className}.cols')) {
+    if (cols.containsKey('${UserProfileEntity.className}.cols') &&
+        cols['${UserProfileEntity.className}.cols']!
+            .contains(UserProfileEntity.offices)) {
       QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
@@ -57,7 +59,9 @@ class UserProfileEntity {
     //+++ get expertise
     List<ExpertiseModel> expertiseList = [];
 
-    if (cols.containsKey('${UserProfileEntity.className}.cols')) {
+    if (cols.containsKey('${UserProfileEntity.className}.cols') &&
+        cols['${UserProfileEntity.className}.cols']!
+            .contains(UserProfileEntity.expertises)) {
       QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
@@ -74,7 +78,9 @@ class UserProfileEntity {
     //+++ get procedure
     List<ProcedureModel> procedureList = [];
 
-    if (cols.containsKey('${UserProfileEntity.className}.cols')) {
+    if (cols.containsKey('${UserProfileEntity.className}.cols') &&
+        cols['${UserProfileEntity.className}.cols']!
+            .contains(UserProfileEntity.procedures)) {
       QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,

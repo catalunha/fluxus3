@@ -25,7 +25,7 @@ class UserProfileObj extends ConsumerWidget {
         tileColor: color,
         onTap: () {
           if (isSingleValue) {
-            Navigator.of(context).pop([model]);
+            Navigator.of(context).pop(model);
           } else {
             ref.watch(userProfileSelectedProvider.notifier).toggle(model);
           }

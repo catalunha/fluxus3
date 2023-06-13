@@ -12,7 +12,14 @@ FutureOr<List<PatientModel>> patientSelect(PatientSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
   query.orderByDescending('name');
-  final list = await ref.read(patientRepositoryProvider).list(query);
+  final list = await ref.read(patientRepositoryProvider).list(query, cols: {
+    "${PatientEntity.className}.cols": [
+      PatientEntity.name,
+      PatientEntity.nickname,
+      PatientEntity.phone,
+      PatientEntity.healthPlans,
+    ],
+  });
   return list;
 }
 
