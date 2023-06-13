@@ -11,7 +11,6 @@ abstract class EventModel with _$EventModel {
   factory EventModel({
     String? id,
     List<AttendanceModel>? attendances,
-    String? attendanceBrief,
     RoomModel? room,
     StatusModel? status,
     DateTime? start,
