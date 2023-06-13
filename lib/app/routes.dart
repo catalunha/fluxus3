@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/attendance/add/attendance_add_page.dart';
+import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
+import 'feature/attendance/search/attendance_search_page.dart';
 import 'feature/error/error_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
@@ -313,28 +315,6 @@ final goRouterProv = Provider<GoRouter>(
                   ),
                 ]),
             GoRoute(
-              path: AppPage.attendanceList.path,
-              name: AppPage.attendanceList.name,
-              builder: (context, state) {
-                return AttendanceListPage(
-                  key: state.pageKey,
-                );
-              },
-              // routes: [
-              //   GoRoute(
-              //     path: AppPage.attendanceSave.path,
-              //     name: AppPage.attendanceSave.name,
-              //     builder: (context, state) {
-              //       final id = state.extra as String?;
-              //       return AttendanceSavePage(
-              //         key: state.pageKey,
-              //         id: id,
-              //       );
-              //     },
-              //   ),
-              // ],
-            ),
-            GoRoute(
               path: AppPage.attendanceAdd.path,
               name: AppPage.attendanceAdd.name,
               builder: (context, state) {
@@ -345,6 +325,38 @@ final goRouterProv = Provider<GoRouter>(
                 );
               },
             ),
+            GoRoute(
+                path: AppPage.attendanceSearch.path,
+                name: AppPage.attendanceSearch.name,
+                builder: (context, state) {
+                  return AttendanceSearchPage(
+                    key: state.pageKey,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: AppPage.attendanceList.path,
+                    name: AppPage.attendanceList.name,
+                    builder: (context, state) {
+                      return AttendanceListPage(
+                        key: state.pageKey,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: AppPage.attendanceEdit.path,
+                        name: AppPage.attendanceEdit.name,
+                        builder: (context, state) {
+                          final id = state.extra as String?;
+                          return AttendanceEditPage(
+                            key: state.pageKey,
+                            id: id,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ]),
           ],
         ),
       ],
@@ -398,9 +410,10 @@ enum AppPage {
   healthPlanTypeSave('healthPlanTypeSave', 'healthPlanTypeSave'),
   patientList('patientList', 'patientList'),
   patientSave('patientSave', 'patientSave'),
+  attendanceSearch('attendanceSearch', 'attendanceSearch'),
   attendanceList('attendanceList', 'attendanceList'),
   attendanceAdd('attendanceAdd', 'attendanceAdd'),
-  attendanceSave('attendanceSave', 'attendanceSave');
+  attendanceEdit('attendanceEdit', 'attendanceEdit');
 
   final String path;
   final String name;

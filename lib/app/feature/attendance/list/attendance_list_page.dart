@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../routes.dart';
-import 'controller/providers.dart';
+import '../search/controller/providers.dart';
 import 'attendance_obj.dart';
 
 class AttendanceListPage extends ConsumerWidget {
@@ -17,12 +15,6 @@ class AttendanceListPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lista de Atendimentos'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.goNamed(AppPage.attendanceSave.name, extra: null);
-        },
-        child: const Icon(Icons.add),
       ),
       body: list.when(data: (data) {
         return ListView.builder(

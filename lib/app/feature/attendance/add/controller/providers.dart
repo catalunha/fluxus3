@@ -8,7 +8,6 @@ import '../../../../core/models/patient_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
-import '../../list/controller/providers.dart';
 import 'states.dart';
 
 part 'providers.g.dart';
@@ -177,7 +176,7 @@ class AttendanceForm extends _$AttendanceForm {
         );
         await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
       }
-      ref.invalidate(attendanceListProvider);
+      // ref.invalidate(attendanceListProvider);
       state = state.copyWith(status: AttendanceFormStatus.success);
     } catch (e, st) {
       log('$e');
@@ -187,17 +186,17 @@ class AttendanceForm extends _$AttendanceForm {
     }
   }
 
-  Future<void> delete() async {
-    state = state.copyWith(status: AttendanceFormStatus.loading);
-    try {
-      await ref.read(attendanceRepositoryProvider).delete(state.model!.id!);
-      ref.invalidate(attendanceListProvider);
-      state = state.copyWith(status: AttendanceFormStatus.success);
-    } catch (e, st) {
-      log('$e');
-      log('$st');
-      state = state.copyWith(
-          status: AttendanceFormStatus.error, error: 'Erro em editar cargo');
-    }
-  }
+  // Future<void> delete() async {
+  //   state = state.copyWith(status: AttendanceFormStatus.loading);
+  //   try {
+  //     await ref.read(attendanceRepositoryProvider).delete(state.model!.id!);
+  //     // ref.invalidate(attendanceListProvider);
+  //     state = state.copyWith(status: AttendanceFormStatus.success);
+  //   } catch (e, st) {
+  //     log('$e');
+  //     log('$st');
+  //     state = state.copyWith(
+  //         status: AttendanceFormStatus.error, error: 'Erro em editar cargo');
+  //   }
+  // }
 }
