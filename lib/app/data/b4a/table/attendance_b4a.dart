@@ -7,38 +7,56 @@ import '../entity/attendance_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class AttendanceB4a {
-  // Future<QueryBuilder<ParseObject>> getQueryAll(
-  //     QueryBuilder<ParseObject> query, Pagination pagination,
-  //     [List<String> cols = const []]) async {
-  //   query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-  //   query.setLimit(pagination.limit);
-  //   //print('AttendanceB4a.getQueryAll $cols');
-  //   query.keysToReturn([
-  //     ...AttendanceEntity.filterSingleCols(cols),
-  //   ]);
-
-  //   // query.keysToReturn([
-  //   //   'professional',
-  //   //   'procedure',
-  //   //   'patient',
-  //   //   'healthPlan',
-  //   //   // 'healthPlan.healthPlanType',
-  //   // ]);
-  //   query.includeObject(AttendanceEntity.filterPointerCols(cols));
-  //   // //print(AttendanceEntity.filterPointerCols(cols));
-  //   // query.includeObject([
-  //   //   'professional',
-  //   //   // 'professional.region',
-  //   //   'procedure',
-  //   //   // 'procedure.expertise',
-  //   //   'patient',
-  //   //   // 'patient.region',
-  //   //   'healthPlan',
-  //   //   'healthPlan.healthPlanType',
-  //   //   // 'status',
-  //   // ]);
-  //   return query;
-  // }
+  Future<List<AttendanceModel>> list(
+    QueryBuilder<ParseObject> query, {
+    Pagination? pagination,
+    Map<String, List<String>> cols = const {},
+  }) async {
+    if (pagination != null) {
+      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+      query.setLimit(pagination.limit);
+    }
+    if (cols.containsKey('${AttendanceEntity.className}.cols')) {
+      query.keysToReturn(cols['${AttendanceEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${AttendanceEntity.className}.pointers')) {
+      query.includeObject(cols['${AttendanceEntity.className}.pointers']!);
+    } else {
+      query.includeObject([
+        'professional',
+        'professional.region',
+        'procedure',
+        'procedure.expertise',
+        'patient',
+        'patient.region',
+        'healthPlan',
+        'healthPlan.healthPlanType',
+        'status',
+      ]);
+    }
+    ParseResponse? parseResponse;
+    try {
+      parseResponse = await query.query();
+      List<AttendanceModel> listTemp = <AttendanceModel>[];
+      if (parseResponse.success && parseResponse.results != null) {
+        for (var element in parseResponse.results!) {
+          listTemp.add(await AttendanceEntity().toModel(element, cols: cols));
+        }
+        return listTemp;
+      } else {
+        return [];
+      }
+    } on Exception {
+      var errorTranslated =
+          ParseErrorTranslate.translate(parseResponse!.error!);
+      throw B4aException(
+        errorTranslated,
+        where: 'AttendanceRepositoryB4a.list',
+        originalError:
+            '${parseResponse.error!.code} -${parseResponse.error!.message}',
+      );
+    }
+  }
 
   Future<AttendanceModel?> readById(
     String id, {
@@ -79,45 +97,6 @@ class AttendanceB4a {
       );
     } catch (_) {
       rethrow;
-    }
-  }
-
-  Future<List<AttendanceModel>> list(
-    QueryBuilder<ParseObject> query, {
-    Pagination? pagination,
-    Map<String, List<String>> cols = const {},
-  }) async {
-    if (pagination != null) {
-      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-      query.setLimit(pagination.limit);
-    }
-    if (cols.containsKey('${AttendanceEntity.className}.cols')) {
-      query.keysToReturn(cols['${AttendanceEntity.className}.cols']!);
-    }
-    if (cols.containsKey('${AttendanceEntity.className}.pointers')) {
-      query.includeObject(cols['${AttendanceEntity.className}.pointers']!);
-    }
-    ParseResponse? parseResponse;
-    try {
-      parseResponse = await query.query();
-      List<AttendanceModel> listTemp = <AttendanceModel>[];
-      if (parseResponse.success && parseResponse.results != null) {
-        for (var element in parseResponse.results!) {
-          listTemp.add(await AttendanceEntity().toModel(element, cols: cols));
-        }
-        return listTemp;
-      } else {
-        return [];
-      }
-    } on Exception {
-      var errorTranslated =
-          ParseErrorTranslate.translate(parseResponse!.error!);
-      throw B4aException(
-        errorTranslated,
-        where: 'AttendanceRepositoryB4a.list',
-        originalError:
-            '${parseResponse.error!.code} -${parseResponse.error!.message}',
-      );
     }
   }
 

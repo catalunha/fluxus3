@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
+import 'feature/attendance/add/attendance_add_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
-import 'feature/attendance/save/attendance_save_page.dart';
 import 'feature/error/error_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
@@ -313,26 +313,38 @@ final goRouterProv = Provider<GoRouter>(
                   ),
                 ]),
             GoRoute(
-                path: AppPage.attendanceList.path,
-                name: AppPage.attendanceList.name,
-                builder: (context, state) {
-                  return AttendanceListPage(
-                    key: state.pageKey,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: AppPage.attendanceSave.path,
-                    name: AppPage.attendanceSave.name,
-                    builder: (context, state) {
-                      final id = state.extra as String?;
-                      return AttendanceSavePage(
-                        key: state.pageKey,
-                        id: id,
-                      );
-                    },
-                  ),
-                ]),
+              path: AppPage.attendanceList.path,
+              name: AppPage.attendanceList.name,
+              builder: (context, state) {
+                return AttendanceListPage(
+                  key: state.pageKey,
+                );
+              },
+              // routes: [
+              //   GoRoute(
+              //     path: AppPage.attendanceSave.path,
+              //     name: AppPage.attendanceSave.name,
+              //     builder: (context, state) {
+              //       final id = state.extra as String?;
+              //       return AttendanceSavePage(
+              //         key: state.pageKey,
+              //         id: id,
+              //       );
+              //     },
+              //   ),
+              // ],
+            ),
+            GoRoute(
+              path: AppPage.attendanceAdd.path,
+              name: AppPage.attendanceAdd.name,
+              builder: (context, state) {
+                final id = state.extra as String?;
+                return AttendanceAddPage(
+                  key: state.pageKey,
+                  id: id,
+                );
+              },
+            ),
           ],
         ),
       ],
@@ -387,6 +399,7 @@ enum AppPage {
   patientList('patientList', 'patientList'),
   patientSave('patientSave', 'patientSave'),
   attendanceList('attendanceList', 'attendanceList'),
+  attendanceAdd('attendanceAdd', 'attendanceAdd'),
   attendanceSave('attendanceSave', 'attendanceSave');
 
   final String path;

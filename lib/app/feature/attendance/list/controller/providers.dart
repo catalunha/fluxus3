@@ -12,5 +12,7 @@ FutureOr<List<AttendanceModel>> attendanceList(AttendanceListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
   query.orderByAscending('name');
-  return await ref.read(attendanceRepositoryProvider).list(query);
+  return await ref.read(attendanceRepositoryProvider).list(
+        query,
+      );
 }

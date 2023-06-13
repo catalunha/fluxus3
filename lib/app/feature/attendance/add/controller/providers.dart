@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/feature/attendance/save/controller/states.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/attendance_model.dart';
@@ -10,47 +9,48 @@ import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../list/controller/providers.dart';
+import 'states.dart';
 
 part 'providers.g.dart';
 
-@riverpod
-FutureOr<AttendanceModel?> attendanceRead(AttendanceReadRef ref,
-    {required String? id}) async {
-  if (id != null) {
-    final attendance =
-        await ref.read(attendanceRepositoryProvider).readById(id);
-    if (attendance != null) {
-      ref.watch(attendanceFormProvider.notifier).setModel(attendance);
-      ref
-          .watch(authorizationDateCreateProvider.notifier)
-          .set(attendance.authorizationDateCreated);
-      ref
-          .watch(authorizationDateLimitProvider.notifier)
-          .set(attendance.authorizationDateLimit);
-      ref
-          .watch(professionalSelectedProvider.notifier)
-          .set(attendance.professional);
-      ref
-          .watch(proceduresProvider.notifier)
-          .set(attendance.procedure != null ? [attendance.procedure!] : []);
-      ref.watch(patientSelectedProvider.notifier).set(attendance.patient);
-      ref
-          .watch(healthPlansProvider.notifier)
-          .set(attendance.healthPlan != null ? [attendance.healthPlan!] : []);
-      return attendance;
-    }
-  }
-  return null;
-}
+// @riverpod
+// FutureOr<AttendanceModel?> attendanceRead(AttendanceReadRef ref,
+//     {required String? id}) async {
+//   if (id != null) {
+//     final attendance =
+//         await ref.read(attendanceRepositoryProvider).readById(id);
+//     if (attendance != null) {
+//       ref.watch(attendanceFormProvider.notifier).setModel(attendance);
+//       ref
+//           .watch(authorizationDateCreateProvider.notifier)
+//           .set(attendance.authorizationDateCreated ?? DateTime.now());
+//       ref.watch(authorizationDateLimitProvider.notifier).set(
+//           attendance.authorizationDateLimit ??
+//               DateTime.now().add(const Duration(days: 30)));
+//       ref
+//           .watch(professionalSelectedProvider.notifier)
+//           .set(attendance.professional);
+//       ref
+//           .watch(proceduresProvider.notifier)
+//           .set(attendance.procedure != null ? [attendance.procedure!] : []);
+//       ref.watch(patientSelectedProvider.notifier).set(attendance.patient);
+//       ref
+//           .watch(healthPlansProvider.notifier)
+//           .set(attendance.healthPlan != null ? [attendance.healthPlan!] : []);
+//       return attendance;
+//     }
+//   }
+//   return null;
+// }
 
 @riverpod
 class AuthorizationDateCreate extends _$AuthorizationDateCreate {
   @override
-  DateTime? build() {
-    return null;
+  DateTime build() {
+    return DateTime.now();
   }
 
-  void set(DateTime? value) {
+  void set(DateTime value) {
     state = value;
   }
 }
@@ -58,11 +58,11 @@ class AuthorizationDateCreate extends _$AuthorizationDateCreate {
 @riverpod
 class AuthorizationDateLimit extends _$AuthorizationDateLimit {
   @override
-  DateTime? build() {
-    return null;
+  DateTime build() {
+    return DateTime.now().add(const Duration(days: 30));
   }
 
-  void set(DateTime? value) {
+  void set(DateTime value) {
     state = value;
   }
 }
@@ -150,10 +150,6 @@ class AttendanceForm extends _$AttendanceForm {
   @override
   AttendanceFormState build() {
     return AttendanceFormState();
-  }
-
-  void setModel(AttendanceModel? model) {
-    state = state.copyWith(model: model);
   }
 
   Future<void> submitForm({
