@@ -62,12 +62,26 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                     },
                     icon: const Icon(Icons.add),
                   ),
-                  // IconButton(
-                  //   onPressed: () {
-                  //     context.goNamed(AppPage.attendanceList.name);
-                  //   },
-                  //   icon: const Icon(Icons.list),
-                  // ),
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.attendanceSearch.name);
+                    },
+                    icon: const Icon(Icons.search),
+                  )
+                ],
+              ),
+              HomeModule(
+                title: 'Eventos',
+                // icon: Icons.event_available,
+                icon: Icons.local_convenience_store_rounded,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.attendanceAdd.name);
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
                   IconButton(
                     onPressed: () {
                       context.goNamed(AppPage.attendanceSearch.name);
