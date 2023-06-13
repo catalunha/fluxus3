@@ -8,7 +8,7 @@ import 'states.dart';
 
 part 'providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<PatientModel>> patientList(PatientListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
@@ -73,6 +73,5 @@ List<PatientModel> patientFiltered(PatientFilteredRef ref) {
         .where((element) => (element.phone != null &&
             element.phone!.toLowerCase().contains(search)))
         .toList(),
-    _ => data
   };
 }
