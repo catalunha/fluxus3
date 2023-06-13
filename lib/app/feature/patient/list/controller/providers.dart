@@ -13,7 +13,9 @@ FutureOr<List<PatientModel>> patientList(PatientListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
   query.orderByAscending('name');
-  return await ref.read(patientRepositoryProvider).list(query);
+  final list = await ref.read(patientRepositoryProvider).list(query);
+  ref.read(patientListDataProvider.notifier).set(list);
+  return list;
 }
 
 @riverpod
@@ -56,20 +58,20 @@ class PatientListData extends _$PatientListData {
 List<PatientModel> patientFiltered(PatientFilteredRef ref) {
   final filterSelected = ref.watch(patientFilteredByProvider);
   final search = ref.watch(patientSearchProvider);
-  final data = ref.read(patientListDataProvider);
+  final data = ref.watch(patientListDataProvider);
 
   return switch (filterSelected) {
     PatientFilterStatus.name => data
-        .where((element) =>
-            (element.name != null && element.name!.startsWith(search)))
+        .where((element) => (element.name != null &&
+            element.name!.toLowerCase().contains(search)))
         .toList(),
-    PatientFilterStatus.cpf => data
-        .where((element) =>
-            (element.cpf != null && element.cpf!.startsWith(search)))
+    PatientFilterStatus.nickname => data
+        .where((element) => (element.nickname != null &&
+            element.nickname!.toLowerCase().contains(search)))
         .toList(),
     PatientFilterStatus.phone => data
-        .where((element) =>
-            (element.phone != null && element.phone!.startsWith(search)))
+        .where((element) => (element.phone != null &&
+            element.phone!.toLowerCase().contains(search)))
         .toList(),
     _ => data
   };

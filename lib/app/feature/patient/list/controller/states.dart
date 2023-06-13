@@ -1,1 +1,1 @@
-enum PatientFilterStatus { name, phone, cpf }
+enum PatientFilterStatus { name, phone, nickname }
