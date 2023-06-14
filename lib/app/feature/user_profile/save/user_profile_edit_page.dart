@@ -158,17 +158,20 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                       label: 'Seu registro no seu conselho',
                       controller: _registerTec,
                     ),
-                    CheckboxListTile(
+
+                    SwitchListTile(
                       title: const Text("Sexo feminino ?"),
+                      value: isFemale,
                       onChanged: (value) {
                         setState(() {
-                          isFemale = value ?? true;
+                          isFemale = value;
                         });
                       },
-                      value: isFemale,
                     ),
+
                     const Text('Selecione a região *'),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () async {
@@ -234,7 +237,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                     // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
+                      child: Column(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Aniversário:'),
@@ -257,12 +260,17 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                                 });
                               }
                             },
-                            child: const Icon(Icons.date_range),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.date_range),
+                                const SizedBox(width: 10),
+                                Text(_birthday != null
+                                    ? dateFormat.format(_birthday!)
+                                    : "Não informado"),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 10),
-                          Text(_birthday != null
-                              ? dateFormat.format(_birthday!)
-                              : "Não informado"),
                         ],
                       ),
                     ),

@@ -99,8 +99,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
                           const Text('* Data do evento:'),
                           const SizedBox(width: 10),
@@ -115,17 +114,23 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                               );
                               ref.watch(dayProvider.notifier).set(newDate);
                             },
-                            child: const Icon(Icons.date_range),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.date_range),
+                                const SizedBox(width: 10),
+                                Text(ref.watch(dayProvider) != null
+                                    ? dateFormat.format(ref.watch(dayProvider)!)
+                                    : "Não informado"),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 10),
-                          Text(ref.watch(dayProvider) != null
-                              ? dateFormat.format(ref.watch(dayProvider)!)
-                              : "Não informado"),
                         ],
                       ),
                     ),
                     const Text('* Selecione um horário:'),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () async {
@@ -159,6 +164,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                     ),
                     const Text('* Selecione uma sala'),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () async {
@@ -193,6 +199,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
 
                     const Text('* Selecione os atendimentos'),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                             onPressed: () async {

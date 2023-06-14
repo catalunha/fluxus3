@@ -160,7 +160,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
+                          child: Column(
                             // mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text('Aniversário:'),
@@ -178,13 +178,19 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                                       .watch(birthDayProvider.notifier)
                                       .set(newDate);
                                 },
-                                child: const Icon(Icons.date_range),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.date_range),
+                                    const SizedBox(width: 10),
+                                    Text(ref.watch(birthDayProvider) != null
+                                        ? dateFormat.format(
+                                            ref.watch(birthDayProvider)!)
+                                        : "Não informado"),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 10),
-                              Text(ref.watch(birthDayProvider) != null
-                                  ? dateFormat
-                                      .format(ref.watch(birthDayProvider)!)
-                                  : "Não informado"),
+
                               // IconButton(
                               //     onPressed: () {
                               //       ref
@@ -197,6 +203,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                         ),
                         const Text('Selecione a região *'),
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                               onPressed: () async {
@@ -236,6 +243,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                         ),
                         const Text('Selecione os parentes'),
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                                 onPressed: () async {
@@ -286,6 +294,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                         ),
                         const Text('Selecione os planos de saúde'),
                         Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                                 onPressed: () async {

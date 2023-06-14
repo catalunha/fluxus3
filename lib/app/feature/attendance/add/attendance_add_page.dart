@@ -107,8 +107,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
                           const Text('Data da criação da autorização:'),
                           const SizedBox(width: 10),
@@ -125,18 +124,22 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                                       authorizationDateCreateProvider.notifier)
                                   .set(newDate ?? DateTime.now());
                             },
-                            child: const Icon(Icons.date_range),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.date_range),
+                                const SizedBox(width: 10),
+                                Text(dateFormat.format(ref
+                                    .watch(authorizationDateCreateProvider)!)),
+                              ],
+                            ),
                           ),
-                          const SizedBox(width: 10),
-                          Text(dateFormat.format(
-                              ref.watch(authorizationDateCreateProvider)!)),
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
                           const Text('Data da limite da autorização:'),
                           const SizedBox(width: 10),
@@ -156,12 +159,17 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                                       DateTime.now()
                                           .add(const Duration(days: 30)));
                             },
-                            child: const Icon(Icons.date_range),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            dateFormat.format(
-                                ref.watch(authorizationDateLimitProvider)!),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.date_range),
+                                const SizedBox(width: 10),
+                                Text(
+                                  dateFormat.format(ref
+                                      .watch(authorizationDateLimitProvider)!),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -169,6 +177,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                     const Text(
                         '* Selecione o profissional e seus procedimentos'),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () async {
@@ -231,6 +240,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                     ),
                     const Text('* Selecione o paciente e um plano apenas'),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           onPressed: () async {
