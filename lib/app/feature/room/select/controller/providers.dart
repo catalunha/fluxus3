@@ -11,7 +11,7 @@ part 'providers.g.dart';
 FutureOr<List<RoomModel>> roomSelect(RoomSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(RoomEntity.className));
-  query.orderByDescending('name');
+  query.orderByAscending('name');
   final list = await ref.read(roomRepositoryProvider).list(query);
   return list;
 }

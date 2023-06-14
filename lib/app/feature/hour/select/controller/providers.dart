@@ -11,7 +11,7 @@ part 'providers.g.dart';
 FutureOr<List<HourModel>> hourSelect(HourSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(HourEntity.className));
-  query.orderByDescending('name');
+  query.orderByAscending('name');
   final list = await ref.read(hourRepositoryProvider).list(query);
   return list;
 }

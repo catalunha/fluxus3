@@ -9,6 +9,8 @@ import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
 import 'feature/attendance/search/attendance_search_page.dart';
 import 'feature/error/error_page.dart';
+import 'feature/event/list/event_list_page.dart';
+import 'feature/event/save/event_save_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
@@ -351,37 +353,60 @@ final goRouterProv = Provider<GoRouter>(
               },
             ),
             GoRoute(
-                path: AppPage.attendanceSearch.path,
-                name: AppPage.attendanceSearch.name,
-                builder: (context, state) {
-                  return AttendanceSearchPage(
-                    key: state.pageKey,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: AppPage.attendanceList.path,
-                    name: AppPage.attendanceList.name,
-                    builder: (context, state) {
-                      return AttendanceListPage(
-                        key: state.pageKey,
-                      );
-                    },
-                    routes: [
-                      GoRoute(
-                        path: AppPage.attendanceEdit.path,
-                        name: AppPage.attendanceEdit.name,
-                        builder: (context, state) {
-                          final id = state.extra as String?;
-                          return AttendanceEditPage(
-                            key: state.pageKey,
-                            id: id,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ]),
+              path: AppPage.attendanceSearch.path,
+              name: AppPage.attendanceSearch.name,
+              builder: (context, state) {
+                return AttendanceSearchPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.attendanceList.path,
+                  name: AppPage.attendanceList.name,
+                  builder: (context, state) {
+                    return AttendanceListPage(
+                      key: state.pageKey,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      path: AppPage.attendanceEdit.path,
+                      name: AppPage.attendanceEdit.name,
+                      builder: (context, state) {
+                        final id = state.extra as String?;
+                        return AttendanceEditPage(
+                          key: state.pageKey,
+                          id: id,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            GoRoute(
+              path: AppPage.eventList.path,
+              name: AppPage.eventList.name,
+              builder: (context, state) {
+                return EventListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.eventSave.path,
+                  name: AppPage.eventSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return EventSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -440,7 +465,9 @@ enum AppPage {
   attendanceSearch('attendanceSearch', 'attendanceSearch'),
   attendanceList('attendanceList', 'attendanceList'),
   attendanceAdd('attendanceAdd', 'attendanceAdd'),
-  attendanceEdit('attendanceEdit', 'attendanceEdit');
+  attendanceEdit('attendanceEdit', 'attendanceEdit'),
+  eventList('eventList', 'eventList'),
+  eventSave('eventSave', 'eventSave');
 
   final String path;
   final String name;

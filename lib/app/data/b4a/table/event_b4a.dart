@@ -7,23 +7,6 @@ import '../entity/event_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class EventB4a {
-  // Future<QueryBuilder<ParseObject>> getQueryAll(
-  //     QueryBuilder<ParseObject> query, Pagination pagination,
-  //     [List<String> cols = const []]) async {
-  //   query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-  //   query.setLimit(pagination.limit);
-  //   query.keysToReturn([
-  //     ...EventEntity.filterSingleCols(cols),
-  //   ]);
-  //   query.includeObject(EventEntity.filterPointerCols(cols));
-
-  //   // query.includeObject([
-  //   //   'room',
-  //   //   'status',
-  //   // ]);
-  //   return query;
-  // }
-
   Future<List<EventModel>> list(
     QueryBuilder<ParseObject> query, {
     Pagination? pagination,
@@ -74,7 +57,6 @@ class EventB4a {
     if (cols.containsKey('${EventEntity.className}.pointers')) {
       query.includeObject(cols['${EventEntity.className}.pointers']!);
     }
-    // query.includeObject(['region']);
     query.first();
     try {
       var response = await query.query();

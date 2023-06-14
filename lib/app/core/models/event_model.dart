@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'attendance_model.dart';
+import 'hour_model.dart';
 import 'room_model.dart';
 import 'status_model.dart';
 
@@ -10,11 +11,11 @@ part 'event_model.freezed.dart';
 abstract class EventModel with _$EventModel {
   factory EventModel({
     String? id,
-    List<AttendanceModel>? attendances,
+    DateTime? day,
+    HourModel? hour,
     RoomModel? room,
+    List<AttendanceModel>? attendances,
     StatusModel? status,
-    DateTime? start,
-    DateTime? end,
     String? history,
   }) = _EventModel;
 }
