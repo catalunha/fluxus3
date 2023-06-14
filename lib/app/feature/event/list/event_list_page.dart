@@ -8,19 +8,19 @@ import '../../../routes.dart';
 import 'controller/providers.dart';
 import 'event_obj.dart';
 
-class RoomListPage extends ConsumerWidget {
-  const RoomListPage({super.key});
+class EventListPage extends ConsumerWidget {
+  const EventListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ref.watch(roomListProvider);
+    final list = ref.watch(eventListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de salas'),
+        title: const Text('Lista de eventos'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.goNamed(AppPage.roomSave.name, extra: null);
+          context.goNamed(AppPage.eventSave.name, extra: null);
         },
         child: const Icon(Icons.add),
       ),
@@ -29,7 +29,7 @@ class RoomListPage extends ConsumerWidget {
           itemCount: data.length,
           itemBuilder: (context, index) {
             final level = data[index];
-            return RoomObj(
+            return EventObj(
               model: level,
             );
           },

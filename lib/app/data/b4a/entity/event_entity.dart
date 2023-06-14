@@ -25,38 +25,32 @@ class EventEntity {
 
     //+++ get attendance
     List<AttendanceModel> attendanceList = [];
-    {
-      QueryBuilder<ParseObject> queryAttendanceType =
-          QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
-      queryAttendanceType.whereRelatedTo(EventEntity.attendances,
-          EventEntity.className, parseObject.objectId!);
-      // List<String> colsRelation = cols
-      //     .where((e) => e.startsWith('${AttendanceEntity.className}.'))
-      //     .toList();
-      // queryAttendanceType.keysToReturn([
-      //   ...AttendanceEntity.filterSingleCols(colsRelation),
-      // ]);
-      // queryAttendanceType
-      //     .includeObject(AttendanceEntity.filterPointerCols(colsRelation));
-      // queryAttendanceType.includeObject([
-      //   'professional',
-      //   'professional.region',
-      //   'procedure',
-      //   'procedure.expertise',
-      //   'patient',
-      //   'patient.region',
-      //   'healthPlan',
-      //   'healthPlan.healthPlanType',
-      //   'status',
-      // ]);
-      final ParseResponse parseResponse = await queryAttendanceType.query();
-      if (parseResponse.success && parseResponse.results != null) {
-        for (var e in parseResponse.results!) {
-          attendanceList.add(
-              await AttendanceEntity().toModel(e as ParseObject, cols: cols));
-        }
+    // if (cols.containsKey('${EventEntity.className}.cols') &&
+    //     cols['${EventEntity.className}.cols']!
+    //         .contains(EventEntity.attendances)) {
+    QueryBuilder<ParseObject> queryAttendanceType =
+        QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+    queryAttendanceType.whereRelatedTo(
+        EventEntity.attendances, EventEntity.className, parseObject.objectId!);
+    queryAttendanceType.includeObject([
+      'professional',
+      'professional.region',
+      'procedure',
+      'procedure.expertise',
+      'patient',
+      'patient.region',
+      'healthPlan',
+      'healthPlan.healthPlanType',
+      'status',
+    ]);
+    final ParseResponse parseResponse = await queryAttendanceType.query();
+    if (parseResponse.success && parseResponse.results != null) {
+      for (var e in parseResponse.results!) {
+        attendanceList.add(
+            await AttendanceEntity().toModel(e as ParseObject, cols: cols));
       }
     }
+    // }
     //--- get healthPlan
 
     EventModel model = EventModel(

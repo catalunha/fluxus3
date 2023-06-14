@@ -66,6 +66,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
     });
 
     final eventRead = ref.watch(eventReadProvider(id: widget.id));
+    final formState = ref.watch(eventFormProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar'),
@@ -83,10 +84,10 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
       ),
       body: eventRead.when(
         data: (data) {
-          if (data != null) {
-            final formState = ref.read(eventFormProvider);
-            _historyTec.text = formState.model?.history ?? '';
-          }
+          // if (data != null) {
+          //   final formState = ref.read(eventFormProvider);
+          //   _historyTec.text = formState.model?.history ?? '';
+          // }
           return Center(
             child: Form(
               key: _formKey,
@@ -311,6 +312,12 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                         AppTextFormField(
                           label: '* Histórico deste evento',
                           controller: _historyTec,
+                        ),
+                        ExpansionTile(
+                          title: const Text('Histórico'),
+                          children: [
+                            Text('${formState.model?.history}'),
+                          ],
                         ),
                         const SizedBox(height: 15),
                         AppDelete(

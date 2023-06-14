@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:fluxus3/app/core/authentication/riverpod/auth_prov.dart';
-import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/attendance_model.dart';
@@ -10,6 +9,7 @@ import '../../../../core/models/hour_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../list/controller/providers.dart';
 import 'states.dart';
 
 part 'providers.g.dart';
@@ -24,7 +24,14 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
       ref.watch(hourSelectedProvider.notifier).set(event.hour);
       ref.watch(roomSelectedProvider.notifier).set(event.room);
       ref.watch(statusSelectedProvider.notifier).set(event.status);
-
+      ref
+          .watch(attendancesOriginalProvider.notifier)
+          .set(event.attendances ?? []);
+      if (event.attendances != null) {
+        for (var item in event.attendances!) {
+          ref.watch(attendancesSelectedProvider.notifier).add(item);
+        }
+      }
       return event;
     }
   }
@@ -138,10 +145,19 @@ class EventForm extends _$EventForm {
       final hour = ref.read(hourSelectedProvider);
       final room = ref.read(roomSelectedProvider);
       final status = ref.read(statusSelectedProvider);
-      final dateFormat = DateFormat('dd/MM/y');
 
-      history =
-          '* ${dateFormat.format(DateTime.now())}\n${auth.user?.userName}\n$history\n${state.model?.history}';
+      history = '''
++++
+Agora: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Dia: $day
+Horário: ${hour?.id}-${hour?.name}-${hour?.start} as ${hour?.end}
+Sala: ${room?.id}-${room?.name}
+Status: ${status?.id}-${status?.name}
+Atendimentos: ${ref.read(attendancesSelectedProvider).map((e) => e.id).toList()}
+Descrição: $history
+${state.model?.history}
+          ''';
 
       EventModel? eventTemp;
       if (state.model != null) {
@@ -169,7 +185,7 @@ class EventForm extends _$EventForm {
         relationColumn: 'attendances',
         relationTable: 'Attendance',
       );
-      // ref.invalidate(eventListProvider);
+      ref.invalidate(eventListProvider);
       state = state.copyWith(status: EventFormStatus.success);
     } catch (e, st) {
       log('$e');
