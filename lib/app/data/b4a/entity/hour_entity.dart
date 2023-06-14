@@ -17,8 +17,8 @@ class HourEntity {
     HourModel model = HourModel(
       id: parseObject.objectId!,
       name: parseObject.get(HourEntity.name),
-      start: parseObject.get<DateTime>(HourEntity.start)?.toLocal(),
-      end: parseObject.get<DateTime>(HourEntity.end)?.toLocal(),
+      start: parseObject.get(HourEntity.start),
+      end: parseObject.get(HourEntity.end),
       isActive: parseObject.get(HourEntity.isActive),
     );
     return model;
@@ -28,14 +28,14 @@ class HourEntity {
     final parseObject = ParseObject(HourEntity.className);
     parseObject.objectId = model.id;
 
-    parseObject.set(HourEntity.name, model.name);
+    if (model.name != null) {
+      parseObject.set(HourEntity.name, model.name);
+    }
     if (model.start != null) {
-      parseObject.set<DateTime?>(HourEntity.start,
-          DateTime(model.start!.year, model.start!.month, model.start!.day));
+      parseObject.set(HourEntity.start, model.start);
     }
     if (model.end != null) {
-      parseObject.set<DateTime?>(HourEntity.end,
-          DateTime(model.end!.year, model.end!.month, model.end!.day));
+      parseObject.set(HourEntity.end, model.end);
     }
     if (model.isActive != null) {
       parseObject.set(HourEntity.isActive, model.isActive);

@@ -172,6 +172,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                title: 'Horários',
+                icon: Icons.timer_sharp,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.roomList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
+              ),
+              HomeModule(
                 title: 'Status',
                 icon: Icons.start,
                 color: Colors.black,

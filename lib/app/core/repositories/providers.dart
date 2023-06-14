@@ -6,6 +6,7 @@ import 'event_repository.dart';
 import 'expertise_repository.dart';
 import 'healthplan_repository.dart';
 import 'healthplantype_repository.dart';
+import 'hour_repository.dart';
 import 'office_repository.dart';
 import 'patient_repository.dart';
 import 'procedure_repository.dart';
@@ -40,6 +41,11 @@ StatusRepository statusRepository(StatusRepositoryRef ref) {
 @riverpod
 RoomRepository roomRepository(RoomRepositoryRef ref) {
   return RoomRepository();
+}
+
+@riverpod
+HourRepository hourRepository(HourRepositoryRef ref) {
+  return HourRepository();
 }
 
 @riverpod

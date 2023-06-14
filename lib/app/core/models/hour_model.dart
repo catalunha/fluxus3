@@ -6,9 +6,9 @@ part 'hour_model.freezed.dart';
 abstract class HourModel with _$HourModel {
   factory HourModel({
     String? id,
-    @Default('0') String name,
-    DateTime? start,
-    DateTime? end,
+    String? name,
+    String? start,
+    String? end,
     bool? isActive,
   }) = _HourModel;
 }
