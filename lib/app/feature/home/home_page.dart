@@ -73,7 +73,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
               HomeModule(
                 title: 'Eventos',
                 // icon: Icons.event_available,
-                icon: Icons.local_convenience_store_rounded,
+                icon: Icons.maps_home_work_rounded,
                 color: Colors.black87,
                 actions: [
                   IconButton(
