@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'controller/providers.dart';
+import '../search/controller/providers.dart';
 import 'event_obj.dart';
 
 class EventListPage extends ConsumerWidget {

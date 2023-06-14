@@ -13,7 +13,7 @@ import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/hour_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
-import '../../list/controller/providers.dart';
+import '../../search/controller/providers.dart';
 import 'states.dart';
 
 part 'providers.g.dart';

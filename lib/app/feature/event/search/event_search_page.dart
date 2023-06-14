@@ -14,8 +14,8 @@ import '../../status/select/status_select_page.dart';
 import '../../user_profile/select/user_profile_select_page.dart';
 import 'controller/providers.dart';
 
-class AttendanceSearchPage extends ConsumerWidget {
-  const AttendanceSearchPage({super.key});
+class EventSearchPage extends ConsumerWidget {
+  const EventSearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,8 +25,8 @@ class AttendanceSearchPage extends ConsumerWidget {
       appBar: AppBar(title: const Text('Buscando atendimentos')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.invalidate(attendanceListProvider);
-          context.goNamed(AppPage.attendanceList.name);
+          ref.invalidate(eventListProvider);
+          context.goNamed(AppPage.eventList.name);
         },
         child: const Icon(Icons.search),
       ),
@@ -36,7 +36,6 @@ class AttendanceSearchPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text('Data da criação da autorização'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
