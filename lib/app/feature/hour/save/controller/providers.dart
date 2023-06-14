@@ -53,18 +53,26 @@ class HourForm extends _$HourForm {
     state = state.copyWith(model: model);
   }
 
-  Future<void> submitForm({required String name}) async {
+  Future<void> submitForm({
+    required String name,
+    required String start,
+    required String end,
+  }) async {
     state = state.copyWith(status: HourFormStatus.loading);
     try {
       HourModel? hourTemp;
       if (state.model != null) {
         hourTemp = state.model!.copyWith(
           name: name,
+          start: start,
+          end: end,
           isActive: ref.read(hourIsActiveProvider),
         );
       } else {
         hourTemp = HourModel(
           name: name,
+          start: start,
+          end: end,
           isActive: ref.read(hourIsActiveProvider),
         );
       }

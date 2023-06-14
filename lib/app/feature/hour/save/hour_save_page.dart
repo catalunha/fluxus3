@@ -71,7 +71,11 @@ class _HourSavePageState extends ConsumerState<HourSavePage>
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            ref.read(hourFormProvider.notifier).submitForm(name: _nameTec.text);
+            ref.read(hourFormProvider.notifier).submitForm(
+                  name: _nameTec.text,
+                  start: _startTec.text,
+                  end: _endTec.text,
+                );
           }
         },
         child: const Icon(Icons.cloud_upload),

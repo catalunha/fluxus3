@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';
 import 'controller/providers.dart';
-import 'room_obj.dart';
+import 'hour_obj.dart';
 
 class HourListPage extends ConsumerWidget {
   const HourListPage({super.key});
@@ -16,7 +16,7 @@ class HourListPage extends ConsumerWidget {
     final list = ref.watch(hourListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de salas'),
+        title: const Text('Lista de Horários'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

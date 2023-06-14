@@ -178,7 +178,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 actions: [
                   IconButton(
                     onPressed: () {
-                      context.goNamed(AppPage.roomList.name);
+                      context.goNamed(AppPage.hourList.name);
                     },
                     icon: const Icon(Icons.list),
                   ),
