@@ -39,7 +39,6 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
   final _cpfTec = TextEditingController();
   final _addressTec = TextEditingController();
   bool firstTime = true;
-  DateTime? _birthday;
   final dateFormat = DateFormat('dd/MM/y');
 
   @override
@@ -107,7 +106,6 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
             _phoneTec.text = formState.model?.phone ?? "";
             _cpfTec.text = formState.model?.cpf ?? "";
             _addressTec.text = formState.model?.address ?? "";
-            _birthday = formState.model?.birthday;
           }
           firstTime = false;
           return Center(
@@ -302,7 +300,6 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                                       );
                                     },
                                   ));
-                                  print(result); //sai do Dialog do loading
 
                                   if (result != null) {
                                     ref

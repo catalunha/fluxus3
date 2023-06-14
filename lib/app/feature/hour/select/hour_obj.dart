@@ -20,7 +20,7 @@ class HourObj extends ConsumerWidget {
     }
     return Card(
       child: ListTile(
-        title: Text('${model.name}'),
+        title: Text('${model.name} das ${model.start} às ${model.end}'),
         tileColor: color,
         onTap: () {
           if (isSingleValue) {

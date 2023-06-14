@@ -27,16 +27,22 @@ class _HourSavePageState extends ConsumerState<HourSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _nameTec = TextEditingController();
+  final _startTec = TextEditingController();
+  final _endTec = TextEditingController();
   bool firstTime = true;
   @override
   void initState() {
     super.initState();
     _nameTec.text = "";
+    _startTec.text = "";
+    _endTec.text = "";
   }
 
   @override
   void dispose() {
     _nameTec.dispose();
+    _startTec.dispose();
+    _endTec.dispose();
     super.dispose();
   }
 
@@ -75,6 +81,8 @@ class _HourSavePageState extends ConsumerState<HourSavePage>
           if (data != null && firstTime) {
             final formState = ref.read(hourFormProvider);
             _nameTec.text = formState.model?.name ?? '';
+            _startTec.text = formState.model?.start ?? '';
+            _endTec.text = formState.model?.end ?? '';
           }
           firstTime = false;
           return Center(
@@ -92,8 +100,20 @@ class _HourSavePageState extends ConsumerState<HourSavePage>
                           validator: Validatorless.required(
                               'Esta informação é obrigatória'),
                         ),
+                        AppTextFormField(
+                          label: '* Start',
+                          controller: _startTec,
+                          validator: Validatorless.required(
+                              'Esta informação é obrigatória'),
+                        ),
+                        AppTextFormField(
+                          label: '* End',
+                          controller: _endTec,
+                          validator: Validatorless.required(
+                              'Esta informação é obrigatória'),
+                        ),
                         SwitchListTile(
-                          title: const Text('A sala esta disponível ?'),
+                          title: const Text('O horario esta disponível ?'),
                           value: ref.watch(hourIsActiveProvider),
                           onChanged: (value) {
                             ref.read(hourIsActiveProvider.notifier).toggle();
