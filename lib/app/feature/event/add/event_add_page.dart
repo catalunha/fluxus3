@@ -62,7 +62,10 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
         showMessageError(context, next.error);
       }
     });
-
+    final day = ref.watch(dayProvider);
+    final hour = ref.watch(hourSelectedProvider);
+    final room = ref.watch(roomSelectedProvider);
+    final attendances = ref.read(attendancesSelectedProvider);
     final formState = ref.watch(eventFormProvider);
     return Scaffold(
       appBar: AppBar(
@@ -71,10 +74,16 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
-          if (formValid) {
+          if (formValid &&
+              day != null &&
+              hour != null &&
+              room != null &&
+              attendances.isNotEmpty) {
             ref
                 .read(eventFormProvider.notifier)
                 .submitForm(history: _historyTec.text);
+          } else {
+            showMessageError(context, 'Ainda faltam informações obrigatórias');
           }
         },
         child: const Icon(Icons.cloud_upload),
@@ -93,7 +102,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Data do evento:'),
+                          const Text('* Data do evento:'),
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
@@ -115,7 +124,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                         ],
                       ),
                     ),
-                    const Text('Selecione um horário:'),
+                    const Text('* Selecione um horário:'),
                     Row(
                       children: [
                         IconButton(
@@ -148,7 +157,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                               icon: const Icon(Icons.delete))
                       ],
                     ),
-                    const Text('Selecione uma sala'),
+                    const Text('* Selecione uma sala'),
                     Row(
                       children: [
                         IconButton(
@@ -182,7 +191,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                       ],
                     ),
 
-                    const Text('Selecione os atendimentos'),
+                    const Text('* Selecione os atendimentos'),
                     Row(
                       children: [
                         IconButton(

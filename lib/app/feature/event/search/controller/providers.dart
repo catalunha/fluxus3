@@ -9,8 +9,14 @@ import '../../../../core/models/room_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
+import '../../../../data/b4a/entity/hour_entity.dart';
+import '../../../../data/b4a/entity/patient_entity.dart';
+import '../../../../data/b4a/entity/procedure_entity.dart';
+import '../../../../data/b4a/entity/room_entity.dart';
 import '../../../../data/b4a/entity/status_entity.dart';
+import '../../../../data/b4a/entity/user_profile_entity.dart';
 
 part 'providers.g.dart';
 
@@ -19,7 +25,26 @@ part 'providers.g.dart';
 FutureOr<List<EventModel>> eventList(EventListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-
+  final start = ref.read(startSearchProvider);
+  final end = ref.read(endSearchProvider);
+  query.whereGreaterThanOrEqualsTo(
+      EventEntity.day, DateTime(start.year, start.month, start.day));
+  query.whereLessThanOrEqualTo(
+      EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
+  if (ref.read(hourSelectProvider)) {
+    query.whereEqualTo(
+        EventEntity.hour,
+        (ParseObject(HourEntity.className)
+              ..objectId = ref.read(hourSelectedProvider)!.id)
+            .toPointer());
+  }
+  if (ref.read(roomSelectProvider)) {
+    query.whereEqualTo(
+        EventEntity.room,
+        (ParseObject(RoomEntity.className)
+              ..objectId = ref.read(roomSelectedProvider)!.id)
+            .toPointer());
+  }
   if (ref.read(statusSelectProvider)) {
     query.whereEqualTo(
         EventEntity.status,
@@ -27,37 +52,56 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
               ..objectId = ref.read(statusSelectedProvider)!.id)
             .toPointer());
   }
-  // if (ref.read(professionalSelectProvider)) {
-  //   query.whereEqualTo(
-  //       EventEntity.professional,
-  //       (ParseObject(UserProfileEntity.className)
-  //             ..objectId = ref.read(professionalSelectedProvider)!.id)
-  //           .toPointer());
-  // }
-  // if (ref.read(procedureSelectProvider)) {
-  //   query.whereEqualTo(
-  //       EventEntity.procedure,
-  //       (ParseObject(ProcedureEntity.className)
-  //             ..objectId = ref.read(procedureSelectedProvider)!.id)
-  //           .toPointer());
-  // }
-  // if (ref.read(patientSelectProvider)) {
-  //   query.whereEqualTo(
-  //       EventEntity.patient,
-  //       (ParseObject(PatientEntity.className)
-  //             ..objectId = ref.read(patientSelectedProvider)!.id)
-  //           .toPointer());
-  // }
-  // final start = ref.read(startSearchProvider);
-  // final end = ref.read(endSearchProvider);
-  // query.whereGreaterThanOrEqualsTo(EventEntity.authorizationDateCreated,
-  //     DateTime(start.year, start.month, start.day));
-  // query.whereLessThanOrEqualTo(EventEntity.authorizationDateCreated,
-  //     DateTime(end.year, end.month, end.day, 23, 59));
+  if (ref.read(professionalSelectProvider)) {
+    QueryBuilder<ParseObject> queryAttendance =
+        QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+    queryAttendance.whereEqualTo(
+        AttendanceEntity.professional,
+        (ParseObject(UserProfileEntity.className)
+              ..objectId = ref.read(professionalSelectedProvider)!.id)
+            .toPointer());
+
+    query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+  }
+  if (ref.read(procedureSelectProvider)) {
+    QueryBuilder<ParseObject> queryAttendance =
+        QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+    queryAttendance.whereEqualTo(
+        AttendanceEntity.procedure,
+        (ParseObject(ProcedureEntity.className)
+              ..objectId = ref.read(procedureSelectedProvider)!.id)
+            .toPointer());
+
+    query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+  }
+  if (ref.read(patientSelectProvider)) {
+    QueryBuilder<ParseObject> queryAttendance =
+        QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+    queryAttendance.whereEqualTo(
+        AttendanceEntity.patient,
+        (ParseObject(PatientEntity.className)
+              ..objectId = ref.read(patientSelectedProvider)!.id)
+            .toPointer());
+
+    query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+  }
+
   query.orderByDescending('updatedAt');
-  return await ref.read(eventRepositoryProvider).list(
-        query,
-      );
+  return await ref.read(eventRepositoryProvider).list(query, cols: {
+    "${EventEntity.className}.cols": [
+      EventEntity.day,
+      EventEntity.hour,
+      EventEntity.room,
+      EventEntity.status,
+      EventEntity.attendances,
+      EventEntity.history,
+    ],
+    "${EventEntity.className}.pointers": [
+      EventEntity.hour,
+      EventEntity.room,
+      EventEntity.status,
+    ]
+  });
 }
 
 @riverpod

@@ -3,13 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/models/hour_model.dart';
 import '../../../core/models/patient_model.dart';
 import '../../../core/models/procedure_model.dart';
+import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../routes.dart';
+import '../../hour/select/hour_select_page.dart';
 import '../../patient/select/patient_select_page.dart';
 import '../../procedure/select/procedure_select_page.dart';
+import '../../room/select/room_select_page.dart';
 import '../../status/select/status_select_page.dart';
 import '../../user_profile/select/user_profile_select_page.dart';
 import 'controller/providers.dart';
@@ -22,7 +26,7 @@ class EventSearchPage extends ConsumerWidget {
     final dateFormat = DateFormat('dd/MM/y');
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Buscando atendimentos')),
+      appBar: AppBar(title: const Text('Buscando eventos')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ref.invalidate(eventListProvider);
@@ -36,6 +40,7 @@ class EventSearchPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                const Text('Data do evento:'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -87,6 +92,78 @@ class EventSearchPage extends ConsumerWidget {
                       Text(dateFormat.format(ref.watch(endSearchProvider))),
                     ],
                   ),
+                ),
+                Card(
+                  child: Column(children: [
+                    const Text('Selecione um Horario'),
+                    Row(
+                      children: [
+                        Switch(
+                            value: ref.watch(hourSelectProvider),
+                            onChanged: (value) {
+                              ref.read(hourSelectProvider.notifier).set(value);
+                            }),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  HourModel? result =
+                                      await Navigator.of(context)
+                                          .push<HourModel>(MaterialPageRoute(
+                                    builder: (context) {
+                                      return const HourSelectPage();
+                                    },
+                                  ));
+                                  ref
+                                      .read(hourSelectedProvider.notifier)
+                                      .set(result);
+                                },
+                                icon: const Icon(Icons.search),
+                              ),
+                              Text('${ref.watch(hourSelectedProvider)?.name}')
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ]),
+                ),
+                Card(
+                  child: Column(children: [
+                    const Text('Selecione um Sala'),
+                    Row(
+                      children: [
+                        Switch(
+                            value: ref.watch(roomSelectProvider),
+                            onChanged: (value) {
+                              ref.read(roomSelectProvider.notifier).set(value);
+                            }),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () async {
+                                  RoomModel? result =
+                                      await Navigator.of(context)
+                                          .push<RoomModel>(MaterialPageRoute(
+                                    builder: (context) {
+                                      return const RoomSelectPage();
+                                    },
+                                  ));
+                                  ref
+                                      .read(roomSelectedProvider.notifier)
+                                      .set(result);
+                                },
+                                icon: const Icon(Icons.search),
+                              ),
+                              Text('${ref.watch(roomSelectedProvider)?.name}')
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ]),
                 ),
                 Card(
                   child: Column(children: [

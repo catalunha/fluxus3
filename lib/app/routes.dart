@@ -12,6 +12,7 @@ import 'feature/error/error_page.dart';
 import 'feature/event/add/event_add_page.dart';
 import 'feature/event/edit/event_edit_page.dart';
 import 'feature/event/list/event_list_page.dart';
+import 'feature/event/search/event_search_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
@@ -387,27 +388,37 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-              path: AppPage.eventList.path,
-              name: AppPage.eventList.name,
-              builder: (context, state) {
-                return EventListPage(
-                  key: state.pageKey,
-                );
-              },
-              routes: [
-                GoRoute(
-                  path: AppPage.eventEdit.path,
-                  name: AppPage.eventEdit.name,
-                  builder: (context, state) {
-                    final id = state.extra as String?;
-                    return EventEditPage(
-                      key: state.pageKey,
-                      id: id,
-                    );
-                  },
-                ),
-              ],
-            ),
+                path: AppPage.eventSearch.path,
+                name: AppPage.eventSearch.name,
+                builder: (context, state) {
+                  return EventSearchPage(
+                    key: state.pageKey,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: AppPage.eventList.path,
+                    name: AppPage.eventList.name,
+                    builder: (context, state) {
+                      return EventListPage(
+                        key: state.pageKey,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: AppPage.eventEdit.path,
+                        name: AppPage.eventEdit.name,
+                        builder: (context, state) {
+                          final id = state.extra as String?;
+                          return EventEditPage(
+                            key: state.pageKey,
+                            id: id,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ]),
             GoRoute(
               path: AppPage.eventAdd.path,
               name: AppPage.eventAdd.name,
@@ -476,6 +487,7 @@ enum AppPage {
   attendanceList('attendanceList', 'attendanceList'),
   attendanceAdd('attendanceAdd', 'attendanceAdd'),
   attendanceEdit('attendanceEdit', 'attendanceEdit'),
+  eventSearch('eventSearch', 'eventSearch'),
   eventList('eventList', 'eventList'),
   eventEdit('eventEdit', 'eventEdit'),
   eventAdd('eventAdd', 'eventAdd');
