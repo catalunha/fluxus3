@@ -18,51 +18,51 @@ import 'states.dart';
 
 part 'providers.g.dart';
 
-@riverpod
-FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
-  if (id != null) {
-    final event = await ref.read(eventRepositoryProvider).readById(id, cols: {
-      "'${EventEntity.className}.cols'": [
-        EventEntity.day,
-        EventEntity.hour,
-        EventEntity.room,
-        EventEntity.status,
-        EventEntity.attendances,
-        EventEntity.history,
-      ],
-      "'${EventEntity.className}.pointers'": [
-        EventEntity.hour,
-        EventEntity.room,
-        EventEntity.status,
-      ]
-    });
-    if (event != null) {
-      ref.read(eventFormProvider.notifier).setModel(event);
-      ref.watch(dayProvider.notifier).set(event.day);
-      ref.watch(hourSelectedProvider.notifier).set(event.hour);
-      ref.watch(roomSelectedProvider.notifier).set(event.room);
-      ref.watch(statusSelectedProvider.notifier).set(event.status);
-      ref
-          .watch(attendancesOriginalProvider.notifier)
-          .set(event.attendances ?? []);
-      if (event.attendances != null) {
-        for (var item in event.attendances!) {
-          ref.watch(attendancesSelectedProvider.notifier).add(item);
-        }
-      }
-      return event;
-    }
-  } else {
-    final repo = ref.read(statusRepositoryProvider);
-    final status = await repo.readById('ZDQA4njpdN');
-    ref.watch(statusSelectedProvider.notifier).set(status);
-  }
-  return null;
-  // else {
-  //   throw Error.throwWithStackTrace(
-  //       'Não achei cargo com este id', StackTrace.current);
-  // }
-}
+// @riverpod
+// FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
+//   if (id != null) {
+//     final event = await ref.read(eventRepositoryProvider).readById(id, cols: {
+//       "'${EventEntity.className}.cols'": [
+//         EventEntity.day,
+//         EventEntity.hour,
+//         EventEntity.room,
+//         EventEntity.status,
+//         EventEntity.attendances,
+//         EventEntity.history,
+//       ],
+//       "'${EventEntity.className}.pointers'": [
+//         EventEntity.hour,
+//         EventEntity.room,
+//         EventEntity.status,
+//       ]
+//     });
+//     if (event != null) {
+//       ref.read(eventFormProvider.notifier).setModel(event);
+//       ref.watch(dayProvider.notifier).set(event.day);
+//       ref.watch(hourSelectedProvider.notifier).set(event.hour);
+//       ref.watch(roomSelectedProvider.notifier).set(event.room);
+//       ref.watch(statusSelectedProvider.notifier).set(event.status);
+//       ref
+//           .watch(attendancesOriginalProvider.notifier)
+//           .set(event.attendances ?? []);
+//       if (event.attendances != null) {
+//         for (var item in event.attendances!) {
+//           ref.watch(attendancesSelectedProvider.notifier).add(item);
+//         }
+//       }
+//       return event;
+//     }
+//   } else {
+//     final repo = ref.read(statusRepositoryProvider);
+//     final status = await repo.readById('ZDQA4njpdN');
+//     ref.watch(statusSelectedProvider.notifier).set(status);
+//   }
+//   return null;
+//   // else {
+//   //   throw Error.throwWithStackTrace(
+//   //       'Não achei cargo com este id', StackTrace.current);
+//   // }
+// }
 
 @riverpod
 class Day extends _$Day {
@@ -100,17 +100,17 @@ class RoomSelected extends _$RoomSelected {
   }
 }
 
-@riverpod
-class StatusSelected extends _$StatusSelected {
-  @override
-  StatusModel? build() {
-    return null;
-  }
+// @riverpod
+// class StatusSelected extends _$StatusSelected {
+//   @override
+//   StatusModel? build() {
+//     return null;
+//   }
 
-  void set(StatusModel? value) {
-    state = value;
-  }
-}
+//   void set(StatusModel? value) {
+//     state = value;
+//   }
+// }
 
 @riverpod
 class AttendancesOriginal extends _$AttendancesOriginal {
@@ -171,7 +171,6 @@ class EventForm extends _$EventForm {
       }
       if (checked) {
         final auth = ref.read(authChNotProvider);
-        final status = ref.read(statusSelectedProvider);
 
         history = '''
 +++
@@ -180,30 +179,22 @@ Usuário: ${auth.user?.userName}
 Dia: $day
 Horário: ${hour?.id}-${hour?.name}-${hour?.start} as ${hour?.end}
 Sala: ${room?.id}-${room?.name}
-Status: ${status?.id}-${status?.name}
+Status: ZDQA4njpdN - Agendado
 Atendimentos: ${ref.read(attendancesSelectedProvider).map((e) => e.id).toList()}
 Descrição: $history
 ${state.model?.history}
           ''';
 
         EventModel? eventTemp;
-        if (state.model != null) {
-          eventTemp = state.model!.copyWith(
-            day: day,
-            hour: hour,
-            room: room,
-            status: status,
-            history: history,
-          );
-        } else {
-          eventTemp = EventModel(
-            day: day,
-            hour: hour,
-            room: room,
-            status: status,
-            history: history,
-          );
-        }
+
+        eventTemp = EventModel(
+          day: day,
+          hour: hour,
+          room: room,
+          status: StatusModel(id: 'ZDQA4njpdN'),
+          history: history,
+        );
+
         final eventId =
             await ref.read(eventRepositoryProvider).update(eventTemp);
         await _updateRelations(

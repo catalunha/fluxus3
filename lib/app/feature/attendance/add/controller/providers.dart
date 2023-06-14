@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/healthplan_model.dart';
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/models/procedure_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
 import 'states.dart';
@@ -153,26 +155,45 @@ class AttendanceForm extends _$AttendanceForm {
 
   Future<void> submitForm({
     required String authorizationCode,
-    required String description,
+    required String history,
   }) async {
     state = state.copyWith(status: AttendanceFormStatus.loading);
     try {
+      final auth = ref.read(authChNotProvider);
+
       final authorizationDateCreate = ref.read(authorizationDateCreateProvider);
       final authorizationDateLimit = ref.read(authorizationDateLimitProvider);
       final professional = ref.watch(professionalSelectedProvider);
       final procedures = ref.watch(proceduresProvider);
       final patient = ref.watch(patientSelectedProvider);
       final healthPlans = ref.watch(healthPlansProvider);
+
       for (var procedure in procedures) {
+        history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Prof.: ${professional?.userName}
+Proc.: ${procedure.name}
+Pac.: ${patient?.name}
+PlanS.: ${healthPlans[0].code}-${healthPlans[0].healthPlanType?.name}
+AutCode.: $authorizationCode
+AutCreate.: $authorizationDateCreate
+AutLimite.: $authorizationDateLimit
+Status: ZDQA4njpdN - Agendado
+Descrição: $history
+${state.model?.history}
+          ''';
         final attendanceTemp = AttendanceModel(
           professional: professional,
           procedure: procedure,
           patient: patient,
           healthPlan: healthPlans[0],
           authorizationCode: authorizationCode,
-          description: description,
+          history: history,
           authorizationDateCreated: authorizationDateCreate,
           authorizationDateLimit: authorizationDateLimit,
+          status: StatusModel(id: 'ZDQA4njpdN'),
         );
         await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
       }

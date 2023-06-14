@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/attendance_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../search/controller/providers.dart';
 import 'states.dart';
@@ -17,6 +19,7 @@ FutureOr<AttendanceModel?> attendanceRead(AttendanceReadRef ref,
         await ref.read(attendanceRepositoryProvider).readById(id);
     if (attendance != null) {
       ref.watch(attendanceFormProvider.notifier).setModel(attendance);
+      ref.watch(statusSelectedProvider.notifier).set(attendance.status);
       ref
           .watch(authorizationDateCreateProvider.notifier)
           .set(attendance.authorizationDateCreated ?? DateTime.now());
@@ -55,6 +58,18 @@ class AuthorizationDateLimit extends _$AuthorizationDateLimit {
 }
 
 @riverpod
+class StatusSelected extends _$StatusSelected {
+  @override
+  StatusModel? build() {
+    return null;
+  }
+
+  void set(StatusModel? value) {
+    state = value;
+  }
+}
+
+@riverpod
 class AttendanceForm extends _$AttendanceForm {
   @override
   AttendanceFormState build() {
@@ -67,18 +82,32 @@ class AttendanceForm extends _$AttendanceForm {
 
   Future<void> submitForm({
     required String authorizationCode,
-    required String description,
+    required String history,
   }) async {
     state = state.copyWith(status: AttendanceFormStatus.loading);
     try {
       final authorizationDateCreate = ref.read(authorizationDateCreateProvider);
       final authorizationDateLimit = ref.read(authorizationDateLimitProvider);
+      final status = ref.read(statusSelectedProvider);
+      final auth = ref.read(authChNotProvider);
 
+      history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+AutCode.: $authorizationCode
+AutCreate.: $authorizationDateCreate
+AutLimite.: $authorizationDateLimit
+Status: ${status?.id}-${status?.name}
+Descrição: $history
+${state.model?.history}
+          ''';
       final attendanceTemp = state.model!.copyWith(
         authorizationCode: authorizationCode,
-        description: description,
+        history: history,
         authorizationDateCreated: authorizationDateCreate,
         authorizationDateLimit: authorizationDateLimit,
+        status: status,
       );
       await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
       ref.invalidate(attendanceListProvider);
@@ -94,7 +123,7 @@ class AttendanceForm extends _$AttendanceForm {
   Future<void> delete() async {
     state = state.copyWith(status: AttendanceFormStatus.loading);
     try {
-      await ref.read(attendanceRepositoryProvider).delete(state.model!.id!);
+      // await ref.read(attendanceRepositoryProvider).delete(state.model!.id!);
       ref.invalidate(attendanceListProvider);
       state = state.copyWith(status: AttendanceFormStatus.success);
     } catch (e, st) {

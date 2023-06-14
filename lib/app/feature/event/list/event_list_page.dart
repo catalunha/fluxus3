@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../routes.dart';
 import 'controller/providers.dart';
 import 'event_obj.dart';
 
@@ -18,12 +16,12 @@ class EventListPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Lista de eventos'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.goNamed(AppPage.eventSave.name, extra: null);
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     context.goNamed(AppPage.eventE.name, extra: null);
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
       body: list.when(data: (data) {
         return ListView.builder(
           itemCount: data.length,

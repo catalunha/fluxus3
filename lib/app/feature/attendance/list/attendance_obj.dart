@@ -76,10 +76,6 @@ class AttendanceObj extends StatelessWidget {
                   : dateFormatHM.format(model.attendance!),
             ),
             AppTextTitleValue(
-              title: 'Descrição: ',
-              value: model.description,
-            ),
-            AppTextTitleValue(
               title: 'Presença confirmada em: ',
               value: model.confirmedPresence == null
                   ? '...'
@@ -88,6 +84,16 @@ class AttendanceObj extends StatelessWidget {
             AppTextTitleValue(
               title: 'Status: ',
               value: model.status?.name,
+            ),
+            ExpansionTile(
+              title: const Text('Histórico'),
+              children: [
+                AppTextTitleValue(
+                  title: 'Histórico: ',
+                  value: '\n${model.history}',
+                  // inColumn: true,
+                ),
+              ],
             ),
             Center(
               child: Wrap(children: [

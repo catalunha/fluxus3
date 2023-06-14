@@ -16,23 +16,19 @@ class EventB4a {
       query.setAmountToSkip((pagination.page - 1) * pagination.limit);
       query.setLimit(pagination.limit);
     }
-    // if (cols.containsKey('${EventEntity.className}.cols')) {
-    //   query.keysToReturn(cols['${EventEntity.className}.cols']!);
-    // }
-    // if (cols.containsKey('${EventEntity.className}.pointers')) {
-    //   query.includeObject(cols['${EventEntity.className}.pointers']!);
-    // } else {
-    //   query.includeObject([
-    //     EventEntity.hour,
-    //     EventEntity.room,
-    //     EventEntity.status,
-    //   ]);
-    // }
-    query.includeObject([
-      EventEntity.hour,
-      EventEntity.room,
-      EventEntity.status,
-    ]);
+    if (cols.containsKey('${EventEntity.className}.cols')) {
+      query.keysToReturn(cols['${EventEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${EventEntity.className}.pointers')) {
+      query.includeObject(cols['${EventEntity.className}.pointers']!);
+    } else {
+      query.includeObject([
+        EventEntity.hour,
+        EventEntity.room,
+        EventEntity.status,
+      ]);
+    }
+
     ParseResponse? response;
     try {
       response = await query.query();
@@ -62,17 +58,18 @@ class EventB4a {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo(EventEntity.id, id);
-    // if (cols.containsKey('${EventEntity.className}.cols')) {
-    //   query.keysToReturn(cols['${EventEntity.className}.cols']!);
-    // }
-    // if (cols.containsKey('${EventEntity.className}.pointers')) {
-    //   query.includeObject(cols['${EventEntity.className}.pointers']!);
-    // }
-    query.includeObject([
-      EventEntity.hour,
-      EventEntity.room,
-      EventEntity.status,
-    ]);
+    if (cols.containsKey('${EventEntity.className}.cols')) {
+      query.keysToReturn(cols['${EventEntity.className}.cols']!);
+    }
+    if (cols.containsKey('${EventEntity.className}.pointers')) {
+      query.includeObject(cols['${EventEntity.className}.pointers']!);
+    } else {
+      query.includeObject([
+        EventEntity.hour,
+        EventEntity.room,
+        EventEntity.status,
+      ]);
+    }
     query.first();
     try {
       var response = await query.query();

@@ -9,8 +9,9 @@ import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
 import 'feature/attendance/search/attendance_search_page.dart';
 import 'feature/error/error_page.dart';
+import 'feature/event/add/event_add_page.dart';
+import 'feature/event/edit/event_edit_page.dart';
 import 'feature/event/list/event_list_page.dart';
-import 'feature/event/save/event_save_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
@@ -395,17 +396,26 @@ final goRouterProv = Provider<GoRouter>(
               },
               routes: [
                 GoRoute(
-                  path: AppPage.eventSave.path,
-                  name: AppPage.eventSave.name,
+                  path: AppPage.eventEdit.path,
+                  name: AppPage.eventEdit.name,
                   builder: (context, state) {
                     final id = state.extra as String?;
-                    return EventSavePage(
+                    return EventEditPage(
                       key: state.pageKey,
                       id: id,
                     );
                   },
                 ),
               ],
+            ),
+            GoRoute(
+              path: AppPage.eventAdd.path,
+              name: AppPage.eventAdd.name,
+              builder: (context, state) {
+                return EventAddPage(
+                  key: state.pageKey,
+                );
+              },
             ),
           ],
         ),
@@ -467,7 +477,8 @@ enum AppPage {
   attendanceAdd('attendanceAdd', 'attendanceAdd'),
   attendanceEdit('attendanceEdit', 'attendanceEdit'),
   eventList('eventList', 'eventList'),
-  eventSave('eventSave', 'eventSave');
+  eventEdit('eventEdit', 'eventEdit'),
+  eventAdd('eventAdd', 'eventAdd');
 
   final String path;
   final String name;

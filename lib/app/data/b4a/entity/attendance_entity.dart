@@ -16,7 +16,7 @@ class AttendanceEntity {
   static const String authorizationDateLimit = 'authorizationDateLimit';
   static const String attendance = 'attendance';
   static const String confirmedPresence = 'confirmedPresence';
-  static const String description = 'description';
+  static const String history = 'history';
   //pointerCols
   static const String professional = 'professional';
   static const String procedure = 'procedure';
@@ -59,7 +59,7 @@ class AttendanceEntity {
       confirmedPresence: parseObject
           .get<DateTime>(AttendanceEntity.confirmedPresence)
           ?.toLocal(),
-      description: parseObject.get(AttendanceEntity.description),
+      history: parseObject.get(AttendanceEntity.history),
       status: parseObject.get(AttendanceEntity.status) != null
           ? StatusEntity().toModel(parseObject.get(AttendanceEntity.status))
           : null,
@@ -127,8 +127,8 @@ class AttendanceEntity {
       parseObject.set<DateTime?>(
           AttendanceEntity.confirmedPresence, model.confirmedPresence);
     }
-    if (model.description != null) {
-      parseObject.set(AttendanceEntity.description, model.description);
+    if (model.history != null) {
+      parseObject.set(AttendanceEntity.history, model.history);
     }
     if (model.status != null) {
       parseObject.set(

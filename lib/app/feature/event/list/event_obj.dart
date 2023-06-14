@@ -87,7 +87,7 @@ class EventObj extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    context.goNamed(AppPage.eventSave.name, extra: model.id);
+                    context.goNamed(AppPage.eventEdit.name, extra: model.id);
                   },
                 ),
               ]),

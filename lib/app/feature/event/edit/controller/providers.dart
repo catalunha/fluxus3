@@ -22,7 +22,7 @@ part 'providers.g.dart';
 FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
   if (id != null) {
     final event = await ref.read(eventRepositoryProvider).readById(id, cols: {
-      "'${EventEntity.className}.cols'": [
+      "${EventEntity.className}.cols": [
         EventEntity.day,
         EventEntity.hour,
         EventEntity.room,
@@ -30,7 +30,7 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
         EventEntity.attendances,
         EventEntity.history,
       ],
-      "'${EventEntity.className}.pointers'": [
+      "${EventEntity.className}.pointers": [
         EventEntity.hour,
         EventEntity.room,
         EventEntity.status,

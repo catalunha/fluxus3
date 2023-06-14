@@ -20,7 +20,7 @@ abstract class AttendanceModel with _$AttendanceModel {
     DateTime? authorizationDateCreated,
     DateTime? authorizationDateLimit,
     DateTime? attendance,
-    String? description,
+    String? history,
     DateTime? confirmedPresence,
     StatusModel? status,
   }) = _AttendanceModel;

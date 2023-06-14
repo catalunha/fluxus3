@@ -10,7 +10,6 @@ import '../../../core/models/patient_model.dart';
 import '../../../core/models/region_model.dart';
 import '../../healthplan/save/healthplan_save_page.dart';
 import '../../region/select/region_select_page.dart';
-import '../../utils/app_delete.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
 import '../../utils/app_textformfield.dart';
@@ -358,12 +357,12 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                           ],
                         ),
                         const SizedBox(height: 15),
-                        AppDelete(
-                          isVisible: data != null,
-                          action: () {
-                            ref.read(patientFormProvider.notifier).delete();
-                          },
-                        ),
+                        // AppDelete(
+                        //   isVisible: data != null,
+                        //   action: () {
+                        //     ref.read(patientFormProvider.notifier).delete();
+                        //   },
+                        // ),
                         const SizedBox(height: 70),
                       ],
                     ),

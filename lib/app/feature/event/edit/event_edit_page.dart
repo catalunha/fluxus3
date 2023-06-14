@@ -20,18 +20,18 @@ import '../../utils/app_textformfield.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
-class EventSavePage extends ConsumerStatefulWidget {
+class EventEditPage extends ConsumerStatefulWidget {
   final String? id;
-  const EventSavePage({
+  const EventEditPage({
     super.key,
     required this.id,
   });
 
   @override
-  ConsumerState<EventSavePage> createState() => _EventSavePageState();
+  ConsumerState<EventEditPage> createState() => _EventEditPageState();
 }
 
-class _EventSavePageState extends ConsumerState<EventSavePage>
+class _EventEditPageState extends ConsumerState<EventEditPage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _historyTec = TextEditingController();
@@ -73,7 +73,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
     final formState = ref.watch(eventFormProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar'),
+        title: const Text('Editar evento'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

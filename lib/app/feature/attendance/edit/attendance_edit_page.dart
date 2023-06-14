@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:validatorless/validatorless.dart';
 
-import '../../utils/app_delete.dart';
+import '../../../core/models/status_model.dart';
+import '../../status/select/status_select_page.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
 import '../../utils/app_textformfield.dart';
@@ -27,7 +29,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _authorizationCodeTec = TextEditingController();
-  final _descriptionTec = TextEditingController();
+  final _historyTec = TextEditingController();
   bool firstTime = true;
   final dateFormat = DateFormat('dd/MM/y');
 
@@ -35,13 +37,13 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
   void initState() {
     super.initState();
     _authorizationCodeTec.text = "";
-    _descriptionTec.text = "";
+    _historyTec.text = "";
   }
 
   @override
   void dispose() {
     _authorizationCodeTec.dispose();
-    _descriptionTec.dispose();
+    _historyTec.dispose();
     super.dispose();
   }
 
@@ -76,7 +78,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
           if (formValid) {
             ref.read(attendanceFormProvider.notifier).submitForm(
                   authorizationCode: _authorizationCodeTec.text,
-                  description: _descriptionTec.text,
+                  history: _historyTec.text,
                 );
           }
         },
@@ -85,10 +87,8 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
       body: attendanceRead.when(
         data: (data) {
           if (data != null && firstTime) {
-            // final formState = ref.read(attendanceFormProvider);
             _authorizationCodeTec.text =
                 formState.model?.authorizationCode ?? '';
-            _descriptionTec.text = formState.model?.description ?? '';
           }
           firstTime = false;
           return Center(
@@ -104,10 +104,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                           label: 'Código da autorização',
                           controller: _authorizationCodeTec,
                         ),
-                        AppTextFormField(
-                          label: 'Descrição do atendimento',
-                          controller: _descriptionTec,
-                        ),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -184,12 +181,63 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                         Text(
                             '${formState.model?.healthPlan?.code}-${formState.model?.healthPlan?.healthPlanType?.name}'),
                         const SizedBox(height: 15),
-                        AppDelete(
-                          isVisible: data != null,
-                          action: () {
-                            ref.read(attendanceFormProvider.notifier).delete();
-                          },
+                        const Text('Selecione um status'),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                StatusModel? result =
+                                    await Navigator.of(context)
+                                        .push<StatusModel>(MaterialPageRoute(
+                                  builder: (context) {
+                                    return const StatusSelectPage();
+                                  },
+                                ));
+
+                                if (result != null) {
+                                  log('$result');
+                                  ref
+                                      .read(statusSelectedProvider.notifier)
+                                      .set(result);
+                                }
+                              },
+                              icon: const Icon(Icons.search),
+                            ),
+                            if (ref.watch(statusSelectedProvider) != null)
+                              Flexible(
+                                child: Text(
+                                  '${ref.watch(statusSelectedProvider)!.name}',
+                                  softWrap: true,
+                                ),
+                              ),
+                            if (ref.watch(statusSelectedProvider) != null)
+                              IconButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(statusSelectedProvider.notifier)
+                                        .set(null);
+                                  },
+                                  icon: const Icon(Icons.delete))
+                          ],
                         ),
+                        AppTextFormField(
+                          label: '* Histórico deste atendimento',
+                          controller: _historyTec,
+                          validator: Validatorless.required(
+                              'Esta informação é obrigatória.'),
+                        ),
+                        ExpansionTile(
+                          title: const Text('Histórico'),
+                          children: [
+                            Text('${formState.model?.history}'),
+                          ],
+                        ),
+                        // AppDelete(
+                        //   isVisible: data != null,
+                        //   action: () {
+                        //     ref.read(attendanceFormProvider.notifier).delete();
+                        //   },
+                        // ),
                         const SizedBox(height: 70),
                       ],
                     ),

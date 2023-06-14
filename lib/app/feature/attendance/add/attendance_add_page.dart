@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:validatorless/validatorless.dart';
 
 import '../../../core/models/patient_model.dart';
 import '../../../core/models/user_profile_model.dart';
@@ -28,7 +29,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _authorizationCodeTec = TextEditingController();
-  final _descriptionTec = TextEditingController();
+  final _historyTec = TextEditingController();
   bool firstTime = true;
   final dateFormat = DateFormat('dd/MM/y');
 
@@ -36,13 +37,13 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
   void initState() {
     super.initState();
     _authorizationCodeTec.text = "";
-    _descriptionTec.text = "";
+    _historyTec.text = "";
   }
 
   @override
   void dispose() {
     _authorizationCodeTec.dispose();
-    _descriptionTec.dispose();
+    _historyTec.dispose();
     super.dispose();
   }
 
@@ -62,6 +63,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
         showLoader(context);
       }
     });
+    final formState = ref.watch(attendanceFormProvider);
 
     final professional = ref.watch(professionalSelectedProvider);
     final procedures = ref.watch(proceduresProvider);
@@ -78,7 +80,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
           if (formValid && procedures.isNotEmpty && healthPlans.length == 1) {
             ref.read(attendanceFormProvider.notifier).submitForm(
                   authorizationCode: _authorizationCodeTec.text,
-                  description: _descriptionTec.text,
+                  history: _historyTec.text,
                 );
           }
           if (procedures.isEmpty) {
@@ -102,10 +104,6 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                     AppTextFormField(
                       label: 'Código da autorização',
                       controller: _authorizationCodeTec,
-                    ),
-                    AppTextFormField(
-                      label: 'Descrição do atendimento',
-                      controller: _descriptionTec,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -283,6 +281,18 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                             .toList(),
                       ),
                     ),
+                    AppTextFormField(
+                      label: '* Histórico deste atendimento',
+                      controller: _historyTec,
+                      validator: Validatorless.required(
+                          'Esta informação é obrigatória.'),
+                    ),
+                    // ExpansionTile(
+                    //   title: const Text('Histórico'),
+                    //   children: [
+                    //     Text('${formState.model?.history}'),
+                    //   ],
+                    // ),
                     const SizedBox(height: 70),
                   ],
                 ),

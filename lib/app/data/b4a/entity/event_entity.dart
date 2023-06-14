@@ -13,45 +13,44 @@ class EventEntity {
   static const String day = 'day';
   static const String hour = 'hour';
   static const String room = 'room';
-  static const String attendances = 'attendances';
   static const String status = 'status';
+  static const String attendances = 'attendances';
   static const String history = 'history';
 
   Future<EventModel> toModel(
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) async {
-    //print('PatientEntity.toModel cols: $cols');
-
     //+++ get attendance
     List<AttendanceModel> attendanceList = [];
-    // if (cols.containsKey('${EventEntity.className}.cols') &&
-    //     cols['${EventEntity.className}.cols']!
-    //         .contains(EventEntity.attendances)) {
-    QueryBuilder<ParseObject> queryAttendanceType =
-        QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
-    queryAttendanceType.whereRelatedTo(
-        EventEntity.attendances, EventEntity.className, parseObject.objectId!);
-    queryAttendanceType.includeObject([
-      'professional',
-      'professional.region',
-      'procedure',
-      'procedure.expertise',
-      'patient',
-      'patient.region',
-      'healthPlan',
-      'healthPlan.healthPlanType',
-      'status',
-    ]);
-    final ParseResponse parseResponse = await queryAttendanceType.query();
-    if (parseResponse.success && parseResponse.results != null) {
-      for (var e in parseResponse.results!) {
-        attendanceList.add(
-            await AttendanceEntity().toModel(e as ParseObject, cols: cols));
+    if (cols.containsKey('${EventEntity.className}.cols') &&
+        cols['${EventEntity.className}.cols']!
+            .contains(EventEntity.attendances)) {
+      print('=====> attendanceList');
+      QueryBuilder<ParseObject> queryAttendanceType =
+          QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+      queryAttendanceType.whereRelatedTo(EventEntity.attendances,
+          EventEntity.className, parseObject.objectId!);
+      queryAttendanceType.includeObject([
+        'professional',
+        'professional.region',
+        'procedure',
+        'procedure.expertise',
+        'patient',
+        'patient.region',
+        'healthPlan',
+        'healthPlan.healthPlanType',
+        'status',
+      ]);
+      final ParseResponse parseResponse = await queryAttendanceType.query();
+      if (parseResponse.success && parseResponse.results != null) {
+        for (var e in parseResponse.results!) {
+          attendanceList.add(
+              await AttendanceEntity().toModel(e as ParseObject, cols: cols));
+        }
       }
     }
-    // }
-    //--- get healthPlan
+    //--- get attendance
 
     EventModel model = EventModel(
       id: parseObject.objectId!,
