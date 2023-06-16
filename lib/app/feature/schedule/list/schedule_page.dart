@@ -91,6 +91,11 @@ class SchedulePage extends ConsumerWidget {
                     minutes: dateTimeStart.minute,
                   ),
                   minutesDuration: 40,
+                  // child: Container(
+                  //   color: Colors.red,
+                  //   child: const Text(
+                  //       'aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk lll mmm nnn ooo ppp qqq rrr sss ttt'),
+                  // ),
                   child: InkWell(
                     onTap: () {
                       // Navigator.of(context).push(
@@ -135,6 +140,17 @@ class SchedulePage extends ConsumerWidget {
           endHour: 19,
           headers: timePlannerHeaders,
           tasks: timePlannerTasks,
+          style: TimePlannerStyle(
+            // backgroundColor: Colors.blueGrey[900],
+            // default value for height is 80
+            cellHeight: 120,
+            // default value for width is 90
+            cellWidth: 120,
+            dividerColor: Colors.white,
+            showScrollBar: true,
+            // horizontalTaskPadding: 5,
+            // borderRadius: const BorderRadius.all(Radius.circular(8)),
+          ),
         );
         return Column(
           children: [

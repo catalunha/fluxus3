@@ -9,8 +9,8 @@ import '../../../../data/b4a/entity/room_entity.dart';
 
 part 'providers.g.dart';
 
-// @riverpod
-@Riverpod(keepAlive: true)
+// @Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
@@ -43,8 +43,6 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
   ref.read(roomSelectedProvider.notifier).set(rooms[0]);
 
   ref.read(eventsProvider.notifier).set(list);
-  final events = ref.read(eventsProvider);
-  print('start events: $events');
   ref.read(eventsFilteredProvider.notifier).set(list);
   return list;
 }
