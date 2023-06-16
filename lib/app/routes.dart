@@ -29,6 +29,7 @@ import 'feature/region/list/region_list_page.dart';
 import 'feature/region/save/region_save_page.dart';
 import 'feature/room/list/room_list_page.dart';
 import 'feature/room/save/room_save_page.dart';
+import 'feature/schedule/list/schedule_page.dart';
 import 'feature/splash/splash_page.dart';
 import 'feature/status/list/status_list_page.dart';
 import 'feature/status/save/status_save_page.dart';
@@ -428,6 +429,15 @@ final goRouterProv = Provider<GoRouter>(
                 );
               },
             ),
+            GoRoute(
+              path: AppPage.schedule.path,
+              name: AppPage.schedule.name,
+              builder: (context, state) {
+                return SchedulePage(
+                  key: state.pageKey,
+                );
+              },
+            ),
           ],
         ),
       ],
@@ -490,7 +500,8 @@ enum AppPage {
   eventSearch('eventSearch', 'eventSearch'),
   eventList('eventList', 'eventList'),
   eventEdit('eventEdit', 'eventEdit'),
-  eventAdd('eventAdd', 'eventAdd');
+  eventAdd('eventAdd', 'eventAdd'),
+  schedule('schedule', 'schedule');
 
   final String path;
   final String name;

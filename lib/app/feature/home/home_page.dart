@@ -90,6 +90,20 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   )
                 ],
               ),
+              HomeModule(
+                title: 'Agenda',
+                // icon: Icons.event_available,
+                icon: Icons.calendar_month,
+                color: Colors.black87,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.schedule.name);
+                    },
+                    icon: const Icon(Icons.view_timeline_sharp),
+                  ),
+                ],
+              ),
               const Divider(
                 height: 10,
               ),
