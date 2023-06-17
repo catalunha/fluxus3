@@ -166,7 +166,9 @@ class EventForm extends _$EventForm {
       final hour = ref.read(hourSelectedProvider);
       final room = ref.read(roomSelectedProvider);
       bool checked = true;
-      if (day != null && hour != null && room != null) {
+      if (day != state.model!.day &&
+          hour != state.model!.hour &&
+          room != state.model!.room) {
         checked = await checkOverBook();
       }
       if (checked) {

@@ -254,6 +254,21 @@ ${state.model?.history}
           ids: [original.id!],
           add: false,
         );
+        final auth = ref.read(authChNotProvider);
+
+        final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Status: ZDQA4njpdN - Agendado
+history: Agendado
+${state.model?.history}
+          ''';
+        final attendanceTemp = AttendanceModel(
+          history: history,
+          status: StatusModel(id: 'ZDQA4njpdN'),
+        );
+        await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
         listFinal.removeWhere((element) => element.id == original.id);
       } else {
         listResult.removeWhere((element) => element.id == original.id);
@@ -267,6 +282,21 @@ ${state.model?.history}
         ids: [result.id!],
         add: true,
       );
+      final auth = ref.read(authChNotProvider);
+
+      final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Status: 9WGnM73WBI - Inserido num evento
+history: Inserido num evento
+${state.model?.history}
+          ''';
+      final attendanceTemp = AttendanceModel(
+        history: history,
+        status: StatusModel(id: '9WGnM73WBI'),
+      );
+      await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
       listFinal.add(result);
     }
     return listFinal;

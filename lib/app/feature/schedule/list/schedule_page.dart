@@ -86,7 +86,7 @@ class SchedulePage extends ConsumerWidget {
                   confirmedPresence++;
                 }
                 tooltipMsgs.add(
-                    '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.patient?.nickname}, ${attendance.healthPlan?.healthPlanType?.name}, ${attendance.patient?.phone}. ${attendance.professional?.nickname}, ${attendance.procedure?.name}.');
+                    '${attendance.id} -${attendance.confirmedPresence != null ? "+" : "-"}${attendance.patient?.nickname}, ${attendance.healthPlan?.healthPlanType?.name}, ${attendance.patient?.phone}. ${attendance.professional?.nickname}, ${attendance.procedure?.name}.');
                 texts.add('${attendance.professional?.nickname}');
               }
               texts

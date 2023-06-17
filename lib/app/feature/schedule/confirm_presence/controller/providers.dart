@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/attendance_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../list/controller/providers.dart';
 import 'states.dart';
@@ -52,19 +54,51 @@ class AttendancePresencForm extends _$AttendancePresencForm {
       for (var attendance in state.all) {
         if (state.confirmed.contains(attendance)) {
           if (attendance.confirmedPresence == null) {
+            final auth = ref.read(authChNotProvider);
+
+            final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Status: RnW37csoJU - presença confirmada
+history: presença confirmada
+${attendance.history}
+          ''';
+            final attendanceTemp = attendance.copyWith(
+              status: StatusModel(id: 'RnW37csoJU'),
+              history: history,
+            );
+
+            await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
             await ref
                 .read(attendanceRepositoryProvider)
                 .confirmPresence(attendance.id!);
           }
         } else {
           if (attendance.confirmedPresence != null) {
+            final auth = ref.read(authChNotProvider);
+
+            final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Status: 9WGnM73WBI - Inserido num evento
+history: Inserido num evento
+${attendance.history}
+          ''';
+            final attendanceTemp = attendance.copyWith(
+              status: StatusModel(id: '9WGnM73WBI'),
+              history: history,
+            );
+            await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
+
             await ref
                 .read(attendanceRepositoryProvider)
                 .unConfirmPresence(attendance.id!);
           }
         }
       }
-      ref.invalidate(scheduleProvider);
+      ref.refresh(scheduleProvider);
       state = state.copyWith(status: AttendancePresencFormStatus.success);
     } catch (e, st) {
       log('$e');
