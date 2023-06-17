@@ -8,8 +8,10 @@ import 'package:uuid/uuid.dart';
 
 import '../../../core/models/attendance_model.dart';
 import '../../../core/models/event_model.dart';
+import '../../../core/models/status_model.dart';
 import '../../event/add/event_add_page.dart';
 import '../../event/edit/event_edit_page.dart';
+import '../../status/select/status_select_page.dart';
 import '../confirm_presence/controller/providers.dart';
 import '../confirm_presence/schedule_presence.dart';
 import 'controller/providers.dart';
@@ -26,6 +28,7 @@ class SchedulePage extends ConsumerWidget {
     final eventsFiltered = ref.watch(eventsFilteredProvider);
     final rooms = ref.watch(roomsProvider);
     final roomSelected = ref.watch(roomSelectedProvider);
+    final status = ref.watch(statusSelectedProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Eventos encontrados'),
@@ -222,6 +225,71 @@ class SchedulePage extends ConsumerWidget {
                     ],
                   ),
                 ),
+                ElevatedButton(
+                    onPressed: () async {
+                      StatusModel? result = await Navigator.of(context)
+                          .push<StatusModel>(MaterialPageRoute(
+                        builder: (context) {
+                          return const StatusSelectPage();
+                        },
+                      ));
+
+                      if (result != null) {
+                        log('$result');
+                        ref.read(statusSelectedProvider.notifier).set(result);
+                      }
+                    },
+                    child: status.when(data: (data) {
+                      return Text(
+                        '${data.name}',
+                        softWrap: true,
+                      );
+                    }, error: (e, st) {
+                      log('$e');
+                      log('$e');
+                      return const Text('Oops');
+                    }, loading: () {
+                      return const Text('...');
+                    })
+                    // child: Text(
+                    //   '${status.name}',
+                    //   softWrap: true,
+                    // ),
+                    ),
+                // Row(
+                //   children: [
+                //     IconButton(
+                //       onPressed: () async {
+                //         StatusModel? result = await Navigator.of(context)
+                //             .push<StatusModel>(MaterialPageRoute(
+                //           builder: (context) {
+                //             return const StatusSelectPage();
+                //           },
+                //         ));
+
+                //         if (result != null) {
+                //           log('$result');
+                //           ref.read(statusSelectedProvider.notifier).set(result);
+                //         }
+                //       },
+                //       icon: const Icon(Icons.search),
+                //     ),
+                //     Flexible(
+                //       child: Text(
+                //         '${ref.watch(statusSelectedProvider)!.name}',
+                //         softWrap: true,
+                //       ),
+                //     ),
+                //     // if (ref.watch(statusSelectedProvider) != null)
+                //     //   IconButton(
+                //     //       onPressed: () {
+                //     //         ref
+                //     //             .read(statusSelectedProvider.notifier)
+                //     //             .set(null);
+                //     //       },
+                //     //       icon: const Icon(Icons.delete))
+                //   ],
+                // ),
                 for (var room in rooms) ...[
                   CircleAvatar(
                     radius: 20,

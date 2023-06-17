@@ -1,12 +1,13 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
 import '../../../../core/models/room_model.dart';
+import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
+import '../../../../data/b4a/entity/status_entity.dart';
 
 part 'providers.g.dart';
 
@@ -21,6 +22,11 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
       EventEntity.day, DateTime(firstDay.year, firstDay.month, firstDay.day));
   query.whereLessThanOrEqualTo(EventEntity.day,
       DateTime(lastDay.year, lastDay.month, lastDay.day, 23, 59));
+  query.whereEqualTo(
+      EventEntity.status,
+      (ParseObject(StatusEntity.className)
+            ..objectId = ref.watch(statusCurrentProvider).id)
+          .toPointer());
   final list = await ref.read(eventRepositoryProvider).list(query, cols: {
     "${EventEntity.className}.cols": [
       EventEntity.day,
@@ -148,5 +154,44 @@ class EventsFiltered extends _$EventsFiltered {
     ];
     print('filter.eventsTemp: $eventsTemp');
     state = eventsTemp;
+  }
+}
+
+@riverpod
+class StatusCurrent extends _$StatusCurrent {
+  @override
+  StatusModel build() {
+    return StatusModel(id: 'ZDQA4njpdN');
+  }
+
+  void set(StatusModel? value) {
+    state = value ?? StatusModel(id: 'ZDQA4njpdN');
+  }
+}
+
+@riverpod
+class StatusSelected extends _$StatusSelected {
+  @override
+  Future<StatusModel> build() async {
+    final status =
+        await ref.read(statusRepositoryProvider).readById('ZDQA4njpdN');
+    ref.read(statusCurrentProvider.notifier).set(status);
+    return status!;
+  }
+
+  Future<void> set(StatusModel? value) async {
+    state = const AsyncLoading();
+    // state = await AsyncValue.guard(() => value??StatusModel(id: 'ZDQA4njpdN'));
+    try {
+      if (value != null) {
+        state = AsyncValue.data(value);
+        ref.read(statusCurrentProvider.notifier).set(value);
+        ref.refresh(scheduleProvider);
+      } else {
+        throw Exception();
+      }
+    } catch (error, stackTrace) {
+      state = AsyncValue.error('Erro em buscar status na agenda', stackTrace);
+    }
   }
 }
