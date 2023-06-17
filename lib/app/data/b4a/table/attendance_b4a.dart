@@ -148,4 +148,55 @@ class AttendanceB4a {
       );
     }
   }
+
+  Future<bool> confirmPresence(String modelId) async {
+    ParseResponse? parseResponse;
+    try {
+      final parseObject = ParseObject(AttendanceEntity.className);
+      parseObject.objectId = modelId;
+      parseObject.set<DateTime?>(
+          AttendanceEntity.confirmedPresence, DateTime.now());
+
+      parseResponse = await parseObject.save();
+      if (parseResponse.success && parseResponse.results != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception {
+      var errorTranslated =
+          ParseErrorTranslate.translate(parseResponse!.error!);
+      throw B4aException(
+        errorTranslated,
+        where: 'AttendanceRepositoryB4a.delete',
+        originalError:
+            '${parseResponse.error!.code} -${parseResponse.error!.message}',
+      );
+    }
+  }
+
+  Future<bool> unConfirmPresence(String modelId) async {
+    ParseResponse? parseResponse;
+    try {
+      final parseObject = ParseObject(AttendanceEntity.className);
+      parseObject.objectId = modelId;
+      parseObject.unset(AttendanceEntity.confirmedPresence);
+
+      parseResponse = await parseObject.save();
+      if (parseResponse.success && parseResponse.results != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception {
+      var errorTranslated =
+          ParseErrorTranslate.translate(parseResponse!.error!);
+      throw B4aException(
+        errorTranslated,
+        where: 'AttendanceRepositoryB4a.delete',
+        originalError:
+            '${parseResponse.error!.code} -${parseResponse.error!.message}',
+      );
+    }
+  }
 }

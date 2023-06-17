@@ -24,4 +24,8 @@ class AttendanceRepository {
   Future<String> update(AttendanceModel model) => apiB4a.update(model);
 
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
+  Future<bool> confirmPresence(String modelId) =>
+      apiB4a.confirmPresence(modelId);
+  Future<bool> unConfirmPresence(String modelId) =>
+      apiB4a.unConfirmPresence(modelId);
 }

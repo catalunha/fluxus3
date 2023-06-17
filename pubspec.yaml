@@ -31,6 +31,7 @@ dependencies:
   url_launcher: ^6.1.9
   font_awesome_flutter: ^10.4.0
   time_planner: ^0.1.1
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:

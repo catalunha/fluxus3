@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:time_planner/time_planner.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core/models/attendance_model.dart';
 import '../../../core/models/event_model.dart';
+import '../../event/add/event_add_page.dart';
+import '../confirm_presence/controller/providers.dart';
+import '../confirm_presence/schedule_presence.dart';
 import 'controller/providers.dart';
 
 class SchedulePage extends ConsumerWidget {
@@ -14,7 +18,7 @@ class SchedulePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateFormat = DateFormat('dd/MM/y', 'pt_BR');
+    final dateFormat = DateFormat('dd/MM', 'pt_BR');
     final dateFormatDay = DateFormat('E', 'pt_BR');
 
     final list = ref.watch(scheduleProvider);
@@ -24,6 +28,14 @@ class SchedulePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Eventos encontrados'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ref.invalidate(scheduleProvider);
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
       ),
       body: list.when(data: (data) {
         // if (eventsFiltered.isEmpty) {
@@ -59,29 +71,28 @@ class SchedulePage extends ConsumerWidget {
               List<String> texts = [];
               List<String> tooltipMsgs = [];
               bool allConfirmedPresence = false;
-              if (e.attendances?.length == 1) {
-                for (AttendanceModel attendance in e.attendances ?? []) {
-                  texts.add('${attendance.professional?.nickname}');
-                  texts.add('${attendance.patient?.nickname}');
-                  allConfirmedPresence =
-                      attendance.confirmedPresence == null ? false : true;
+              // if (e.attendances?.length == 1) {
+              //   for (AttendanceModel attendance in e.attendances ?? []) {
+              //     texts.add('${attendance.professional?.nickname}');
+              //     texts.add('${attendance.patient?.nickname}');
+              //     allConfirmedPresence =
+              //         attendance.confirmedPresence == null ? false : true;
+              //   }
+              // } else {
+              int confirmedPresence = 0;
+              for (AttendanceModel attendance in e.attendances ?? []) {
+                if (attendance.confirmedPresence != null) {
+                  confirmedPresence++;
                 }
-              } else {
-                int confirmedPresence = 0;
-                for (AttendanceModel attendance in e.attendances ?? []) {
-                  if (attendance.confirmedPresence != null) {
-                    confirmedPresence++;
-                  }
-                  tooltipMsgs.add(
-                      '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname} (${attendance.procedure?.code}) - ${attendance.patient?.nickname} ( ${attendance.healthPlan?.healthPlanType?.name}) ${attendance.patient?.phone}');
-                  texts.add(
-                      '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.professional?.nickname}');
-                }
-                texts.add(
-                    '$confirmedPresence/${e.attendances?.length} Cfm/Ats. ');
-                allConfirmedPresence =
-                    confirmedPresence != e.attendances?.length ? false : true;
+                tooltipMsgs.add(
+                    '${attendance.confirmedPresence != null ? "+" : "-"}${attendance.patient?.nickname}, ${attendance.healthPlan?.healthPlanType?.name}, ${attendance.patient?.phone}. ${attendance.professional?.nickname}, ${attendance.procedure?.name}.');
+                texts.add('${attendance.professional?.nickname}');
               }
+              texts
+                  .add('\n$confirmedPresence / ${e.attendances!.length} P/A. ');
+              allConfirmedPresence =
+                  confirmedPresence != e.attendances?.length ? false : true;
+              // }
               timePlannerTasks.add(
                 TimePlannerTask(
                   color: allConfirmedPresence ? Colors.green : Colors.black,
@@ -96,37 +107,23 @@ class SchedulePage extends ConsumerWidget {
                   //   child: const Text(
                   //       'aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk lll mmm nnn ooo ppp qqq rrr sss ttt'),
                   // ),
-                  child: InkWell(
-                    onTap: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (_) => BlocProvider.value(
-                      //       value: BlocProvider.of<ScheduleSearchBloc>(context),
-                      //       child: EventAddPage(model: e),
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                    child: Tooltip(
-                        message: tooltipMsgs.join('\n'),
-                        child: Text(texts.join('\n'))),
-                  ),
+                  child: Tooltip(
+                      message: tooltipMsgs.join('\n'),
+                      child: Text(texts.join(', '))),
                   onTap: () async {
-                    // await showDialog(
-                    //   barrierDismissible: false,
-                    //   context: context,
-                    //   builder: (_) {
-                    //     return ;
-                    //     // return ScheduleConfirmAttendancePage(
-                    //     //     models: models);
+                    ref
+                        .watch(attendancePresencFormProvider.notifier)
+                        .set(e.attendances!);
 
-                    //     // return BlocProvider.value(
-                    //     //   value: BlocProvider.of<ScheduleSearchBloc>(
-                    //     //       context),
-                    //     //   child: ScheduleConfirmAttendancePage(event: e),
-                    //     // );
-                    //   },
-                    // );
+                    await showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (_) {
+                        return SchedulePresence(
+                          event: e,
+                        );
+                      },
+                    );
                   },
                 ),
               );
@@ -135,7 +132,7 @@ class SchedulePage extends ConsumerWidget {
           day++;
         }
         Widget newPlanner = TimePlanner(
-          key: ValueKey(eventsFiltered.hashCode),
+          key: ValueKey(const Uuid().v4()),
           startHour: 7,
           endHour: 19,
           headers: timePlannerHeaders,
@@ -156,6 +153,50 @@ class SchedulePage extends ConsumerWidget {
           children: [
             Wrap(
               children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    DateTime? newDate = await showDatePicker(
+                      context: context,
+                      initialDate: ref.watch(fistDayProvider),
+                      firstDate: DateTime(DateTime.now().year - 1),
+                      lastDate: DateTime(DateTime.now().year + 1),
+                    );
+                    ref
+                        .watch(fistDayProvider.notifier)
+                        .set(newDate ?? DateTime.now());
+                    ref.invalidate(scheduleProvider);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.date_range),
+                      const SizedBox(width: 10),
+                      Text(dateFormat.format(ref.watch(fistDayProvider)!)),
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    DateTime? newDate = await showDatePicker(
+                      context: context,
+                      initialDate: ref.watch(lastDayProvider),
+                      firstDate: DateTime(DateTime.now().year - 1),
+                      lastDate: DateTime(DateTime.now().year + 1),
+                    );
+                    ref
+                        .watch(lastDayProvider.notifier)
+                        .set(newDate ?? DateTime.now());
+                    ref.invalidate(scheduleProvider);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.date_range),
+                      const SizedBox(width: 10),
+                      Text(dateFormat.format(ref.watch(lastDayProvider)!)),
+                    ],
+                  ),
+                ),
                 for (var room in rooms) ...[
                   CircleAvatar(
                     radius: 20,
@@ -168,7 +209,7 @@ class SchedulePage extends ConsumerWidget {
                       },
                     ),
                   )
-                ]
+                ],
               ],
             ),
             Expanded(child: newPlanner),
@@ -188,14 +229,9 @@ class SchedulePage extends ConsumerWidget {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (_) => BlocProvider.value(
-          //       value: BlocProvider.of<ScheduleSearchBloc>(context),
-          //       child: const EventAddPage(model: null),
-          //     ),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => const EventAddPage()),
+          );
         },
         child: const Icon(Icons.add),
       ),

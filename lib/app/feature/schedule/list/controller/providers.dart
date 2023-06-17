@@ -1,6 +1,7 @@
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/repositories/providers.dart';
