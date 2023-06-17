@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/models/attendance_model.dart';
 import '../../../core/models/event_model.dart';
 import '../../event/add/event_add_page.dart';
+import '../../event/edit/event_edit_page.dart';
 import '../confirm_presence/controller/providers.dart';
 import '../confirm_presence/schedule_presence.dart';
 import 'controller/providers.dart';
@@ -107,24 +108,48 @@ class SchedulePage extends ConsumerWidget {
                   //   child: const Text(
                   //       'aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk lll mmm nnn ooo ppp qqq rrr sss ttt'),
                   // ),
-                  child: Tooltip(
-                      message: tooltipMsgs.join('\n'),
-                      child: Text(texts.join(', '))),
-                  onTap: () async {
-                    ref
-                        .watch(attendancePresencFormProvider.notifier)
-                        .set(e.attendances!);
+                  child: InkWell(
+                    onTap: () async {
+                      ref
+                          .watch(attendancePresencFormProvider.notifier)
+                          .set(e.attendances!);
 
-                    await showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (_) {
-                        return SchedulePresence(
-                          event: e,
-                        );
-                      },
-                    );
-                  },
+                      await showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (_) {
+                          return SchedulePresence(
+                            event: e,
+                          );
+                        },
+                      );
+                    },
+                    onDoubleTap: () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => EventEditPage(id: e.id)),
+                      );
+                      ref.invalidate(scheduleProvider);
+                    },
+                    child: Tooltip(
+                        message: tooltipMsgs.join('\n'),
+                        child: Text(texts.join(', '))),
+                  ),
+                  // onTap: () async {
+                  //   ref
+                  //       .watch(attendancePresencFormProvider.notifier)
+                  //       .set(e.attendances!);
+
+                  //   await showDialog(
+                  //     barrierDismissible: false,
+                  //     context: context,
+                  //     builder: (_) {
+                  //       return SchedulePresence(
+                  //         event: e,
+                  //       );
+                  //     },
+                  //   );
+                  // },
                 ),
               );
             }
