@@ -223,7 +223,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                                           .duplicate(e.id!);
                                     },
                                   ),
-                                  Text('${e.name}'),
+                                  Text('${e.code} - ${e.name}'),
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () {

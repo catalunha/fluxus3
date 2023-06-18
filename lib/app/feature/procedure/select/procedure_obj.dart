@@ -20,7 +20,8 @@ class ProcedureObj extends ConsumerWidget {
     }
     return Card(
       child: ListTile(
-        title: Text('${model.name}'),
+        title: Text('${model.code} - ${model.name}'),
+        subtitle: Text('${model.description}'),
         tileColor: color,
         onTap: () {
           if (isSingleValue) {

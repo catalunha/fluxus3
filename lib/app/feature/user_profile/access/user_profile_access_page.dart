@@ -226,7 +226,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                               .map(
                                 (e) => Row(
                                   children: [
-                                    Text('${e.name}'),
+                                    Text('${e.code} - ${e.name}'),
                                     IconButton(
                                       icon: const Icon(Icons.delete),
                                       onPressed: () {
