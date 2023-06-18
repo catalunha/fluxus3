@@ -14,7 +14,7 @@ class AttendanceListPage extends ConsumerWidget {
     final list = ref.watch(attendanceListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Atendimentos'),
+        title: Text('Lista com ${list.asData?.value.length} Atendimentos'),
       ),
       body: list.when(data: (data) {
         return ListView.builder(

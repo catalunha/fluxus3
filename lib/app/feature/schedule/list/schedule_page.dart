@@ -31,7 +31,7 @@ class SchedulePage extends ConsumerWidget {
     final status = ref.watch(statusSelectedProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Eventos encontrados'),
+        title: Text('Agenda com ${list.asData?.value.length} eventos'),
         actions: [
           IconButton(
             onPressed: () {

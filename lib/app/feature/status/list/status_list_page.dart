@@ -16,7 +16,7 @@ class StatusListPage extends ConsumerWidget {
     final list = ref.watch(statusListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de status'),
+        title: Text('Lista com ${list.asData?.value.length} status'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

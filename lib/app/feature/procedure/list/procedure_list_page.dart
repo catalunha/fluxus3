@@ -16,7 +16,7 @@ class ProcedureListPage extends ConsumerWidget {
     final list = ref.watch(procedureListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de procedimentos'),
+        title: Text('Lista com ${list.asData?.value.length} procedimentos'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -19,7 +19,7 @@ class PatientListPage extends ConsumerWidget {
     final listFiltered = ref.watch(patientFilteredProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de pacientes'),
+        title: Text('Lista com ${list.asData?.value.length} pacientes'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

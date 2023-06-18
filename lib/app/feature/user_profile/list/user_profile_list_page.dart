@@ -15,7 +15,7 @@ class UserProfileListPage extends ConsumerWidget {
     final list = ref.watch(userProfileListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de usuarios'),
+        title: Text('Lista com ${list.asData?.value.length} usuários'),
       ),
       body: list.when(data: (data) {
         return ListView.builder(

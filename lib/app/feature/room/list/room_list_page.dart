@@ -16,7 +16,7 @@ class RoomListPage extends ConsumerWidget {
     final list = ref.watch(roomListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de salas'),
+        title: Text('Lista com ${list.asData?.value.length} salas'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

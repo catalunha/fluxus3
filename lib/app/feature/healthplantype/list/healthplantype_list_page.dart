@@ -16,7 +16,7 @@ class HealthPlanTypeListPage extends ConsumerWidget {
     final list = ref.watch(healthPlanTypeListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Planos de Saúde'),
+        title: Text('Lista com ${list.asData?.value.length} Planos de Saúde'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

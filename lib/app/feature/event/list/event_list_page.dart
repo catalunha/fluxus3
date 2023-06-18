@@ -14,7 +14,7 @@ class EventListPage extends ConsumerWidget {
     final list = ref.watch(eventListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de eventos'),
+        title: Text('Lista com ${list.asData?.value.length} eventos'),
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {

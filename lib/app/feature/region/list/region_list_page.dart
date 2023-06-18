@@ -16,7 +16,7 @@ class RegionListPage extends ConsumerWidget {
     final list = ref.watch(regionListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de regiões'),
+        title: Text('Lista com ${list.asData?.value.length} regiões'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
