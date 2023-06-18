@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/patient_model.dart';
 import '../../../../data/b4a/entity/patient_entity.dart';
-import 'states.dart';
 
 part 'providers.g.dart';
 
@@ -25,17 +24,17 @@ FutureOr<List<PatientModel>> patientList(PatientListRef ref) async {
   return list;
 }
 
-@riverpod
-class PatientFilteredBy extends _$PatientFilteredBy {
-  @override
-  PatientFilterStatus build() {
-    return PatientFilterStatus.name;
-  }
+// @riverpod
+// class PatientFilteredBy extends _$PatientFilteredBy {
+//   @override
+//   PatientFilterStatus build() {
+//     return PatientFilterStatus.name;
+//   }
 
-  void set(PatientFilterStatus value) {
-    state = value;
-  }
-}
+//   void set(PatientFilterStatus value) {
+//     state = value;
+//   }
+// }
 
 @riverpod
 class PatientSearch extends _$PatientSearch {
@@ -63,7 +62,20 @@ class PatientListData extends _$PatientListData {
 
 @riverpod
 List<PatientModel> patientFiltered(PatientFilteredRef ref) {
-  final filterSelected = ref.watch(patientFilteredByProvider);
+  // final filterSelected = ref.watch(patientFilteredByProvider);
+  final search = ref.watch(patientSearchProvider);
+  final data = ref.watch(patientListDataProvider);
+
+  return data
+      .where((element) => (element.name != null &&
+          element.name!.toLowerCase().contains(search)))
+      .toList();
+}
+
+/*
+@riverpod
+List<PatientModel> patientFiltered(PatientFilteredRef ref) {
+  // final filterSelected = ref.watch(patientFilteredByProvider);
   final search = ref.watch(patientSearchProvider);
   final data = ref.watch(patientListDataProvider);
 
@@ -82,3 +94,4 @@ List<PatientModel> patientFiltered(PatientFilteredRef ref) {
         .toList(),
   };
 }
+*/

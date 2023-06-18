@@ -203,8 +203,8 @@ class PatientForm extends _$PatientForm {
       if (state.model != null) {
         patientTemp = state.model!.copyWith(
           name: name,
-          email: email,
           nickname: nickname,
+          email: email,
           phone: phone,
           cpf: cpf,
           address: address,

@@ -7,3 +7,9 @@ Gerenciamento de agenda para proClinica e proKids
 Colocar history,isDeleted em attendance
 Colocar isDeleted em event
 corrigir   query.orderByDescending('name');
+
+
+
+retirar filtro de paciente
+colocar nickname automatico
+criacao de plano completar

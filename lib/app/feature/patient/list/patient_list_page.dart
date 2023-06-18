@@ -6,8 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';
 import 'controller/providers.dart';
-import 'controller/states.dart';
-import 'filter_mark.dart';
 import 'patient_obj.dart';
 
 class PatientListPage extends ConsumerWidget {
@@ -48,32 +46,19 @@ class PatientListPage extends ConsumerWidget {
         // );
         return Column(
           children: [
-            Wrap(
-              alignment: WrapAlignment.center,
-              runAlignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                SizedBox(
-                  width: 300,
-                  child: TextField(
-                    // decoration: const InputDecoration(
-                    //   border: OutlineInputBorder(),
-                    //   hintText: 'digite um texto para pesquisa',
-                    // ),
-                    onChanged: (value) {
-                      ref.read(patientSearchProvider.notifier).set(value);
-                    },
-                  ),
-                ),
-                const Text('Buscar em:'),
-                const FilterMark(
-                    title: 'Nome', status: PatientFilterStatus.name),
-                const FilterMark(
-                    title: 'Celular', status: PatientFilterStatus.phone),
-                const FilterMark(
-                    title: 'Nome Curto', status: PatientFilterStatus.nickname),
-              ],
+            SizedBox(
+              width: 300,
+              child: TextField(
+                // decoration: const InputDecoration(
+                //   border: OutlineInputBorder(),
+                //   hintText: 'digite um texto para pesquisa',
+                // ),
+                onChanged: (value) {
+                  ref.read(patientSearchProvider.notifier).set(value);
+                },
+              ),
             ),
+
             Flexible(
               child: ListView.builder(
                 itemCount: listFiltered.length,
