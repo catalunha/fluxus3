@@ -10,6 +10,8 @@ import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../../../data/b4a/entity/patient_entity.dart';
+import '../../../../data/b4a/entity/user_profile_entity.dart';
 import 'states.dart';
 
 part 'providers.g.dart';
@@ -75,9 +77,24 @@ class ProfessionalSelected extends _$ProfessionalSelected {
     return null;
   }
 
-  void set(UserProfileModel? value) {
-    state = value;
-    ref.watch(proceduresProvider.notifier).set(state?.procedures ?? []);
+  void set(UserProfileModel? value) async {
+    if (value != null) {
+      final userProfile = await ref
+          .read(userProfileRepositoryProvider)
+          .readById(value.id, cols: {
+        "${UserProfileEntity.className}.cols": [
+          UserProfileEntity.userName,
+          UserProfileEntity.email,
+          UserProfileEntity.isActive,
+          UserProfileEntity.access,
+          UserProfileEntity.nickname,
+          UserProfileEntity.procedures,
+        ]
+      });
+
+      state = userProfile;
+      ref.watch(proceduresProvider.notifier).set(state?.procedures ?? []);
+    }
   }
 }
 
@@ -119,9 +136,28 @@ class PatientSelected extends _$PatientSelected {
     return null;
   }
 
-  void set(PatientModel? value) {
-    state = value;
-    ref.watch(healthPlansProvider.notifier).set(state?.healthPlans ?? []);
+  void set(PatientModel? value) async {
+    if (value != null) {
+      final patient =
+          await ref.read(patientRepositoryProvider).readById(value.id!, cols: {
+        "${PatientEntity.className}.cols": [
+          // PatientEntity.name,
+          // PatientEntity.email,
+          PatientEntity.nickname,
+          // PatientEntity.cpf,
+          // PatientEntity.phone,
+          // PatientEntity.isFemale,
+          // PatientEntity.birthday,
+          // PatientEntity.address,
+          // PatientEntity.region,
+          // PatientEntity.family,
+          PatientEntity.healthPlans,
+        ],
+        "${PatientEntity.className}.pointers": [PatientEntity.region],
+      });
+      state = patient;
+      ref.watch(healthPlansProvider.notifier).set(state?.healthPlans ?? []);
+    }
   }
 }
 
@@ -220,4 +256,16 @@ ${state.model?.history}
   //         status: AttendanceFormStatus.error, error: 'Erro em editar cargo');
   //   }
   // }
+}
+
+@riverpod
+class AttendanceAddStatusState extends _$AttendanceAddStatusState {
+  @override
+  AttendanceAddStatus build() {
+    return AttendanceAddStatus.initial;
+  }
+
+  void set(AttendanceAddStatus value) {
+    state = value;
+  }
 }

@@ -15,9 +15,9 @@ FutureOr<List<PatientModel>> patientSelect(PatientSelectRef ref) async {
   final list = await ref.read(patientRepositoryProvider).list(query, cols: {
     "${PatientEntity.className}.cols": [
       PatientEntity.name,
-      PatientEntity.nickname,
+      // PatientEntity.nickname,
       PatientEntity.phone,
-      PatientEntity.healthPlans,
+      // PatientEntity.healthPlans,
     ],
   });
   return list;

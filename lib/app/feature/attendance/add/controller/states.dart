@@ -6,6 +6,8 @@ part 'states.freezed.dart';
 
 enum AttendanceFormStatus { initial, loading, success, error }
 
+enum AttendanceAddStatus { initial, loading, success, error }
+
 @freezed
 abstract class AttendanceFormState with _$AttendanceFormState {
   factory AttendanceFormState({

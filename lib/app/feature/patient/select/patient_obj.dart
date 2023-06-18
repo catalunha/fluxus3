@@ -21,6 +21,7 @@ class PatientObj extends ConsumerWidget {
     return Card(
       child: ListTile(
         title: Text('${model.name}'),
+        subtitle: Text('${model.phone}'),
         tileColor: color,
         onTap: () {
           if (isSingleValue) {

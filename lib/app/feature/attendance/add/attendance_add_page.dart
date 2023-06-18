@@ -49,17 +49,17 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AttendanceFormState>(attendanceFormProvider,
+    ref.listen<AttendanceAddStatus>(attendanceAddStatusStateProvider,
         (previous, next) async {
-      if (next.status == AttendanceFormStatus.error) {
+      if (next == AttendanceAddStatus.error) {
         hideLoader(context);
-        showMessageError(context, next.error);
+        showMessageError(context, 'Erro em AttendanceAddPage');
       }
-      if (next.status == AttendanceFormStatus.success) {
+      if (next == AttendanceAddStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         context.pop(); //sai da pagina
       }
-      if (next.status == AttendanceFormStatus.loading) {
+      if (next == AttendanceAddStatus.loading) {
         showLoader(context);
       }
     });
