@@ -149,7 +149,7 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                             if (ref.watch(hourSelectedProvider) != null)
                               Flexible(
                                 child: Text(
-                                  '${ref.watch(hourSelectedProvider)!.name} das ${ref.watch(hourSelectedProvider)!.start} às ${ref.watch(hourSelectedProvider)!.end}',
+                                  '${ref.watch(hourSelectedProvider)!.start} às ${ref.watch(hourSelectedProvider)!.end}',
                                   softWrap: true,
                                 ),
                               ),

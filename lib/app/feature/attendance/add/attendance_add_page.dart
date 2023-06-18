@@ -262,7 +262,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                         if (patient != null)
                           Flexible(
                             child: Text(
-                              '${patient.nickname}',
+                              '${patient.name}',
                               softWrap: true,
                             ),
                           ),

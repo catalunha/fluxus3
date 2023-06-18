@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluxus3/app/feature/hour/select/hour_obj2.dart';
 
 import 'controller/providers.dart';
-import 'hour_obj.dart';
 
 class HourSelectPage extends ConsumerWidget {
   final bool isSingleValue;
@@ -21,16 +21,21 @@ class HourSelectPage extends ConsumerWidget {
       ),
       body: list.when(
         data: (data) {
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final level = data[index];
-              return HourObj(
-                model: level,
-                isSingleValue: isSingleValue,
-              );
-            },
+          return Wrap(
+            children: [
+              for (var hour in data) ...[HourObj2(model: hour)]
+            ],
           );
+          // return ListView.builder(
+          //   itemCount: data.length,
+          //   itemBuilder: (context, index) {
+          //     final level = data[index];
+          //     return HourObj(
+          //       model: level,
+          //       isSingleValue: isSingleValue,
+          //     );
+          //   },
+          // );
         },
         error: (error, stackTrace) {
           log('Erro em Lista de usuarios');

@@ -21,8 +21,8 @@ class UserProfileObj extends ConsumerWidget {
     }
     return Card(
       child: ListTile(
-        title: Text('${model.name}'),
-        subtitle: Text('${model.nickname}'),
+        title: Text('${model.nickname}'),
+        // subtitle: Text('${model.nickname}'),
         tileColor: color,
         onTap: () {
           if (isSingleValue) {

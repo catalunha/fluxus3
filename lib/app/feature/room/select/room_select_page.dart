@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'controller/providers.dart';
-import 'room_obj.dart';
+import 'room_obj2.dart';
 
 class RoomSelectPage extends ConsumerWidget {
   final bool isSingleValue;
@@ -17,10 +17,16 @@ class RoomSelectPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('Selecione ${isSingleValue ? 'um cargo' : 'alguns cargos'}'),
+            Text('Selecione ${isSingleValue ? 'uma sala' : 'algumas salas'}'),
       ),
       body: list.when(
         data: (data) {
+          return Wrap(
+            children: [
+              for (var hour in data) ...[RoomObj2(model: hour)]
+            ],
+          );
+          /*
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
@@ -31,6 +37,7 @@ class RoomSelectPage extends ConsumerWidget {
               );
             },
           );
+          */
         },
         error: (error, stackTrace) {
           log('Erro em Lista de usuarios');

@@ -13,7 +13,14 @@ FutureOr<List<PatientModel>> patientList(PatientListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
   query.orderByAscending('name');
-  final list = await ref.watch(patientRepositoryProvider).list(query);
+  final list = await ref.watch(patientRepositoryProvider).list(query, cols: {
+    "${PatientEntity.className}.cols": [
+      PatientEntity.name,
+      // PatientEntity.nickname,
+      PatientEntity.phone,
+      // PatientEntity.healthPlans,
+    ],
+  });
   ref.watch(patientListDataProvider.notifier).set(list);
   return list;
 }

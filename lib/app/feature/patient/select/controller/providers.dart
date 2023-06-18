@@ -7,6 +7,7 @@ import '../../../../data/b4a/entity/patient_entity.dart';
 
 part 'providers.g.dart';
 
+// @riverpod
 @Riverpod(keepAlive: true)
 FutureOr<List<PatientModel>> patientSelect(PatientSelectRef ref) async {
   QueryBuilder<ParseObject> query =
@@ -20,7 +21,45 @@ FutureOr<List<PatientModel>> patientSelect(PatientSelectRef ref) async {
       // PatientEntity.healthPlans,
     ],
   });
+  ref.watch(patientListDataProvider.notifier).set(list);
+
   return list;
+}
+
+// @riverpod
+@Riverpod(keepAlive: true)
+class PatientListData extends _$PatientListData {
+  @override
+  List<PatientModel> build() {
+    return [];
+  }
+
+  void set(List<PatientModel> value) {
+    state = value;
+  }
+}
+
+@riverpod
+class PatientSearch extends _$PatientSearch {
+  @override
+  String build() {
+    return '';
+  }
+
+  void set(String value) {
+    state = value;
+  }
+}
+
+@riverpod
+List<PatientModel> patientFiltered(PatientFilteredRef ref) {
+  final search = ref.watch(patientSearchProvider);
+  final data = ref.watch(patientListDataProvider);
+
+  return data
+      .where((element) => (element.name != null &&
+          element.name!.toLowerCase().contains(search)))
+      .toList();
 }
 
 @riverpod

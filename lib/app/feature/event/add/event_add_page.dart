@@ -148,7 +148,7 @@ class _EventAddPageState extends ConsumerState<EventAddPage>
                         if (ref.watch(hourSelectedProvider) != null)
                           Flexible(
                             child: Text(
-                              '${ref.watch(hourSelectedProvider)!.name} das ${ref.watch(hourSelectedProvider)!.start} às ${ref.watch(hourSelectedProvider)!.end}',
+                              '${ref.watch(hourSelectedProvider)!.start} às ${ref.watch(hourSelectedProvider)!.end}',
                               softWrap: true,
                             ),
                           ),

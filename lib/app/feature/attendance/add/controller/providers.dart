@@ -141,9 +141,9 @@ class PatientSelected extends _$PatientSelected {
       final patient =
           await ref.read(patientRepositoryProvider).readById(value.id!, cols: {
         "${PatientEntity.className}.cols": [
-          // PatientEntity.name,
+          PatientEntity.name,
           // PatientEntity.email,
-          PatientEntity.nickname,
+          // PatientEntity.nickname,
           // PatientEntity.cpf,
           // PatientEntity.phone,
           // PatientEntity.isFemale,
