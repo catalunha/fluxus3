@@ -1,9 +1,20 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'routes.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -16,7 +27,8 @@ class App extends ConsumerWidget {
       routeInformationParser: goRouterProvIW.routeInformationParser,
       routeInformationProvider: goRouterProvIW.routeInformationProvider,
       routerDelegate: goRouterProvIW.routerDelegate,
-      title: 'RepeatAndLearn',
+      scrollBehavior: MyCustomScrollBehavior(),
+      title: 'Fluxus 3.0',
       theme: ThemeData.dark(useMaterial3: true),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
