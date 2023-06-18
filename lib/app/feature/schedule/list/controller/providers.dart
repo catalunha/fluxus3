@@ -126,7 +126,7 @@ class Events extends _$Events {
   }
 
   void set(List<EventModel> value) {
-    print('Events.set: $value');
+    // print('Events.set: $value');
     state = value;
   }
 }
@@ -146,13 +146,13 @@ class EventsFiltered extends _$EventsFiltered {
 
   void filter() {
     final events = ref.watch(eventsProvider);
-    print('filter.events: $events');
+    // print('filter.events: $events');
     final room = ref.watch(roomSelectedProvider);
-    print('filter.room: $room');
+    // print('filter.room: $room');
     final eventsTemp = [
       ...events.where((e) => e.room?.id == room!.id).toList()
     ];
-    print('filter.eventsTemp: $eventsTemp');
+    // print('filter.eventsTemp: $eventsTemp');
     state = eventsTemp;
   }
 }
@@ -186,7 +186,7 @@ class StatusSelected extends _$StatusSelected {
       if (value != null) {
         state = AsyncValue.data(value);
         ref.read(statusCurrentProvider.notifier).set(value);
-        ref.refresh(scheduleProvider);
+        ref.invalidate(scheduleProvider);
       } else {
         throw Exception();
       }

@@ -63,7 +63,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
         showLoader(context);
       }
     });
-    final formState = ref.watch(attendanceFormProvider);
+    // final formState = ref.watch(attendanceFormProvider);
 
     final professional = ref.watch(professionalSelectedProvider);
     final procedures = ref.watch(proceduresProvider);

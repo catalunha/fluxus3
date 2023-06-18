@@ -63,8 +63,8 @@ class SchedulePage extends ConsumerWidget {
               title: dateFormatDay.format(dayMorning),
             ),
           );
-          print('list: ${list.length}');
-          print('roomSelected: $roomSelected');
+          // print('list: ${list.length}');
+          // print('roomSelected: $roomSelected');
           for (EventModel e in list) {
             final hourStartList =
                 e.hour!.start!.split(':').map((e) => int.parse(e)).toList();

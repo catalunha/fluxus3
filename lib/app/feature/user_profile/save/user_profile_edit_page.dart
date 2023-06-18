@@ -52,8 +52,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
     _birthday = user?.userProfile?.birthday;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       //print("WidgetsBinding1");
-      ref.read(regionSelectedProvider.notifier).state =
-          user?.userProfile?.region;
+      ref.read(regionSelectedProvider.notifier).set(user?.userProfile?.region);
     });
   }
 
