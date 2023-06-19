@@ -11,7 +11,7 @@ part 'providers.g.dart';
 FutureOr<List<OfficeModel>> officeSelect(OfficeSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
-  query.orderByDescending('name');
+  query.orderByAscending('name');
   final list = await ref.read(officeRepositoryProvider).list(query);
   return list;
 }

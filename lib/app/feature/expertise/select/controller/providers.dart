@@ -11,7 +11,7 @@ part 'providers.g.dart';
 FutureOr<List<ExpertiseModel>> expertiseSelect(ExpertiseSelectRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
-  query.orderByDescending('name');
+  query.orderByAscending('name');
   final list = await ref.read(expertiseRepositoryProvider).list(query);
   return list;
 }

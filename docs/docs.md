@@ -212,3 +212,16 @@ Parse.Cloud.afterDelete(Parse.User, async (req) => {
   await userProfile.destroy({ useMasterKey: true });
 });
 ```
+
+```
+const myObj = new Parse.Object('_User');
+const query = new Parse.Query(myObj);
+query.equalTo('emailVerified',false);
+const list=await query.find();
+for(let i=0;i<list.length;i++){
+  const obj = list[i];
+console.log(obj.id);
+  obj.set('emailVerified',true);
+  await obj.save(null,{useMasterKey:true});
+}
+```

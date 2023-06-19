@@ -324,7 +324,8 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                                   .map(
                                     (e) => Row(
                                       children: [
-                                        Text('${e.code}'),
+                                        Text(
+                                            '${e.code} - ${e.healthPlanType?.name}'),
                                         IconButton(
                                           icon: const Icon(Icons.edit),
                                           onPressed: () async {

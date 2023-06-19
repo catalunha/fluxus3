@@ -38,10 +38,12 @@ class PatientSelectPage extends ConsumerWidget {
               SizedBox(
                 width: 300,
                 child: TextField(
-                  // decoration: const InputDecoration(
-                  //   border: OutlineInputBorder(),
-                  //   hintText: 'digite um texto para pesquisa',
-                  // ),
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    hintText: 'digite parte do nome para busca',
+                  ),
                   onChanged: (value) {
                     ref.read(patientSearchProvider.notifier).set(value);
                   },

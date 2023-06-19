@@ -10,6 +10,6 @@ corrigir   query.orderByDescending('name');
 
 
 
-retirar filtro de paciente
-colocar nickname automatico
+retirar filtro de paciente ok
+colocar nickname automatico ok
 criacao de plano completar

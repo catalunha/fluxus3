@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../../../core/models/healthplantype_model.dart';
+import '../../healthplantype/select/healthplantype_select_page.dart';
 import '../../utils/app_delete.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
@@ -27,15 +29,18 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _codeTec = TextEditingController();
+  final _descriptionTec = TextEditingController();
   @override
   void initState() {
     super.initState();
     _codeTec.text = "";
+    _descriptionTec.text = "";
   }
 
   @override
   void dispose() {
     _codeTec.dispose();
+    _descriptionTec.dispose();
     super.dispose();
   }
 
@@ -58,6 +63,7 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
     });
 
     final healthPlanRead = ref.watch(healthPlanReadProvider(id: widget.id));
+    final healthPlanTypeSelected = ref.watch(healthPlanTypeSelectedProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar'),
@@ -65,19 +71,24 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
-          if (formValid) {
-            ref
-                .read(healthPlanFormProvider.notifier)
-                .submitForm(code: _codeTec.text);
+          if (formValid && healthPlanTypeSelected != null) {
+            ref.read(healthPlanFormProvider.notifier).submitForm(
+                  code: _codeTec.text,
+                  description: _descriptionTec.text,
+                );
+          }
+          if (healthPlanTypeSelected == null) {
+            showMessageError(context, 'É necessario definir um tipo de plano');
           }
         },
         child: const Icon(Icons.cloud_upload),
       ),
       body: healthPlanRead.when(
         data: (data) {
+          final formState = ref.read(healthPlanFormProvider);
           if (data != null) {
-            final formState = ref.read(healthPlanFormProvider);
             _codeTec.text = formState.model?.code ?? '';
+            _descriptionTec.text = formState.model?.description ?? '';
           }
           return Center(
             child: Form(
@@ -88,11 +99,51 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        const Text('Selecione o tipo de plano'),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                HealthPlanTypeModel? result =
+                                    await Navigator.of(context)
+                                        .push<HealthPlanTypeModel>(
+                                            MaterialPageRoute(
+                                  builder: (context) {
+                                    return const HealthPlanTypeSelectPage();
+                                  },
+                                ));
+
+                                if (result != null) {
+                                  log('$result');
+                                  ref
+                                      .read(healthPlanTypeSelectedProvider
+                                          .notifier)
+                                      .set(result);
+                                }
+                              },
+                              icon: const Icon(Icons.search),
+                            ),
+                            // if (ref.watch(healthPlanTypeSelectedProvider) != null)
+                            //   Flexible(
+                            // child:
+                            Text(
+                              '${healthPlanTypeSelected?.name}',
+                              softWrap: true,
+                            ),
+                            // ),
+                          ],
+                        ),
+                        const Text('Se o plano for particular o código é 1.'),
                         AppTextFormField(
                           label: '* Informe o código do plano',
                           controller: _codeTec,
                           validator: Validatorless.required(
                               'Esta informação é obrigatória'),
+                        ),
+                        AppTextFormField(
+                          label: 'Descrição do plano',
+                          controller: _descriptionTec,
                         ),
                         const SizedBox(height: 15),
                         AppDelete(
@@ -101,6 +152,7 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
                             ref.read(healthPlanFormProvider.notifier).delete();
                           },
                         ),
+                        Text('id: ${formState.model?.id}'),
                         const SizedBox(height: 70),
                       ],
                     ),

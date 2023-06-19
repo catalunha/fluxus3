@@ -14,6 +14,9 @@ class ProcedureSelectPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ref.watch(procedureSelectProvider);
+    final listFiltered = ref.watch(procedureFilteredProvider);
+    final listSelected = ref.watch(procedureSelectedProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -21,15 +24,45 @@ class ProcedureSelectPage extends ConsumerWidget {
       ),
       body: list.when(
         data: (data) {
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final level = data[index];
-              return ProcedureObj(
-                model: level,
-                isSingleValue: isSingleValue,
-              );
-            },
+          return Column(
+            children: [
+              SingleChildScrollView(
+                child: Column(children: [
+                  for (var model in listSelected) ...[
+                    ProcedureObj(
+                      model: model,
+                      isSingleValue: isSingleValue,
+                    )
+                  ]
+                ]),
+              ),
+              SizedBox(
+                width: 350,
+                child: TextField(
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    hintText: 'digite parte da descrição para busca',
+                  ),
+                  onChanged: (value) {
+                    ref.read(procedureSearchProvider.notifier).set(value);
+                  },
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: listFiltered.length,
+                  itemBuilder: (context, index) {
+                    final model = listFiltered[index];
+                    return ProcedureObj(
+                      model: model,
+                      isSingleValue: isSingleValue,
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
         error: (error, stackTrace) {

@@ -24,6 +24,7 @@ class HealthPlanB4a {
     if (cols.containsKey('${HealthPlanEntity.className}.pointers')) {
       query.includeObject(cols['${HealthPlanEntity.className}.pointers']!);
     }
+
     ParseResponse? parseResponse;
     try {
       parseResponse = await query.query();

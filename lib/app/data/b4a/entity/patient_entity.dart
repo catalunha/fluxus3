@@ -92,10 +92,11 @@ class PatientEntity {
     parseObject.objectId = model.id;
 
     if (model.nickname != null) {
-      parseObject.set(PatientEntity.nickname, model.nickname);
+      parseObject.set(
+          PatientEntity.nickname, model.nickname?.trim().toTitleCase());
     }
     if (model.name != null) {
-      parseObject.set(PatientEntity.name, model.name);
+      parseObject.set(PatientEntity.name, model.name?.trim().toTitleCase());
     }
     if (model.email != null) {
       parseObject.set(PatientEntity.email, model.email);
@@ -108,7 +109,8 @@ class PatientEntity {
       parseObject.set(PatientEntity.phone, model.phone);
     }
     if (model.address != null) {
-      parseObject.set(PatientEntity.address, model.address);
+      parseObject.set(
+          PatientEntity.address, model.address?.trim().toTitleCase());
     }
 
     if (model.isFemale != null) {

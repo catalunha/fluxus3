@@ -100,8 +100,8 @@ class AttendanceEntity {
               .toPointer());
     }
     if (model.authorizationCode != null) {
-      parseObject.set(
-          AttendanceEntity.authorizationCode, model.authorizationCode);
+      parseObject.set(AttendanceEntity.authorizationCode,
+          model.authorizationCode!.toUpperCase());
     }
 
     if (model.authorizationDateCreated != null) {
