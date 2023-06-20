@@ -438,6 +438,28 @@ final goRouterProv = Provider<GoRouter>(
                 );
               },
             ),
+            GoRoute(
+              path: AppPage.anamneseGroupList.path,
+              name: AppPage.anamneseGroupList.name,
+              builder: (context, state) {
+                return AnamneseGroupListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.anamneseGroupSave.path,
+                  name: AppPage.anamneseGroupSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return AnamneseGroupSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -501,7 +523,9 @@ enum AppPage {
   eventList('eventList', 'eventList'),
   eventEdit('eventEdit', 'eventEdit'),
   eventAdd('eventAdd', 'eventAdd'),
-  schedule('schedule', 'schedule');
+  schedule('schedule', 'schedule'),
+  anamneseGroupList('anamneseGroupList', 'anamneseGroupList'),
+  anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave');
 
   final String path;
   final String name;

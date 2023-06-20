@@ -8,17 +8,17 @@ class AnamneseGroupRepository {
   final AnamneseGroupB4a apiB4a = AnamneseGroupB4a();
 
   AnamneseGroupRepository();
-  Future<List<AnamneseGroupModel>> read(
+  Future<List<AnamneseGroupModel>> list(
     QueryBuilder<ParseObject> query, {
     Pagination? pagination,
     Map<String, List<String>> cols = const {},
   }) =>
-      apiB4a.read(query, pagination: pagination, cols: cols);
+      apiB4a.list(query, pagination: pagination, cols: cols);
   Future<AnamneseGroupModel?> readById(
     String id, {
     Map<String, List<String>> cols = const {},
   }) =>
       apiB4a.readById(id, cols: cols);
-  Future<String> update(AnamneseGroupModel model) => apiB4a.update(model);
+  Future<String> save(AnamneseGroupModel model) => apiB4a.save(model);
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
 }

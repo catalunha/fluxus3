@@ -9,7 +9,7 @@ import '../entity/anamnese_group_entity.dart';
 import '../utils/parse_error_translate.dart';
 
 class AnamneseGroupB4a {
-  Future<List<AnamneseGroupModel>> read(
+  Future<List<AnamneseGroupModel>> list(
     QueryBuilder<ParseObject> query, {
     Pagination? pagination,
     Map<String, List<String>> cols = const {},
@@ -79,7 +79,7 @@ class AnamneseGroupB4a {
     }
   }
 
-  Future<String> update(AnamneseGroupModel model) async {
+  Future<String> save(AnamneseGroupModel model) async {
     final parseObject = await AnamneseGroupEntity().toParse(model);
     ParseResponse? parseResponse;
     try {
