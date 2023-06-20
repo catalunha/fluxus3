@@ -78,7 +78,7 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
         );
       }
       await ref.read(anamneseGroupRepositoryProvider).save(anamneseGrouptemp);
-      ref.invalidate(anamneseGroupListProvider);
+      ref.invalidate(anamneseGroupsProvider);
       state = state.copyWith(status: AnamneseGroupFormStatus.success);
     } catch (e, st) {
       log('$e');
@@ -92,7 +92,7 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
     state = state.copyWith(status: AnamneseGroupFormStatus.loading);
     try {
       await ref.read(anamneseGroupRepositoryProvider).delete(state.model!.id!);
-      ref.invalidate(anamneseGroupListProvider);
+      ref.invalidate(anamneseGroupsProvider);
       state = state.copyWith(status: AnamneseGroupFormStatus.success);
     } catch (e, st) {
       log('$e');

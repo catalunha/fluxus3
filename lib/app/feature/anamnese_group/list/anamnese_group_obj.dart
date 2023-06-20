@@ -19,6 +19,10 @@ class AnamneseGroupObj extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppTextTitleValue(
+              title: 'Id: ',
+              value: model.id,
+            ),
+            AppTextTitleValue(
               title: 'Nome: ',
               value: model.name,
             ),
