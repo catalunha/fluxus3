@@ -28,16 +28,19 @@ class _AnamneseGroupSavePageState extends ConsumerState<AnamneseGroupSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _nameTec = TextEditingController();
+  final _descriptionTec = TextEditingController();
   bool firstTime = true;
   @override
   void initState() {
     super.initState();
     _nameTec.text = "";
+    _descriptionTec.text = "";
   }
 
   @override
   void dispose() {
     _nameTec.dispose();
+    _descriptionTec.dispose();
     super.dispose();
   }
 
@@ -68,9 +71,10 @@ class _AnamneseGroupSavePageState extends ConsumerState<AnamneseGroupSavePage>
         onPressed: () {
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
-            ref
-                .read(anamneseGroupFormProvider.notifier)
-                .submitForm(name: _nameTec.text);
+            ref.read(anamneseGroupFormProvider.notifier).submitForm(
+                  name: _nameTec.text,
+                  description: _descriptionTec.text,
+                );
           }
         },
         child: const Icon(Icons.cloud_upload),
@@ -80,6 +84,7 @@ class _AnamneseGroupSavePageState extends ConsumerState<AnamneseGroupSavePage>
           if (data != null && firstTime) {
             final formState = ref.read(anamneseGroupFormProvider);
             _nameTec.text = formState.model?.name ?? '';
+            _descriptionTec.text = formState.model?.description ?? '';
           }
           firstTime = false;
           return Center(
@@ -96,6 +101,10 @@ class _AnamneseGroupSavePageState extends ConsumerState<AnamneseGroupSavePage>
                           controller: _nameTec,
                           validator: Validatorless.required(
                               'Esta informação é obrigatória'),
+                        ),
+                        AppTextFormField(
+                          label: 'Descrição',
+                          controller: _descriptionTec,
                         ),
                         SwitchListTile(
                           title: const Text('Grupo ativo ?'),

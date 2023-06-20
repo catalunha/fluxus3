@@ -34,7 +34,7 @@ FutureOr<AnamneseGroupModel?> anamneseGroupRead(AnamneseGroupReadRef ref,
 class AnamneseGroupIsActive extends _$AnamneseGroupIsActive {
   @override
   bool build() {
-    return false;
+    return true;
   }
 
   void toggle() {
@@ -57,18 +57,23 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
     state = state.copyWith(model: model);
   }
 
-  Future<void> submitForm({required String name}) async {
+  Future<void> submitForm({
+    required String name,
+    String description = '',
+  }) async {
     state = state.copyWith(status: AnamneseGroupFormStatus.loading);
     try {
       late AnamneseGroupModel anamneseGrouptemp;
       if (state.model != null) {
         anamneseGrouptemp = state.model!.copyWith(
           name: name,
+          description: description,
           isActive: ref.read(anamneseGroupIsActiveProvider),
         );
       } else {
         anamneseGrouptemp = AnamneseGroupModel(
           name: name,
+          description: description,
           isActive: ref.read(anamneseGroupIsActiveProvider),
         );
       }

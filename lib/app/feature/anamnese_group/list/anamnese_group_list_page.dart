@@ -16,7 +16,7 @@ class AnamneseGroupListPage extends ConsumerWidget {
     final list = ref.watch(anamneseGroupListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista com ${list.asData?.value.length} salas'),
+        title: Text('Lista com ${list.asData?.value.length} Grupos'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

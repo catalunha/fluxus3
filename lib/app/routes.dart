@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
+import 'feature/anamnese_group/list/anamnese_group_list_page.dart';
+import 'feature/anamnese_group/save/anamnese_group_save_page.dart';
 import 'feature/attendance/add/attendance_add_page.dart';
 import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';

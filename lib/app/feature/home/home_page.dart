@@ -224,6 +224,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   ),
                 ],
               ),
+              HomeModule(
+                title: 'Anamnese - Grupos',
+                icon: Icons.question_answer,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.anamneseGroupList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
