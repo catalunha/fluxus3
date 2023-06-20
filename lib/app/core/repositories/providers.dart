@@ -1,6 +1,7 @@
 import 'package:fluxus3/app/data/b4a/table/user_b4a.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'anamnese_group_repository.dart';
 import 'attendance_repository.dart';
 import 'event_repository.dart';
 import 'expertise_repository.dart';
@@ -92,4 +93,10 @@ EventRepository eventRepository(EventRepositoryRef ref) {
 @riverpod
 AttendanceRepository attendanceRepository(AttendanceRepositoryRef ref) {
   return AttendanceRepository();
+}
+
+@riverpod
+AnamneseGroupRepository anamneseGroupRepository(
+    AnamneseGroupRepositoryRef ref) {
+  return AnamneseGroupRepository();
 }
