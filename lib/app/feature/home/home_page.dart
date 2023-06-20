@@ -104,9 +104,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   ),
                 ],
               ),
-              const Divider(
-                height: 10,
-              ),
+              const Divider(height: 10),
               HomeModule(
                 title: 'Gerenciar Usuários',
                 icon: Icons.people,
@@ -224,6 +222,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   ),
                 ],
               ),
+              const Divider(height: 5),
               HomeModule(
                 title: 'Anamnese - Grupos',
                 icon: Icons.question_answer,
@@ -232,6 +231,19 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   IconButton(
                     onPressed: () {
                       context.goNamed(AppPage.anamneseGroupList.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
+              ),
+              HomeModule(
+                title: 'Anamnese - Perguntas',
+                icon: Icons.question_mark,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.anamneseQuestionList.name);
                     },
                     icon: const Icon(Icons.list),
                   ),

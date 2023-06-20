@@ -13,5 +13,15 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroupList(
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
   query.orderByAscending('name');
-  return await ref.read(anamneseGroupRepositoryProvider).list(query);
+  return await ref.read(anamneseGroupRepositoryProvider).list(
+    query,
+    cols: {
+      "${AnamneseGroupEntity.className}.cols": [
+        AnamneseGroupEntity.name,
+        AnamneseGroupEntity.description,
+        AnamneseGroupEntity.isActive,
+        AnamneseGroupEntity.orderOfQuestions,
+      ],
+    },
+  );
 }

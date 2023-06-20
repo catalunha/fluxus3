@@ -6,6 +6,8 @@ import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/anamnese_group/list/anamnese_group_list_page.dart';
 import 'feature/anamnese_group/save/anamnese_group_save_page.dart';
+import 'feature/anamnese_question/list/anamnese_question_list_page.dart';
+import 'feature/anamnese_question/save/anamnese_question_save_page.dart';
 import 'feature/attendance/add/attendance_add_page.dart';
 import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
@@ -462,6 +464,28 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+              path: AppPage.anamneseQuestionList.path,
+              name: AppPage.anamneseQuestionList.name,
+              builder: (context, state) {
+                return AnamneseQuestionListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.anamneseQuestionSave.path,
+                  name: AppPage.anamneseQuestionSave.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return AnamneseQuestionSavePage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -527,7 +551,9 @@ enum AppPage {
   eventAdd('eventAdd', 'eventAdd'),
   schedule('schedule', 'schedule'),
   anamneseGroupList('anamneseGroupList', 'anamneseGroupList'),
-  anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave');
+  anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave'),
+  anamneseQuestionList('anamneseQuestionList', 'anamneseQuestionList'),
+  anamneseQuestionSave('anamneseQuestionSave', 'anamneseQuestionSave');
 
   final String path;
   final String name;
