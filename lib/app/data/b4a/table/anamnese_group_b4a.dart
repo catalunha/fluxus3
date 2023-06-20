@@ -104,7 +104,7 @@ class AnamneseGroupB4a {
     }
   }
 
-  Future<bool> delete(String modelId) async {
+  Future<String> delete(String modelId) async {
     final parseObject = ParseObject(AnamneseGroupEntity.className);
     parseObject.objectId = modelId;
     ParseResponse? parseResponse;
@@ -112,9 +112,11 @@ class AnamneseGroupB4a {
     try {
       parseResponse = await parseObject.delete();
       if (parseResponse.success && parseResponse.results != null) {
-        return true;
+        ParseObject parseObjectItem =
+            parseResponse.results!.first as ParseObject;
+        return parseObjectItem.objectId!;
       } else {
-        return false;
+        throw Exception();
       }
     } on Exception {
       var errorTranslated =

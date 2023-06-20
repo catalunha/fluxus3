@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/anamnese_group_model.dart';
+import '../../../../core/models/anamnese_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../list/controller/providers.dart';
 import 'states.dart';
@@ -77,28 +78,57 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
           isActive: ref.read(anamneseGroupIsActiveProvider),
         );
       }
-      await ref.read(anamneseGroupRepositoryProvider).save(anamneseGrouptemp);
+      final newAnamneseGroupId = await ref
+          .read(anamneseGroupRepositoryProvider)
+          .save(anamneseGrouptemp);
+      var anamnese = await ref
+          .read(anamneseRepositoryProvider)
+          .readByName('orderOfGroups');
+      anamnese ??= AnamneseModel(name: 'orderOfGroups');
+      if (state.model == null) {
+        var listOld = [...anamnese.orderOfGroups];
+        listOld.add(newAnamneseGroupId);
+        await ref
+            .read(anamneseRepositoryProvider)
+            .save(anamnese.copyWith(orderOfGroups: listOld));
+      }
+
       ref.invalidate(anamneseGroupsProvider);
       state = state.copyWith(status: AnamneseGroupFormStatus.success);
     } catch (e, st) {
       log('$e');
       log('$st');
       state = state.copyWith(
-          status: AnamneseGroupFormStatus.error, error: 'Erro em editar cargo');
+          status: AnamneseGroupFormStatus.error,
+          error: 'Erro em editar Anamnese Group');
     }
   }
 
   Future<void> delete() async {
     state = state.copyWith(status: AnamneseGroupFormStatus.loading);
     try {
-      await ref.read(anamneseGroupRepositoryProvider).delete(state.model!.id!);
+      final deletedAnamneseGroupId = await ref
+          .read(anamneseGroupRepositoryProvider)
+          .delete(state.model!.id!);
+
+      var anamnese = await ref
+          .read(anamneseRepositoryProvider)
+          .readByName('orderOfGroups');
+      anamnese ??= AnamneseModel(name: 'orderOfGroups');
+      var listOld = [...anamnese.orderOfGroups];
+      listOld.remove(deletedAnamneseGroupId);
+      await ref
+          .read(anamneseRepositoryProvider)
+          .save(anamnese.copyWith(orderOfGroups: listOld));
+
       ref.invalidate(anamneseGroupsProvider);
       state = state.copyWith(status: AnamneseGroupFormStatus.success);
     } catch (e, st) {
       log('$e');
       log('$st');
       state = state.copyWith(
-          status: AnamneseGroupFormStatus.error, error: 'Erro em editar cargo');
+          status: AnamneseGroupFormStatus.error,
+          error: 'Erro em editar Anamnese Group');
     }
   }
 }

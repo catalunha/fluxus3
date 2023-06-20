@@ -20,5 +20,5 @@ class AnamneseGroupRepository {
   }) =>
       apiB4a.readById(id, cols: cols);
   Future<String> save(AnamneseGroupModel model) => apiB4a.save(model);
-  Future<bool> delete(String modelId) => apiB4a.delete(modelId);
+  Future<String> delete(String modelId) => apiB4a.delete(modelId);
 }
