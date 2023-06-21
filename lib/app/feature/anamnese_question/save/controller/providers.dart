@@ -146,7 +146,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
       await ref
           .read(anamneseQuestionRepositoryProvider)
           .save(anamneseQuestiontemp);
-      ref.invalidate(anamneseQuestionListProvider);
+      ref.invalidate(anamneseQuestionsProvider);
       state = state.copyWith(status: AnamneseQuestionFormStatus.success);
     } catch (e, st) {
       log('$e');
@@ -163,7 +163,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
       await ref
           .read(anamneseQuestionRepositoryProvider)
           .delete(state.model!.id!);
-      ref.invalidate(anamneseQuestionListProvider);
+      ref.invalidate(anamneseQuestionsProvider);
       state = state.copyWith(status: AnamneseQuestionFormStatus.success);
     } catch (e, st) {
       log('$e');

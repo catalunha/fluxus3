@@ -26,7 +26,7 @@ class AnamneseGroupEntity {
               .map((e) => e.toString())
               .toList()
           : [],
-      isActive: parseObject.get(AnamneseGroupEntity.isActive),
+      isActive: parseObject.get(AnamneseGroupEntity.isActive) ?? true,
     );
     return model;
   }

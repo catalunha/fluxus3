@@ -8,25 +8,6 @@ import '../../../../data/b4a/entity/anamnese_group_entity.dart';
 
 part 'providers.g.dart';
 
-// @Riverpod(keepAlive: true)
-// FutureOr<List<AnamneseGroupModel>> anamneseGroupList(
-//     AnamneseGroupListRef ref) async {
-//   QueryBuilder<ParseObject> query =
-//       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
-//   query.orderByAscending('name');
-//   return await ref.read(anamneseGroupRepositoryProvider).list(
-//     query,
-//     cols: {
-//       "${AnamneseGroupEntity.className}.cols": [
-//         AnamneseGroupEntity.name,
-//         AnamneseGroupEntity.description,
-//         AnamneseGroupEntity.isActive,
-//         AnamneseGroupEntity.orderOfQuestions,
-//       ],
-//     },
-//   );
-// }
-
 @riverpod
 class AnamneseGroups extends _$AnamneseGroups {
   @override
@@ -34,7 +15,7 @@ class AnamneseGroups extends _$AnamneseGroups {
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
     query.orderByAscending('name');
-    var listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
+    final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
       query,
       cols: {
         "${AnamneseGroupEntity.className}.cols": [
@@ -77,6 +58,28 @@ class AnamneseGroups extends _$AnamneseGroups {
           .save(anamnese.copyWith(orderOfGroups: itens));
       return listReordered;
     });
-    // state = AsyncValue.data(value);
   }
 }
+
+
+
+
+
+// @Riverpod(keepAlive: true)
+// FutureOr<List<AnamneseGroupModel>> anamneseGroupList(
+//     AnamneseGroupListRef ref) async {
+//   QueryBuilder<ParseObject> query =
+//       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
+//   query.orderByAscending('name');
+//   return await ref.read(anamneseGroupRepositoryProvider).list(
+//     query,
+//     cols: {
+//       "${AnamneseGroupEntity.className}.cols": [
+//         AnamneseGroupEntity.name,
+//         AnamneseGroupEntity.description,
+//         AnamneseGroupEntity.isActive,
+//         AnamneseGroupEntity.orderOfQuestions,
+//       ],
+//     },
+//   );
+// }

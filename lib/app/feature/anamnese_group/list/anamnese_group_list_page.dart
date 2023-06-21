@@ -33,15 +33,16 @@ class _AnamneseGroupListPageState extends ConsumerState<AnamneseGroupListPage> {
       ),
       body: list.when(data: (data) {
         return ReorderableListView.builder(
-            itemBuilder: (context, index) {
-              final level = data[index];
-              return AnamneseGroupObj(
-                key: ValueKey(level.id),
-                model: level,
-              );
-            },
-            itemCount: data.length,
-            onReorder: _onReorder);
+          itemBuilder: (context, index) {
+            final level = data[index];
+            return AnamneseGroupObj(
+              key: ValueKey(level.id),
+              model: level,
+            );
+          },
+          itemCount: data.length,
+          onReorder: _onReorder,
+        );
         /*
         return ListView.builder(
           itemCount: data.length,
