@@ -37,6 +37,12 @@ class AnamneseGroups extends _$AnamneseGroups {
         listGroupsReordened.add(mapping[groupId]!);
       }
     } else {
+      if (listGroups.isNotEmpty) {
+        await ref.read(anamneseRepositoryProvider).save(AnamneseModel(
+            name: 'orderOfGroups',
+            orderOfGroups: listGroups.map((e) => e.id!).toList()));
+      }
+
       listGroupsReordened = [...listGroups];
     }
     return listGroupsReordened;

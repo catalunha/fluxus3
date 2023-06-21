@@ -56,16 +56,35 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
       ],
     },
   );
-  final groupSelected = ref.read(anamneseGroupSelectedProvider);
-  if (groupSelected == null && listGroups.isNotEmpty) {
-    ref.read(anamneseGroupSelectedProvider.notifier).set(listGroups.first);
+
+  var anamnese =
+      await ref.read(anamneseRepositoryProvider).readByName('orderOfGroups');
+  var listGroupsOrdened = <AnamneseGroupModel>[];
+  if (anamnese != null && anamnese.orderOfGroups.isNotEmpty) {
+    final Map<String, AnamneseGroupModel> mapping = {
+      for (var group in listGroups) group.id!: group
+    };
+    for (var groupId in anamnese.orderOfGroups) {
+      listGroupsOrdened.add(mapping[groupId]!);
+    }
   } else {
-    final index =
-        listGroups.indexWhere((element) => element.id == groupSelected!.id);
-    ref.read(anamneseGroupSelectedProvider.notifier).set(listGroups[index]);
+    listGroupsOrdened = [...listGroups];
   }
 
-  return listGroups;
+  final groupSelected = ref.read(anamneseGroupSelectedProvider);
+  if (groupSelected == null && listGroupsOrdened.isNotEmpty) {
+    ref
+        .read(anamneseGroupSelectedProvider.notifier)
+        .set(listGroupsOrdened.first);
+  } else {
+    final index = listGroupsOrdened
+        .indexWhere((element) => element.id == groupSelected!.id);
+    ref
+        .read(anamneseGroupSelectedProvider.notifier)
+        .set(listGroupsOrdened[index]);
+  }
+
+  return listGroupsOrdened;
 }
 
 @riverpod

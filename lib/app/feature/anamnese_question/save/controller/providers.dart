@@ -212,7 +212,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
 
       ref.invalidate(anamneseGroupsProvider);
       ref.invalidate(anamneseQuestionsProvider);
-      ref.invalidate(questionsFilteredProvider);
+      // ref.invalidate(questionsFilteredProvider);
 
       state = state.copyWith(status: AnamneseQuestionFormStatus.success);
     } catch (e, st) {
@@ -240,7 +240,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
       //---
       ref.invalidate(anamneseGroupsProvider);
       ref.invalidate(anamneseQuestionsProvider);
-      ref.invalidate(questionsFilteredProvider);
+      // ref.invalidate(questionsFilteredProvider);
       state = state.copyWith(status: AnamneseQuestionFormStatus.success);
     } catch (e, st) {
       log('$e');
