@@ -13,14 +13,15 @@ class GroupMark extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final groupSelected = ref.watch(anamneseGroupSelectedProvider);
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: ref.watch(anamnesesGroupSelectedProvider) == model
+        backgroundColor: groupSelected?.id == model.id
             ? const MaterialStatePropertyAll<Color>(Colors.black)
             : null,
       ),
       onPressed: () {
-        ref.read(anamnesesGroupSelectedProvider.notifier).set(model);
+        ref.read(anamneseGroupSelectedProvider.notifier).set(model);
       },
       child: Text(model.name),
     );

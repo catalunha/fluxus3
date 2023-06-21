@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluxus3/app/core/models/anamnese_group_model.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,6 +15,7 @@ part 'providers.g.dart';
 class AnamneseQuestions extends _$AnamneseQuestions {
   @override
   Future<List<AnamneseQuestionModel>> build() async {
+    log('Rebuilding...', name: 'anamneseQuestionsProvider');
     QueryBuilder<ParseObject> query = QueryBuilder<ParseObject>(
         ParseObject(AnamneseQuestionEntity.className));
     query.orderByAscending('text');
@@ -33,66 +36,19 @@ class AnamneseQuestions extends _$AnamneseQuestions {
         ],
       },
     );
-    QueryBuilder<ParseObject> query2 =
-        QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
-    query2.orderByAscending('name');
-    final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
-      query2,
-      cols: {
-        "${AnamneseGroupEntity.className}.cols": [
-          AnamneseGroupEntity.name,
-          AnamneseGroupEntity.orderOfQuestions,
-        ],
-      },
-    );
-    ref.read(anamneseGroupListProvider.notifier).set(listGroups);
-
-    /*
-    var anamnese =
-        await ref.read(anamneseRepositoryProvider).readByName('orderOfQuestions');
-    var listQuestionsReordened = <AnamneseQuestionModel>[];
-    if (anamnese != null && anamnese.orderOfQuestions.isNotEmpty) {
-      final Map<String, AnamneseQuestionModel> mapping = {
-        for (var group in listQuestions) group.id!: group
-      };
-      for (var groupId in anamnese.orderOfQuestions) {
-        listQuestionsReordened.add(mapping[groupId]!);
-      }
-    } else {
-      listQuestionsReordened = [...listQuestions];
-    }
-    */
-    var listQuestionsReordened = [...listQuestions];
-    return listQuestionsReordened;
+    return listQuestions;
   }
-/*
-  void set(List<AnamneseQuestionModel> listReordered) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      var itens = <String>[];
-      for (var item in listReordered) {
-        itens.add(item.id!);
-      }
-      var anamnese = await ref
-          .read(anamneseRepositoryProvider)
-          .readByName('orderOfQuestions');
-      anamnese ??= AnamneseModel(name: 'orderOfQuestions');
-      await ref
-          .read(anamneseRepositoryProvider)
-          .save(anamnese.copyWith(orderOfQuestions: itens));
-      return listReordered;
-    });
-  }
-  */
 }
 
 @riverpod
 FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
-  QueryBuilder<ParseObject> query2 =
+  log('Rebuilding...', name: 'anamneseGroupsProvider');
+
+  QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
-  query2.orderByAscending('name');
+  query.orderByAscending('name');
   final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
-    query2,
+    query,
     cols: {
       "${AnamneseGroupEntity.className}.cols": [
         AnamneseGroupEntity.name,
@@ -100,88 +56,72 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
       ],
     },
   );
+  final groupSelected = ref.read(anamneseGroupSelectedProvider);
+  if (groupSelected == null && listGroups.isNotEmpty) {
+    ref.read(anamneseGroupSelectedProvider.notifier).set(listGroups.first);
+  } else {
+    final index =
+        listGroups.indexWhere((element) => element.id == groupSelected!.id);
+    ref.read(anamneseGroupSelectedProvider.notifier).set(listGroups[index]);
+  }
+
   return listGroups;
 }
 
 @riverpod
-class AnamneseGroupList extends _$AnamneseGroupList {
+class AnamneseGroupSelected extends _$AnamneseGroupSelected {
   @override
-  List<AnamneseGroupModel> build() {
-    return [];
-  }
+  AnamneseGroupModel? build() {
+    log('Rebuilding...', name: 'anamneseGroupSelectedProvider');
 
-  void set(List<AnamneseGroupModel> value) {
-    state = value;
-  }
-}
-
-@riverpod
-class AnamnesesGroupSelected extends _$AnamnesesGroupSelected {
-  @override
-  AnamneseGroupModel build() {
-    final list = ref.read(anamneseGroupListProvider);
-    return list[0];
+    return null;
   }
 
   void set(AnamneseGroupModel value) {
     state = value;
   }
 }
-/*
-@riverpod
-List<AnamneseQuestionModel> questionsFiltered(QuestionsFilteredRef ref) {
-  final search = ref.watch(anamnesesGroupSelectedProvider);
-  final data = ref.watch(anamneseQuestionsProvider);
-  return data.when(
-    data: (data) {
-      final questionsUnOrdered = data
-          .where((element) => element.anamneseGroup.id == search.id)
-          .toList();
-      var questionsOrdered = <AnamneseQuestionModel>[];
-      if (search.orderOfQuestions.isNotEmpty) {
-        final Map<String, AnamneseQuestionModel> mapping = {
-          for (var question in questionsUnOrdered) question.id!: question
-        };
-        for (var questionId in search.orderOfQuestions) {
-          questionsOrdered.add(mapping[questionId]!);
-        }
-      } else {
-        questionsOrdered = [...questionsUnOrdered];
-      }
-
-      return questionsOrdered;
-    },
-    error: (error, stackTrace) => [],
-    loading: () => [],
-  );
-}
-*/
 
 @riverpod
 class QuestionsFiltered extends _$QuestionsFiltered {
   @override
   List<AnamneseQuestionModel> build() {
-    final search = ref.watch(anamnesesGroupSelectedProvider);
-    final data = ref.watch(anamneseQuestionsProvider);
-    return data.when(
-      data: (data) {
-        print('group: $search');
-        final questionsUnOrdered = data
-            .where((element) => element.anamneseGroup.id == search.id)
-            .toList();
-        var questionsOrdered = <AnamneseQuestionModel>[];
-        if (search.orderOfQuestions.isNotEmpty) {
-          final Map<String, AnamneseQuestionModel> mapping = {
-            for (var question in questionsUnOrdered) question.id!: question
-          };
-          for (var questionId in search.orderOfQuestions) {
-            questionsOrdered.add(mapping[questionId]!);
+    log('Rebuilding...', name: 'questionsFilteredProvider');
+    final questions = ref.watch(anamneseQuestionsProvider);
+    final group = ref.watch(anamneseGroupSelectedProvider);
+    ref.watch(anamneseGroupsProvider);
+    return questions.when(
+      data: (questions) {
+        if (questions.isNotEmpty) {
+          if (group != null) {
+            log('questions.length: ${questions.length}',
+                name: 'questionsFilteredProvider');
+            log('group: $group', name: 'questionsFilteredProvider');
+            final questionsUnOrdered = questions
+                .where((element) => element.anamneseGroup.id == group.id)
+                .toList();
+
+            var questionsOrdered = <AnamneseQuestionModel>[];
+            if (group.orderOfQuestions.isNotEmpty) {
+              final Map<String, AnamneseQuestionModel> mapping = {
+                for (var question in questionsUnOrdered) question.id!: question
+              };
+              for (var questionId in group.orderOfQuestions) {
+                if (mapping.containsKey(questionId)) {
+                  questionsOrdered.add(mapping[questionId]!);
+                }
+              }
+            } else {
+              questionsOrdered = [...questionsUnOrdered];
+            }
+
+            return questionsOrdered;
+          } else {
+            return questions;
           }
         } else {
-          questionsOrdered = [...questionsUnOrdered];
+          return [];
         }
-
-        return questionsOrdered;
       },
       error: (error, stackTrace) => [],
       loading: () => [],
@@ -193,11 +133,12 @@ class QuestionsFiltered extends _$QuestionsFiltered {
     for (var item in listReordered) {
       itens.add(item.id!);
     }
-    final group = ref.watch(anamnesesGroupSelectedProvider);
-
-    await ref
-        .read(anamneseGroupRepositoryProvider)
-        .save(group.copyWith(orderOfQuestions: itens));
+    final group = ref.watch(anamneseGroupSelectedProvider);
+    if (group != null) {
+      await ref
+          .read(anamneseGroupRepositoryProvider)
+          .save(group.copyWith(orderOfQuestions: itens));
+    }
     state = listReordered;
   }
 }

@@ -81,18 +81,19 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
       final newAnamneseGroupId = await ref
           .read(anamneseGroupRepositoryProvider)
           .save(anamneseGrouptemp);
-      var anamnese = await ref
-          .read(anamneseRepositoryProvider)
-          .readByName('orderOfGroups');
-      anamnese ??= AnamneseModel(name: 'orderOfGroups');
+      //+++ Atualizando lista de grupos em anamnese
       if (state.model == null) {
+        var anamnese = await ref
+            .read(anamneseRepositoryProvider)
+            .readByName('orderOfGroups');
+        anamnese ??= AnamneseModel(name: 'orderOfGroups');
         var listOld = [...anamnese.orderOfGroups];
         listOld.add(newAnamneseGroupId);
         await ref
             .read(anamneseRepositoryProvider)
             .save(anamnese.copyWith(orderOfGroups: listOld));
       }
-
+      //---
       ref.invalidate(anamneseGroupsProvider);
       state = state.copyWith(status: AnamneseGroupFormStatus.success);
     } catch (e, st) {
@@ -110,7 +111,7 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
       final deletedAnamneseGroupId = await ref
           .read(anamneseGroupRepositoryProvider)
           .delete(state.model!.id!);
-
+      //+++ atualizando lista de grupos
       var anamnese = await ref
           .read(anamneseRepositoryProvider)
           .readByName('orderOfGroups');
@@ -120,7 +121,7 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
       await ref
           .read(anamneseRepositoryProvider)
           .save(anamnese.copyWith(orderOfGroups: listOld));
-
+      //---
       ref.invalidate(anamneseGroupsProvider);
       state = state.copyWith(status: AnamneseGroupFormStatus.success);
     } catch (e, st) {

@@ -5,6 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/models/anamnese_group_model.dart';
 import '../../../../core/models/anamnese_question_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../../../data/b4a/entity/anamnese_group_entity.dart';
+import '../../../../data/b4a/entity/anamnese_question_entity.dart';
 import '../../list/controller/providers.dart';
 import 'states.dart';
 
@@ -16,7 +18,22 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
     {required String? id}) async {
   if (id != null) {
     final anamneseQuestion =
-        await ref.read(anamneseQuestionRepositoryProvider).readById(id);
+        await ref.read(anamneseQuestionRepositoryProvider).readById(
+      id,
+      cols: {
+        "${AnamneseQuestionEntity.className}.cols": [
+          AnamneseQuestionEntity.text,
+          AnamneseQuestionEntity.description,
+          AnamneseQuestionEntity.type,
+          AnamneseQuestionEntity.isActive,
+          AnamneseQuestionEntity.isRequired,
+          AnamneseQuestionEntity.anamneseGroup,
+        ],
+        "${AnamneseQuestionEntity.className}.pointers": [
+          AnamneseQuestionEntity.anamneseGroup,
+        ],
+      },
+    );
     if (anamneseQuestion != null) {
       ref
           .watch(anamneseQuestionFormProvider.notifier)
@@ -30,6 +47,7 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
       ref
           .watch(anamneseGroupSelectedProvider.notifier)
           .set(anamneseQuestion.anamneseGroup);
+      log('group: ${anamneseQuestion.anamneseGroup}', name: 'Start question');
 
       final type = switch (anamneseQuestion.type) {
         'boolean' => AnamneseQuestionTypeStatus.boolean,
@@ -88,8 +106,21 @@ class AnamneseGroupSelected extends _$AnamneseGroupSelected {
     return null;
   }
 
-  void set(AnamneseGroupModel? value) {
+  void set(AnamneseGroupModel? value) async {
+    if (value != null && value.orderOfQuestions.isEmpty) {
+      final value2 = await ref.read(anamneseGroupRepositoryProvider).readById(
+        value.id!,
+        cols: {
+          "${AnamneseGroupEntity.className}.cols": [
+            AnamneseGroupEntity.name,
+            AnamneseGroupEntity.orderOfQuestions,
+          ],
+        },
+      );
+      state = value2;
+    }
     state = value;
+    log('state: $state', name: 'Set AnamneseGroupSelected');
   }
 }
 
@@ -124,13 +155,14 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
     try {
       final group = ref.read(anamneseGroupSelectedProvider);
       final type = ref.read(anamneseQuestionTypeProvider);
-
+      var groupOld = group!;
       late AnamneseQuestionModel anamneseQuestiontemp;
       if (state.model != null) {
+        groupOld = state.model!.anamneseGroup.copyWith();
         anamneseQuestiontemp = state.model!.copyWith(
           text: text,
           description: description,
-          anamneseGroup: group!,
+          anamneseGroup: group,
           type: type.name,
           isActive: ref.read(anamneseQuestionIsActiveProvider),
         );
@@ -138,15 +170,50 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
         anamneseQuestiontemp = AnamneseQuestionModel(
           text: text,
           description: description,
-          anamneseGroup: group!,
+          anamneseGroup: group,
           type: type.name,
           isActive: ref.read(anamneseQuestionIsActiveProvider),
         );
       }
-      await ref
+      final newAnamneseQuestionId = await ref
           .read(anamneseQuestionRepositoryProvider)
           .save(anamneseQuestiontemp);
+      log('newAnamneseQuestionId: $newAnamneseQuestionId',
+          name: 'Save question');
+
+      //+++ Atualizando lista de questions em grupo
+      if (state.model == null) {
+        log('group: $group', name: 'Save new question');
+        var listOld = [...group.orderOfQuestions];
+        listOld.add(newAnamneseQuestionId);
+        await ref
+            .read(anamneseGroupRepositoryProvider)
+            .save(group.copyWith(orderOfQuestions: listOld));
+      } else if (groupOld.id != group.id) {
+        log('groupOld: $groupOld', name: 'Save old question');
+        log('group: $group', name: 'Save old question');
+        //remove do model
+        var listOld = [...groupOld.orderOfQuestions];
+        listOld.remove(newAnamneseQuestionId);
+        await ref
+            .read(anamneseGroupRepositoryProvider)
+            .save(groupOld.copyWith(orderOfQuestions: listOld));
+        // add no group
+        listOld.clear();
+        listOld = [...group.orderOfQuestions];
+        if (!listOld.contains(newAnamneseQuestionId)) {
+          listOld.add(newAnamneseQuestionId);
+          await ref
+              .read(anamneseGroupRepositoryProvider)
+              .save(group.copyWith(orderOfQuestions: listOld));
+        }
+      }
+      //---
+
+      ref.invalidate(anamneseGroupsProvider);
       ref.invalidate(anamneseQuestionsProvider);
+      ref.invalidate(questionsFilteredProvider);
+
       state = state.copyWith(status: AnamneseQuestionFormStatus.success);
     } catch (e, st) {
       log('$e');
@@ -163,7 +230,17 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
       await ref
           .read(anamneseQuestionRepositoryProvider)
           .delete(state.model!.id!);
+      //+++ Atualizando lista de questions em grupo
+      final group = ref.read(anamneseGroupSelectedProvider);
+      var listOld = [...group!.orderOfQuestions];
+      listOld.remove(state.model!.id!);
+      await ref
+          .read(anamneseGroupRepositoryProvider)
+          .save(group.copyWith(orderOfQuestions: listOld));
+      //---
+      ref.invalidate(anamneseGroupsProvider);
       ref.invalidate(anamneseQuestionsProvider);
+      ref.invalidate(questionsFilteredProvider);
       state = state.copyWith(status: AnamneseQuestionFormStatus.success);
     } catch (e, st) {
       log('$e');

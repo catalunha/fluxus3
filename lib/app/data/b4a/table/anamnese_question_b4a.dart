@@ -64,7 +64,6 @@ class AnamneseQuestionB4a {
       query
           .includeObject(cols['${AnamneseQuestionEntity.className}.pointers']!);
     }
-
     query.first();
     try {
       var response = await query.query();

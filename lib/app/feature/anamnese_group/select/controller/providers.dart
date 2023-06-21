@@ -7,7 +7,8 @@ import '../../../../data/b4a/entity/anamnese_group_entity.dart';
 
 part 'providers.g.dart';
 
-@Riverpod(keepAlive: true)
+// @Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<AnamneseGroupModel>> anamneseGroupSelect(
     AnamneseGroupSelectRef ref) async {
   QueryBuilder<ParseObject> query =
