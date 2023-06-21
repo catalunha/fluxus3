@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
+import 'feature/anamnese/anamnese_data_page.dart';
+import 'feature/anamnese/anamnese_start_page.dart';
 import 'feature/anamnese_group/list/anamnese_group_list_page.dart';
 import 'feature/anamnese_group/save/anamnese_group_save_page.dart';
 import 'feature/anamnese_question/list/anamnese_question_list_page.dart';
@@ -486,6 +488,26 @@ final goRouterProv = Provider<GoRouter>(
                 ),
               ],
             ),
+            GoRoute(
+              path: AppPage.anamneseStart.path,
+              name: AppPage.anamneseStart.name,
+              builder: (context, state) {
+                return AnamneseStartPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.anamneseData.path,
+                  name: AppPage.anamneseData.name,
+                  builder: (context, state) {
+                    return AnamneseDataPage(
+                      key: state.pageKey,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -553,7 +575,9 @@ enum AppPage {
   anamneseGroupList('anamneseGroupList', 'anamneseGroupList'),
   anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave'),
   anamneseQuestionList('anamneseQuestionList', 'anamneseQuestionList'),
-  anamneseQuestionSave('anamneseQuestionSave', 'anamneseQuestionSave');
+  anamneseQuestionSave('anamneseQuestionSave', 'anamneseQuestionSave'),
+  anamneseStart('anamneseStart', 'anamneseStart'),
+  anamneseData('anamneseData', 'anamneseData');
 
   final String path;
   final String name;
