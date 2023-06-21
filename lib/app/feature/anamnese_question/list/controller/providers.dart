@@ -41,6 +41,7 @@ class AnamneseQuestions extends _$AnamneseQuestions {
       cols: {
         "${AnamneseGroupEntity.className}.cols": [
           AnamneseGroupEntity.name,
+          AnamneseGroupEntity.orderOfQuestions,
         ],
       },
     );
@@ -83,6 +84,23 @@ class AnamneseQuestions extends _$AnamneseQuestions {
     });
   }
   */
+}
+
+@riverpod
+FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
+  QueryBuilder<ParseObject> query2 =
+      QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
+  query2.orderByAscending('name');
+  final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
+    query2,
+    cols: {
+      "${AnamneseGroupEntity.className}.cols": [
+        AnamneseGroupEntity.name,
+        AnamneseGroupEntity.orderOfQuestions,
+      ],
+    },
+  );
+  return listGroups;
 }
 
 @riverpod
@@ -147,6 +165,7 @@ class QuestionsFiltered extends _$QuestionsFiltered {
     final data = ref.watch(anamneseQuestionsProvider);
     return data.when(
       data: (data) {
+        print('group: $search');
         final questionsUnOrdered = data
             .where((element) => element.anamneseGroup.id == search.id)
             .toList();
