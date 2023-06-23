@@ -48,6 +48,9 @@ class AnamneseAnswerNavigator extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: canGoToIndexPrevious
                       ? () {
+                          ref
+                              .read(readAllQuestionsProvider.notifier)
+                              .saveAnswers();
                           // final isCorrectAnsStudent = ref
                           //     .read(indexCurrentProvider.notifier)
                           //     .beforeUpdateState();

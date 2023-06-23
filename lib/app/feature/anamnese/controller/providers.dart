@@ -4,6 +4,7 @@ import 'package:fluxus3/app/core/models/anamnese_question_model.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../core/models/anamnese_answer_model.dart';
 import '../../../core/models/anamnese_group_model.dart';
 import '../../../core/models/anamnese_model.dart';
 import '../../../core/models/anamnese_people_model.dart';
@@ -17,7 +18,7 @@ part 'providers.g.dart';
 @riverpod
 class ReadAllQuestions extends _$ReadAllQuestions {
   @override
-  FutureOr<List<AnamneseQuestionModel>> build() async {
+  FutureOr<List<AnamneseAnswerModel>> build() async {
     //Lendo os grupos e colocando em ordem
     QueryBuilder<ParseObject> queryGroups =
         QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
@@ -96,11 +97,62 @@ class ReadAllQuestions extends _$ReadAllQuestions {
     }
     ref.read(indexEndProvider.notifier).set(questionsOrdered.length);
     ref.read(questionCurrentProvider.notifier).set(questionsOrdered[0]);
-    return questionsOrdered;
+    final people = ref.read(anamnesePeopleFormProvider).model;
+    var answers = <AnamneseAnswerModel>[];
+    for (var question in questionsOrdered) {
+      answers.add(AnamneseAnswerModel(people: people, question: question));
+    }
+    ref.invalidate(indexCurrentProvider);
+    return answers;
   }
 
-  AnamneseQuestionModel getQuestion(int value) {
-    return state.requireValue[value];
+  AnamneseAnswerModel getQuestion(int id) {
+    return state.requireValue[id];
+  }
+
+  void updateAnswer(
+    int id, {
+    required bool answered,
+    bool? answerBool,
+    String? answerText,
+  }) {
+    log('updateAnswer.id: $id');
+    log('updateAnswer.answered: $answered');
+    log('updateAnswer.answerBool: $answerBool');
+    log('updateAnswer.answerText: $answerText');
+    List<AnamneseAnswerModel> list = [...state.requireValue];
+    AnamneseAnswerModel temp = list[id];
+    list.replaceRange(id, id + 1, [
+      temp.copyWith(
+        answered: answered,
+        answerBool: answerBool,
+        answerText: answerText,
+      )
+    ]);
+    state = AsyncData([...list]);
+  }
+
+  void saveAnswers() async {
+    ref
+        .read(anamnesePeopleFormStatusStateProvider.notifier)
+        .set(AnamnesePeopleFormStatus.loading);
+    await Future.delayed(const Duration(seconds: 2));
+
+    ref
+        .read(anamnesePeopleFormStatusStateProvider.notifier)
+        .set(AnamnesePeopleFormStatus.success);
+  }
+}
+
+@riverpod
+class AnamnesePeopleFormStatusState extends _$AnamnesePeopleFormStatusState {
+  @override
+  AnamnesePeopleFormStatus build() {
+    return AnamnesePeopleFormStatus.initial;
+  }
+
+  void set(AnamnesePeopleFormStatus value) {
+    state = value;
   }
 }
 
@@ -117,19 +169,19 @@ class QuestionCurrent extends _$QuestionCurrent {
 }
 
 @riverpod
-class AnswerTypeYesNo extends _$AnswerTypeYesNo {
+class AnswerTypeBoolean extends _$AnswerTypeBoolean {
   @override
-  AnswerTypeYesNoStatus build() {
-    return AnswerTypeYesNoStatus.none;
+  AnswerTypeBooleanStatus build() {
+    return AnswerTypeBooleanStatus.none;
   }
 
-  void set(AnswerTypeYesNoStatus value) {
+  void set(AnswerTypeBooleanStatus value) {
     state = value;
   }
 }
 
 @riverpod
-class AnswerText extends _$AnswerText {
+class AnswerTypeText extends _$AnswerTypeText {
   @override
   String build() {
     return '';
@@ -171,25 +223,85 @@ class IndexCurrent extends _$IndexCurrent {
     return 0;
   }
 
-  void previous() {
+  void previous() async {
     if (state > 0) {
+      await _updateBeforeChangeIndex();
       state = state - 1;
-      final question =
+      await _updateAfterChangeIndex();
+      final questionCurrent =
           ref.read(readAllQuestionsProvider.notifier).getQuestion(state);
-      ref.read(questionCurrentProvider.notifier).set(question);
+      ref.read(questionCurrentProvider.notifier).set(questionCurrent.question!);
     }
   }
 
-  void next() {
-    log('next: $state');
+  void next() async {
     final indexEnd = ref.read(indexEndProvider);
     if (state < (indexEnd - 1)) {
+      await _updateBeforeChangeIndex();
+
       state = state + 1;
-      final question =
+      await _updateAfterChangeIndex();
+      final questionCurrent2 =
           ref.read(readAllQuestionsProvider.notifier).getQuestion(state);
-      ref.read(questionCurrentProvider.notifier).set(question);
-      log('next: $state');
+      ref
+          .read(questionCurrentProvider.notifier)
+          .set(questionCurrent2.question!);
     }
+  }
+
+  Future<void> _updateBeforeChangeIndex() async {
+    final answerTypeBoolean = ref.read(answerTypeBooleanProvider);
+    final answerTypeText = ref.read(answerTypeTextProvider);
+
+    if (answerTypeBoolean != AnswerTypeBooleanStatus.none ||
+        answerTypeText.isNotEmpty) {
+      if (answerTypeBoolean != AnswerTypeBooleanStatus.none) {
+        ref.read(readAllQuestionsProvider.notifier).updateAnswer(state,
+            answered: true,
+            answerBool: answerTypeBoolean == AnswerTypeBooleanStatus.yes
+                ? true
+                : false);
+      }
+      if (answerTypeText.isNotEmpty) {
+        ref
+            .read(readAllQuestionsProvider.notifier)
+            .updateAnswer(state, answered: true, answerText: answerTypeText);
+      }
+    } else {
+      ref.read(readAllQuestionsProvider.notifier).updateAnswer(state,
+          answered: false, answerBool: null, answerText: null);
+    }
+    ref.invalidate(answerTypeBooleanProvider);
+    ref.invalidate(answerTypeTextProvider);
+
+    final questionCurrent =
+        ref.read(readAllQuestionsProvider.notifier).getQuestion(state);
+    log('_updateBeforeChangeIndex questionCurrent[$state]: $questionCurrent');
+  }
+
+  Future<void> _updateAfterChangeIndex() async {
+    final questionCurrent =
+        ref.read(readAllQuestionsProvider.notifier).getQuestion(state);
+    if (questionCurrent.answered) {
+      if (questionCurrent.answerBool != null) {
+        ref.read(answerTypeBooleanProvider.notifier).set(
+            questionCurrent.answerBool!
+                ? AnswerTypeBooleanStatus.yes
+                : AnswerTypeBooleanStatus.no);
+      }
+      if (questionCurrent.answerText != null) {
+        ref
+            .read(answerTypeTextProvider.notifier)
+            .set(questionCurrent.answerText!);
+      }
+    } else {
+      ref.invalidate(answerTypeBooleanProvider);
+      ref.invalidate(answerTypeTextProvider);
+    }
+    final answerTypeBoolean = ref.read(answerTypeBooleanProvider);
+    final answerTypeText = ref.read(answerTypeTextProvider);
+    log('answerTypeBoolean: $answerTypeBoolean');
+    log('answerTypeText: $answerTypeText');
   }
 }
 
@@ -221,7 +333,7 @@ class ChildIsFemale extends _$ChildIsFemale {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AnamnesePeopleForm extends _$AnamnesePeopleForm {
   @override
   AnamnesePeopleFormState build() {
@@ -246,9 +358,16 @@ class AnamnesePeopleForm extends _$AnamnesePeopleForm {
         childBirthDate: childBirthDate!,
       );
 
-      await ref.read(anamnesePeopleRepositoryProvider).save(anamnesePeopleTemp);
+      final id = await ref
+          .read(anamnesePeopleRepositoryProvider)
+          .save(anamnesePeopleTemp);
 
-      state = state.copyWith(status: AnamnesePeopleFormStatus.success);
+      state = state.copyWith(
+        status: AnamnesePeopleFormStatus.success,
+        model: anamnesePeopleTemp.copyWith(
+          id: id,
+        ),
+      );
     } catch (e, st) {
       log('$e');
       log('$st');

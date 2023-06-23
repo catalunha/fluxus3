@@ -12,9 +12,30 @@ class AnamneseAnswerText extends ConsumerStatefulWidget {
 
 class _AnamneseAnswerTextState extends ConsumerState<AnamneseAnswerText> {
   final _txtTec = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final answerTypeText = ref.read(answerTypeTextProvider);
+    _txtTec.text = answerTypeText;
+  }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _txtTec.text = '';
+  }
+
+  var intBefore = -1;
+  @override
   Widget build(BuildContext context) {
+    final answerTypeText = ref.watch(answerTypeTextProvider);
+    final index = ref.watch(indexCurrentProvider);
+    if (intBefore != index) {
+      _txtTec.text = answerTypeText;
+      intBefore = index;
+    }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -28,17 +49,17 @@ class _AnamneseAnswerTextState extends ConsumerState<AnamneseAnswerText> {
             ),
             maxLines: 3,
             onChanged: (value) {
-              ref.read(answerTextProvider.notifier).set(value);
+              ref.read(answerTypeTextProvider.notifier).set(value);
             },
           ),
           TextButton(
             onPressed: () {
               _txtTec.text = '';
-              ref.read(answerTextProvider.notifier).set('');
+              ref.read(answerTypeTextProvider.notifier).set('');
             },
             child: const Text('Limpar resposta'),
           ),
-          Text(ref.watch(answerTextProvider))
+          Text(answerTypeText)
         ],
       ),
     );

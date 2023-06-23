@@ -9,6 +9,7 @@ class AnamneseAnswerSingle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final answerTypeBoolean = ref.watch(answerTypeBooleanProvider);
     return Column(
       children: [
         Row(
@@ -17,26 +18,25 @@ class AnamneseAnswerSingle extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 ref
-                    .read(answerTypeYesNoProvider.notifier)
-                    .set(AnswerTypeYesNoStatus.yes);
+                    .read(answerTypeBooleanProvider.notifier)
+                    .set(AnswerTypeBooleanStatus.yes);
               },
               style: ButtonStyle(
-                backgroundColor: ref.watch(answerTypeYesNoProvider) ==
-                        AnswerTypeYesNoStatus.yes
-                    ? const MaterialStatePropertyAll<Color>(Colors.black)
-                    : null,
+                backgroundColor:
+                    answerTypeBoolean == AnswerTypeBooleanStatus.yes
+                        ? const MaterialStatePropertyAll<Color>(Colors.black)
+                        : null,
               ),
               child: const Text('Sim'),
             ),
             ElevatedButton(
               onPressed: () {
                 ref
-                    .read(answerTypeYesNoProvider.notifier)
-                    .set(AnswerTypeYesNoStatus.no);
+                    .read(answerTypeBooleanProvider.notifier)
+                    .set(AnswerTypeBooleanStatus.no);
               },
               style: ButtonStyle(
-                backgroundColor: ref.watch(answerTypeYesNoProvider) ==
-                        AnswerTypeYesNoStatus.no
+                backgroundColor: answerTypeBoolean == AnswerTypeBooleanStatus.no
                     ? const MaterialStatePropertyAll<Color>(Colors.black)
                     : null,
               ),
@@ -47,8 +47,8 @@ class AnamneseAnswerSingle extends ConsumerWidget {
         TextButton(
           onPressed: () {
             ref
-                .read(answerTypeYesNoProvider.notifier)
-                .set(AnswerTypeYesNoStatus.none);
+                .read(answerTypeBooleanProvider.notifier)
+                .set(AnswerTypeBooleanStatus.none);
           },
           child: const Text('Limpar resposta'),
         ),

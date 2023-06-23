@@ -12,8 +12,8 @@ class AnamneseText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final questionCurrent = ref.watch(questionCurrentProvider)!;
-
-    if (questionCurrent.text == 'u') {}
+    ref.watch(answerTypeBooleanProvider);
+    ref.watch(answerTypeTextProvider);
 
     return Column(
       children: [

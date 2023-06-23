@@ -9,7 +9,7 @@ class AnamneseStartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Anamnese'),
+        title: const Text('Anamnese - Inicio'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
