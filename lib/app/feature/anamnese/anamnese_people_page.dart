@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluxus3/app/routes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -135,25 +137,29 @@ class _AnamneseDataPageState extends ConsumerState<AnamnesePeoplePage>
                       ),
                     ),
                     ElevatedButton(
-                        onPressed: () {
-                          if (ref.read(childBirthDateProvider) == null) {
-                            showMessageError(context,
-                                'Por favor preencha a data de nascimento');
-                          }
-                          final formValid =
-                              _formKey.currentState?.validate() ?? false;
+                      onPressed: () {
+                        context.goNamed(AppPage.anamneseAnswer.name);
+                      },
+                      // onPressed: () {
+                      //   if (ref.read(childBirthDateProvider) == null) {
+                      //     showMessageError(context,
+                      //         'Por favor preencha a data de nascimento');
+                      //   }
+                      //   final formValid =
+                      //       _formKey.currentState?.validate() ?? false;
 
-                          if (formValid) {
-                            ref
-                                .read(anamnesePeopleFormProvider.notifier)
-                                .submitForm(
-                                  adultName: _adultNameTec.text,
-                                  adultPhone: _adultPhoneTec.text,
-                                  childName: _childNameTec.text,
-                                );
-                          }
-                        },
-                        child: const Text('Iniciar Questionário.'))
+                      //   if (formValid) {
+                      //     ref
+                      //         .read(anamnesePeopleFormProvider.notifier)
+                      //         .submitForm(
+                      //           adultName: _adultNameTec.text,
+                      //           adultPhone: _adultPhoneTec.text,
+                      //           childName: _childNameTec.text,
+                      //         );
+                      //   }
+                      // },
+                      child: const Text('Iniciar Questionário.'),
+                    )
                   ],
                 ),
               ),
