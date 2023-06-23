@@ -3,35 +3,61 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../utils/app_mixin_loader.dart';
+import '../utils/app_mixin_messages.dart';
 import '../utils/app_textformfield.dart';
 import 'controller/providers.dart';
+import 'controller/states.dart';
 
-class AnamneseDataPage extends ConsumerStatefulWidget {
-  const AnamneseDataPage({super.key});
+class AnamnesePeoplePage extends ConsumerStatefulWidget {
+  const AnamnesePeoplePage({super.key});
 
   @override
-  ConsumerState<AnamneseDataPage> createState() => _AnamneseDataPageState();
+  ConsumerState<AnamnesePeoplePage> createState() => _AnamneseDataPageState();
 }
 
-class _AnamneseDataPageState extends ConsumerState<AnamneseDataPage> {
+class _AnamneseDataPageState extends ConsumerState<AnamnesePeoplePage>
+    with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
-  final _nameTec = TextEditingController();
+  final _adultNameTec = TextEditingController();
+  final _adultPhoneTec = TextEditingController();
+  final _childNameTec = TextEditingController();
   final dateFormat = DateFormat('dd/MM/y');
 
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
+    _adultNameTec.text = "";
+    _adultPhoneTec.text = "";
+    _childNameTec.text = "";
   }
 
   @override
   void dispose() {
-    _nameTec.dispose();
+    _adultNameTec.dispose();
+    _adultPhoneTec.dispose();
+    _childNameTec.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AnamnesePeopleFormState>(anamnesePeopleFormProvider,
+        (previous, next) async {
+      if (next.status == AnamnesePeopleFormStatus.error) {
+        hideLoader(context);
+        showMessageError(context, next.error);
+      }
+      if (next.status == AnamnesePeopleFormStatus.success) {
+        hideLoader(context); //sai do Dialog do loading
+        // context.pop(); //sai da pagina
+        Navigator.pop(context);
+      }
+      if (next.status == AnamnesePeopleFormStatus.loading) {
+        showLoader(context);
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dados pessoais'),
@@ -45,32 +71,30 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseDataPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    const Text('Dados do Pai/Mãe/Responsável pela criança'),
                     AppTextFormField(
-                      label: '* Nome do adulto entrevistador',
-                      controller: _nameTec,
+                      label: '* Nome completo',
+                      controller: _adultNameTec,
                       validator: Validatorless.required(
                           'Esta informação é obrigatória'),
                     ),
                     AppTextFormField(
-                      label: '* Email do adulto entrevistador',
-                      controller: _nameTec,
+                      label: '* Celular. Formato: DDDNUMERO',
+                      controller: _adultPhoneTec,
                       validator: Validatorless.required(
                           'Esta informação é obrigatória'),
                     ),
+                    const Text('Dados da criança'),
                     AppTextFormField(
-                      label: '* Celular do adulto entrevistador',
-                      controller: _nameTec,
-                      validator: Validatorless.required(
-                          'Esta informação é obrigatória'),
-                    ),
-                    AppTextFormField(
-                      label: '* Nome da criança entrevistada',
-                      controller: _nameTec,
+                      label: '* Nome completo',
+                      controller: _childNameTec,
                       validator: Validatorless.required(
                           'Esta informação é obrigatória'),
                     ),
                     SwitchListTile(
-                      title: const Text('É menina ?'),
+                      title: ref.watch(childIsFemaleProvider)
+                          ? const Text('É uma menina !')
+                          : const Text('É um menino !'),
                       value: ref.watch(childIsFemaleProvider),
                       onChanged: (value) {
                         ref.read(childIsFemaleProvider.notifier).toggle();
@@ -78,7 +102,7 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseDataPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
+                      child: Row(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text('Data de nascimento:'),
@@ -92,7 +116,7 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseDataPage> {
                                 lastDate: DateTime.now(),
                               );
                               ref
-                                  .watch(childBirthDayProvider.notifier)
+                                  .watch(childBirthDateProvider.notifier)
                                   .set(newDate);
                             },
                             child: Row(
@@ -100,9 +124,9 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseDataPage> {
                               children: [
                                 const Icon(Icons.date_range),
                                 const SizedBox(width: 10),
-                                Text(ref.watch(childBirthDayProvider) != null
+                                Text(ref.watch(childBirthDateProvider) != null
                                     ? dateFormat.format(
-                                        ref.watch(childBirthDayProvider)!)
+                                        ref.watch(childBirthDateProvider)!)
                                     : "Não informado"),
                               ],
                             ),
@@ -110,6 +134,26 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseDataPage> {
                         ],
                       ),
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          if (ref.read(childBirthDateProvider) == null) {
+                            showMessageError(context,
+                                'Por favor preencha a data de nascimento');
+                          }
+                          final formValid =
+                              _formKey.currentState?.validate() ?? false;
+
+                          if (formValid) {
+                            ref
+                                .read(anamnesePeopleFormProvider.notifier)
+                                .submitForm(
+                                  adultName: _adultNameTec.text,
+                                  adultPhone: _adultPhoneTec.text,
+                                  childName: _childNameTec.text,
+                                );
+                          }
+                        },
+                        child: const Text('Iniciar Questionário.'))
                   ],
                 ),
               ),
