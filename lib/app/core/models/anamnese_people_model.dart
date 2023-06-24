@@ -6,6 +6,7 @@ part 'anamnese_people_model.freezed.dart';
 abstract class AnamnesePeopleModel with _$AnamnesePeopleModel {
   factory AnamnesePeopleModel({
     String? id,
+    DateTime? createdAt,
     required String adultName,
     required String adultPhone,
     required String childName,

@@ -51,3 +51,34 @@ console.log(obj.id);
   await obj.save(null,{useMasterKey:true});
 }
 ```
+
+
+# dateDescribe
+
+```dart
+Class(varInternalGet: varExternalSet) => varExternalSet.
+extension DescribeDate on DateTime {
+  void describe() {
+    final now = DateTime.now();
+    final difference = this.difference(DateTime(now.year, now.month, now.day));
+print(Duration());
+    String description = switch (difference) {
+      Duration(inDays: -1) => 'Yesterday',
+      Duration(inDays: 0) => 'Today',
+      Duration(inDays: 1) => 'Tomorrow',
+      Duration(inDays: int d, isNegative: true) => '${d.abs()} days ago',
+      Duration(inDays: int d, isNegative: false) => '$d days from now',
+    };
+
+    print('$year/$month/$day is $description');
+  }
+}
+
+main() {
+  DateTime(2023, 5, 16).describe();
+  DateTime(2023, 5, 17).describe();
+  DateTime(2023, 5, 18).describe();
+  DateTime(2023, 5, 10).describe();
+  DateTime(2023, 5, 25).describe();
+}
+```

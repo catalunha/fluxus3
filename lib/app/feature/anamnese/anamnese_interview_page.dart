@@ -11,14 +11,15 @@ import '../utils/app_textformfield.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
-class AnamnesePeoplePage extends ConsumerStatefulWidget {
-  const AnamnesePeoplePage({super.key});
+class AnamneseInterviewPage extends ConsumerStatefulWidget {
+  const AnamneseInterviewPage({super.key});
 
   @override
-  ConsumerState<AnamnesePeoplePage> createState() => _AnamneseDataPageState();
+  ConsumerState<AnamneseInterviewPage> createState() =>
+      _AnamneseDataPageState();
 }
 
-class _AnamneseDataPageState extends ConsumerState<AnamnesePeoplePage>
+class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _adultNameTec = TextEditingController();
@@ -46,16 +47,16 @@ class _AnamneseDataPageState extends ConsumerState<AnamnesePeoplePage>
   Widget build(BuildContext context) {
     ref.listen<AnamnesePeopleFormState>(anamnesePeopleFormProvider,
         (previous, next) async {
-      if (next.status == AnamnesePeopleFormStatus.error) {
+      if (next.status == AnamneseStatus.error) {
         hideLoader(context);
         showMessageError(context, next.error);
       }
-      if (next.status == AnamnesePeopleFormStatus.success) {
+      if (next.status == AnamneseStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         // context.pop(); //sai da pagina
         Navigator.pop(context);
       }
-      if (next.status == AnamnesePeopleFormStatus.loading) {
+      if (next.status == AnamneseStatus.loading) {
         showLoader(context);
       }
     });

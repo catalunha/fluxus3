@@ -60,7 +60,7 @@ class AnamneseStartPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    context.goNamed(AppPage.anamnesePeople.name);
+                    context.goNamed(AppPage.anamneseInterview.name);
                   },
                   child: const Text('Prosseguir'),
                 ),

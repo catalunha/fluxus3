@@ -5,6 +5,7 @@ import '../../../core/models/anamnese_people_model.dart';
 class AnamnesePeopleEntity {
   static const String className = 'AnamnesePeople';
   static const String id = 'objectId';
+  static const String createdAt = 'createdAt';
   static const String adultName = 'adultName';
   static const String adultPhone = 'adultPhone';
   static const String childName = 'childName';
@@ -17,6 +18,7 @@ class AnamnesePeopleEntity {
   }) {
     AnamnesePeopleModel model = AnamnesePeopleModel(
       id: parseObject.objectId!,
+      createdAt: parseObject.createdAt!.toLocal(),
       adultName: parseObject.get(AnamnesePeopleEntity.adultName),
       adultPhone: parseObject.get(AnamnesePeopleEntity.adultPhone),
       childName: parseObject.get(AnamnesePeopleEntity.childName),

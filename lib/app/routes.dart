@@ -6,10 +6,11 @@ import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
 import 'feature/anamnese/anamnese_answer_page.dart';
 import 'feature/anamnese/anamnese_end_page.dart';
-import 'feature/anamnese/anamnese_people_page.dart';
+import 'feature/anamnese/anamnese_interview_page.dart';
 import 'feature/anamnese/anamnese_start_page.dart';
 import 'feature/anamnese_group/list/anamnese_group_list_page.dart';
 import 'feature/anamnese_group/save/anamnese_group_save_page.dart';
+import 'feature/anamnese_people/anamnese_people_list_page.dart';
 import 'feature/anamnese_question/list/anamnese_question_list_page.dart';
 import 'feature/anamnese_question/save/anamnese_question_save_page.dart';
 import 'feature/attendance/add/attendance_add_page.dart';
@@ -500,10 +501,10 @@ final goRouterProv = Provider<GoRouter>(
               },
               routes: [
                 GoRoute(
-                  path: AppPage.anamnesePeople.path,
-                  name: AppPage.anamnesePeople.name,
+                  path: AppPage.anamneseInterview.path,
+                  name: AppPage.anamneseInterview.name,
                   builder: (context, state) {
-                    return AnamnesePeoplePage(
+                    return AnamneseInterviewPage(
                       key: state.pageKey,
                     );
                   },
@@ -527,6 +528,15 @@ final goRouterProv = Provider<GoRouter>(
                   },
                 ),
               ],
+            ),
+            GoRoute(
+              path: AppPage.anamnesePeopleList.path,
+              name: AppPage.anamnesePeopleList.name,
+              builder: (context, state) {
+                return AnamnesePeopleListPage(
+                  key: state.pageKey,
+                );
+              },
             ),
           ],
         ),
@@ -597,9 +607,10 @@ enum AppPage {
   anamneseQuestionList('anamneseQuestionList', 'anamneseQuestionList'),
   anamneseQuestionSave('anamneseQuestionSave', 'anamneseQuestionSave'),
   anamneseStart('anamneseStart', 'anamneseStart'),
-  anamnesePeople('anamnesePeople', 'anamnesePeople'),
+  anamneseInterview('anamneseInterview', 'anamneseInterview'),
   anamneseAnswer('anamneseAnswer', 'anamneseAnswer'),
-  anamneseEnd('anamneseEnd', 'anamneseEnd');
+  anamneseEnd('anamneseEnd', 'anamneseEnd'),
+  anamnesePeopleList('anamnesePeopleList', 'anamnesePeopleList');
 
   final String path;
   final String name;

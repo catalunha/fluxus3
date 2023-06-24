@@ -135,21 +135,23 @@ class ReadAllQuestions extends _$ReadAllQuestions {
   void saveAnswers() async {
     ref
         .read(anamnesePeopleFormStatusStateProvider.notifier)
-        .set(AnamnesePeopleFormStatus.loading);
+        .set(AnamneseStatus.loading);
     try {
       final repo = ref.read(anamneseAnswerRepositoryProvider);
-
+      var saves = <Future<String>>[];
       for (var answer in state.requireValue) {
-        await repo.save(answer);
+        if (answer.answered) {
+          saves.add(repo.save(answer));
+        }
       }
-      // Future.wait(futures);
+      Future.wait(saves);
       ref
           .read(anamnesePeopleFormStatusStateProvider.notifier)
-          .set(AnamnesePeopleFormStatus.success);
+          .set(AnamneseStatus.success);
     } catch (e) {
       ref
           .read(anamnesePeopleFormStatusStateProvider.notifier)
-          .set(AnamnesePeopleFormStatus.error);
+          .set(AnamneseStatus.error);
     }
   }
 }
@@ -157,11 +159,11 @@ class ReadAllQuestions extends _$ReadAllQuestions {
 @riverpod
 class AnamnesePeopleFormStatusState extends _$AnamnesePeopleFormStatusState {
   @override
-  AnamnesePeopleFormStatus build() {
-    return AnamnesePeopleFormStatus.initial;
+  AnamneseStatus build() {
+    return AnamneseStatus.initial;
   }
 
-  void set(AnamnesePeopleFormStatus value) {
+  void set(AnamneseStatus value) {
     state = value;
   }
 }
@@ -355,7 +357,7 @@ class AnamnesePeopleForm extends _$AnamnesePeopleForm {
     required String adultPhone,
     required String childName,
   }) async {
-    state = state.copyWith(status: AnamnesePeopleFormStatus.loading);
+    state = state.copyWith(status: AnamneseStatus.loading);
     try {
       final childIsFemale = ref.read(childIsFemaleProvider);
       final childBirthDate = ref.read(childBirthDateProvider);
@@ -373,7 +375,7 @@ class AnamnesePeopleForm extends _$AnamnesePeopleForm {
           .save(anamnesePeopleTemp);
 
       state = state.copyWith(
-        status: AnamnesePeopleFormStatus.success,
+        status: AnamneseStatus.success,
         model: anamnesePeopleTemp.copyWith(
           id: id,
         ),
@@ -382,8 +384,7 @@ class AnamnesePeopleForm extends _$AnamnesePeopleForm {
       log('$e');
       log('$st');
       state = state.copyWith(
-          status: AnamnesePeopleFormStatus.error,
-          error: 'Erro em editar cargo');
+          status: AnamneseStatus.error, error: 'Erro em editar cargo');
     }
   }
 }

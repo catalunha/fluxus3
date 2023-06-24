@@ -250,13 +250,26 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
-                title: 'Anamnese',
+                title: 'Anamnese - Entrevista',
                 icon: Icons.people_outline,
                 color: Colors.black,
                 actions: [
                   IconButton(
                     onPressed: () {
                       context.goNamed(AppPage.anamneseStart.name);
+                    },
+                    icon: const Icon(Icons.list),
+                  ),
+                ],
+              ),
+              HomeModule(
+                title: 'Anamnese - Respostas',
+                icon: Icons.receipt_long,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.anamnesePeopleList.name);
                     },
                     icon: const Icon(Icons.list),
                   ),

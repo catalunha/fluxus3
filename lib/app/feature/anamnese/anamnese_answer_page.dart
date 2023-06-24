@@ -14,18 +14,18 @@ class AnamneseAnswerPage extends ConsumerWidget with Loader, Messages {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AnamnesePeopleFormStatus>(anamnesePeopleFormStatusStateProvider,
+    ref.listen<AnamneseStatus>(anamnesePeopleFormStatusStateProvider,
         (previous, next) async {
-      if (next == AnamnesePeopleFormStatus.error) {
+      if (next == AnamneseStatus.error) {
         hideLoader(context);
         showMessageError(context, 'Erro ao salvar pesquisa');
       }
-      if (next == AnamnesePeopleFormStatus.success) {
+      if (next == AnamneseStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         // context.pop(); //sai da pagina
         context.goNamed(AppPage.anamneseEnd.name);
       }
-      if (next == AnamnesePeopleFormStatus.loading) {
+      if (next == AnamneseStatus.loading) {
         showLoader(context);
       }
     });
