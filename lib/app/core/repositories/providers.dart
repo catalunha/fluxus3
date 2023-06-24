@@ -1,6 +1,7 @@
 import 'package:fluxus3/app/data/b4a/table/user_b4a.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'anamnese_answer_repository.dart';
 import 'anamnese_group_repository.dart';
 import 'anamnese_people_repository.dart';
 import 'anamnese_question_repository.dart';
@@ -119,4 +120,10 @@ AnamneseRepository anamneseRepository(AnamneseRepositoryRef ref) {
 AnamnesePeopleRepository anamnesePeopleRepository(
     AnamnesePeopleRepositoryRef ref) {
   return AnamnesePeopleRepository();
+}
+
+@riverpod
+AnamneseAnswerRepository anamneseAnswerRepository(
+    AnamneseAnswerRepositoryRef ref) {
+  return AnamneseAnswerRepository();
 }

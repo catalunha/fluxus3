@@ -136,11 +136,21 @@ class ReadAllQuestions extends _$ReadAllQuestions {
     ref
         .read(anamnesePeopleFormStatusStateProvider.notifier)
         .set(AnamnesePeopleFormStatus.loading);
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      final repo = ref.read(anamneseAnswerRepositoryProvider);
 
-    ref
-        .read(anamnesePeopleFormStatusStateProvider.notifier)
-        .set(AnamnesePeopleFormStatus.success);
+      for (var answer in state.requireValue) {
+        await repo.save(answer);
+      }
+      // Future.wait(futures);
+      ref
+          .read(anamnesePeopleFormStatusStateProvider.notifier)
+          .set(AnamnesePeopleFormStatus.success);
+    } catch (e) {
+      ref
+          .read(anamnesePeopleFormStatusStateProvider.notifier)
+          .set(AnamnesePeopleFormStatus.error);
+    }
   }
 }
 

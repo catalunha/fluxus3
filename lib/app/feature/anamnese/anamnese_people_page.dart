@@ -137,27 +137,31 @@ class _AnamneseDataPageState extends ConsumerState<AnamnesePeoplePage>
                       ),
                     ),
                     ElevatedButton(
+                      // onPressed: () {
+                      //   context.goNamed(AppPage.anamneseAnswer.name);
+                      // },
                       onPressed: () {
+                        if (ref.read(childBirthDateProvider) == null) {
+                          showMessageError(context,
+                              'Por favor preencha a data de nascimento');
+                          return;
+                        }
+                        final formValid =
+                            _formKey.currentState?.validate() ?? false;
+
+                        if (formValid) {
+                          ref
+                              .read(anamnesePeopleFormProvider.notifier)
+                              .submitForm(
+                                adultName: _adultNameTec.text,
+                                adultPhone: _adultPhoneTec.text,
+                                childName: _childNameTec.text,
+                              );
+                        } else {
+                          return;
+                        }
                         context.goNamed(AppPage.anamneseAnswer.name);
                       },
-                      // onPressed: () {
-                      //   if (ref.read(childBirthDateProvider) == null) {
-                      //     showMessageError(context,
-                      //         'Por favor preencha a data de nascimento');
-                      //   }
-                      //   final formValid =
-                      //       _formKey.currentState?.validate() ?? false;
-
-                      //   if (formValid) {
-                      //     ref
-                      //         .read(anamnesePeopleFormProvider.notifier)
-                      //         .submitForm(
-                      //           adultName: _adultNameTec.text,
-                      //           adultPhone: _adultPhoneTec.text,
-                      //           childName: _childNameTec.text,
-                      //         );
-                      //   }
-                      // },
                       child: const Text('Iniciar Questionário.'),
                     )
                   ],
