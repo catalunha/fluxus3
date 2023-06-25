@@ -1,21 +1,26 @@
 import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/models/anamnese_people_model.dart';
+import '../../routes.dart';
 import '../utils/app_text_title_value.dart';
+import 'controller/providers.dart';
 
-class AnamnesePeopleObj extends StatelessWidget {
+class AnamnesePeopleObj extends ConsumerWidget {
   final AnamnesePeopleModel model;
   const AnamnesePeopleObj({Key? key, required this.model}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('dd/MM/y');
     final childBirthDate =
         AgeCalculator.age(model.childBirthDate, today: DateTime.now());
     final createdAt =
         AgeCalculator.age(model.createdAt!, today: DateTime.now());
+    ref.watch(anamnesePeopleSelectedProvider);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -39,6 +44,10 @@ class AnamnesePeopleObj extends StatelessWidget {
             ),
             const Text('Dados da criança:'),
             AppTextTitleValue(
+              title: 'Nome: ',
+              value: model.childName,
+            ),
+            AppTextTitleValue(
               title: 'A criança é: ',
               value: model.childIsFemale ? "MeninA" : "MeninO",
             ),
@@ -47,6 +56,36 @@ class AnamnesePeopleObj extends StatelessWidget {
               value:
                   '${dateFormat.format(model.childBirthDate)} - ${childBirthDate.years} a, ${childBirthDate.months} m, ${childBirthDate.days} d',
             ),
+            ElevatedButton(
+                onPressed: () {
+                  ref.read(anamnesePeopleSelectedProvider.notifier).set(model);
+                  context.goNamed(AppPage.anamnesePeopleAnswerList.name);
+                  // print('aa');
+                  // final list = ref.read(anamneseAnswerListProvider);
+                  // print('bb');
+
+                  // list.when(
+                  //     data: (data) {
+                  //       print('ee');
+                  //       return Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) {
+                  //             return AnamnesePeoplePrintPage(
+                  //               people: model,
+                  //               answerList: data,
+                  //             );
+                  //           },
+                  //         ),
+                  //       );
+                  //     },
+                  //     error: (error, st) {
+                  //       log('$error');
+                  //       log('$st');
+                  //     },
+                  //     loading: () {});
+                  // print('cc');
+                },
+                child: const Text('Listar perguntas'))
           ],
         ),
       ),

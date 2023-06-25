@@ -11,6 +11,7 @@ import 'feature/anamnese/anamnese_start_page.dart';
 import 'feature/anamnese_group/list/anamnese_group_list_page.dart';
 import 'feature/anamnese_group/save/anamnese_group_save_page.dart';
 import 'feature/anamnese_people/anamnese_people_list_page.dart';
+import 'feature/anamnese_people/anamnese_people_answer_list_page.dart';
 import 'feature/anamnese_question/list/anamnese_question_list_page.dart';
 import 'feature/anamnese_question/save/anamnese_question_save_page.dart';
 import 'feature/attendance/add/attendance_add_page.dart';
@@ -530,14 +531,24 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-              path: AppPage.anamnesePeopleList.path,
-              name: AppPage.anamnesePeopleList.name,
-              builder: (context, state) {
-                return AnamnesePeopleListPage(
-                  key: state.pageKey,
-                );
-              },
-            ),
+                path: AppPage.anamnesePeopleList.path,
+                name: AppPage.anamnesePeopleList.name,
+                builder: (context, state) {
+                  return AnamnesePeopleListPage(
+                    key: state.pageKey,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: AppPage.anamnesePeopleAnswerList.path,
+                    name: AppPage.anamnesePeopleAnswerList.name,
+                    builder: (context, state) {
+                      return AnamnesePeopleAnswerListPage(
+                        key: state.pageKey,
+                      );
+                    },
+                  ),
+                ]),
           ],
         ),
       ],
@@ -610,7 +621,9 @@ enum AppPage {
   anamneseInterview('anamneseInterview', 'anamneseInterview'),
   anamneseAnswer('anamneseAnswer', 'anamneseAnswer'),
   anamneseEnd('anamneseEnd', 'anamneseEnd'),
-  anamnesePeopleList('anamnesePeopleList', 'anamnesePeopleList');
+  anamnesePeopleList('anamnesePeopleList', 'anamnesePeopleList'),
+  anamnesePeopleAnswerList(
+      'anamnesePeopleAnswerList', 'anamnesePeopleAnswerList');
 
   final String path;
   final String name;
