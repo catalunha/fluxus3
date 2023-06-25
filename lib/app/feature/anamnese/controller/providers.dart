@@ -19,7 +19,7 @@ part 'providers.g.dart';
 class ReadAllQuestions extends _$ReadAllQuestions {
   @override
   FutureOr<List<AnamneseAnswerModel>> build() async {
-    //Lendo os grupos e colocando em ordem
+    // +++ Listando Group
     QueryBuilder<ParseObject> queryGroups =
         QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
     queryGroups.orderByAscending('name');
@@ -54,8 +54,8 @@ class ReadAllQuestions extends _$ReadAllQuestions {
       listGroupsOrdened = [...listGroups];
     }
 
-    //Lendo as pergunta e ordenando pelos grupos
-
+    // --- Listando Group
+    // +++ Listando Question
     QueryBuilder<ParseObject> queryQuestions = QueryBuilder<ParseObject>(
         ParseObject(AnamneseQuestionEntity.className));
     queryQuestions.orderByAscending('text');
@@ -95,6 +95,8 @@ class ReadAllQuestions extends _$ReadAllQuestions {
         questionsOrdered.addAll([...questionsUnOrdered]);
       }
     }
+    // --- Listando Question
+
     ref.read(indexEndProvider.notifier).set(questionsOrdered.length);
     ref.read(questionCurrentProvider.notifier).set(questionsOrdered[0]);
     final people = ref.read(anamnesePeopleFormProvider).model;

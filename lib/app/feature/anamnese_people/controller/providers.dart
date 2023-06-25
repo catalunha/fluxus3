@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/models/anamnese_answer_model.dart';
 import '../../../core/models/anamnese_group_model.dart';
 import '../../../core/models/anamnese_people_model.dart';
+import '../../../core/models/anamnese_question_model.dart';
 import '../../../data/b4a/entity/anamnese_answer_entity.dart';
 import '../../../data/b4a/entity/anamnese_group_entity.dart';
 import '../../../data/b4a/entity/anamnese_people_entity.dart';
@@ -29,7 +30,21 @@ FutureOr<List<AnamnesePeopleModel>> anamnesePeopleList(
       AnamnesePeopleEntity.childBirthDate,
     ],
   });
+  ref.watch(anamnesePeopleListDataProvider.notifier).set(list);
+
   return list;
+}
+
+@riverpod
+class AnamnesePeopleListData extends _$AnamnesePeopleListData {
+  @override
+  List<AnamnesePeopleModel> build() {
+    return [];
+  }
+
+  void set(List<AnamnesePeopleModel> value) {
+    state = value;
+  }
 }
 
 @riverpod
@@ -45,24 +60,14 @@ class AnamnesePeopleSearch extends _$AnamnesePeopleSearch {
 }
 
 @riverpod
-FutureOr<List<AnamnesePeopleModel>> anamnesePeopleFiltered(
+List<AnamnesePeopleModel> anamnesePeopleFiltered(
     AnamnesePeopleFilteredRef ref) {
   final search = ref.watch(anamnesePeopleSearchProvider);
-  final data = ref.watch(anamnesePeopleListProvider);
+  final data = ref.watch(anamnesePeopleListDataProvider);
 
-  // return data
-  //     .where((element) => (element.childName.toLowerCase().contains(search)))
-  //     .toList();
-  // // return AsyncValue.data([]);
-  return data.when(data: (data2) {
-    return data2
-        .where((element) => (element.childName.toLowerCase().contains(search)))
-        .toList();
-  }, error: (error, st) {
-    return [];
-  }, loading: () {
-    return [];
-  });
+  return data
+      .where((element) => (element.childName.toLowerCase().contains(search)))
+      .toList();
 }
 
 // @riverpod
@@ -84,7 +89,7 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
   QueryBuilder<ParseObject> queryAnswer =
       QueryBuilder<ParseObject>(ParseObject(AnamneseAnswerEntity.className));
   queryAnswer.orderByAscending('name');
-  final listAnswer = await ref
+  final listAnswerUnordened = await ref
       .watch(anamneseAnswerRepositoryProvider)
       .list(queryAnswer, cols: {
     "${AnamneseAnswerEntity.className}.cols": [
@@ -108,8 +113,6 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
     cols: {
       "${AnamneseGroupEntity.className}.cols": [
         AnamneseGroupEntity.name,
-        // AnamneseGroupEntity.description,
-        // AnamneseGroupEntity.isActive,
         AnamneseGroupEntity.orderOfQuestions,
       ],
     },
@@ -117,26 +120,26 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
   var anamnese =
       await ref.read(anamneseRepositoryProvider).readByName('orderOfGroups');
   var listGroupsOrdened = <AnamneseGroupModel>[];
-  final Map<String, AnamneseGroupModel> mapping = {
-    for (var group in listGroups) group.id!: group
-  };
-  for (var groupId in anamnese!.orderOfGroups) {
-    listGroupsOrdened.add(mapping[groupId]!);
+  if (anamnese != null && anamnese.orderOfGroups.isNotEmpty) {
+    final Map<String, AnamneseGroupModel> mapping = {
+      for (var group in listGroups) group.id!: group
+    };
+    for (var groupId in anamnese.orderOfGroups) {
+      listGroupsOrdened.add(mapping[groupId]!);
+    }
+  } else {
+    listGroupsOrdened = [...listGroups];
   }
   // --- Listando Group
   // +++ Listando Question
   QueryBuilder<ParseObject> queryQuestions =
       QueryBuilder<ParseObject>(ParseObject(AnamneseQuestionEntity.className));
-  queryQuestions.orderByAscending('text');
   final listQuestions = await ref.read(anamneseQuestionRepositoryProvider).list(
     queryQuestions,
     cols: {
       "${AnamneseQuestionEntity.className}.cols": [
         AnamneseQuestionEntity.text,
-        AnamneseQuestionEntity.description,
         AnamneseQuestionEntity.type,
-        AnamneseQuestionEntity.isActive,
-        AnamneseQuestionEntity.isRequired,
         AnamneseQuestionEntity.anamneseGroup,
       ],
       "${AnamneseQuestionEntity.className}.pointers": [
@@ -163,9 +166,21 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
       questionsOrdered.addAll([...questionsUnOrdered]);
     }
   }
+
   // --- Listando Question
 
-  return listAnswer;
+  //+++ Aplicando o ordenamento nas Answer de acordo com a ordem do grupo e questão
+  final Map<String, AnamneseAnswerModel> mapping = {
+    for (var answer in listAnswerUnordened) answer.question!.id!: answer
+  };
+  var listAnswerOrdened = <AnamneseAnswerModel>[];
+  for (var question in questionsOrdered) {
+    if (mapping.containsKey(question.id)) {
+      listAnswerOrdened.add(mapping[question.id]!);
+    }
+  }
+  //---
+  return listAnswerOrdened;
 }
 
 @Riverpod(keepAlive: true)

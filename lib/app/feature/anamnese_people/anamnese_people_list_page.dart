@@ -11,8 +11,8 @@ class AnamnesePeopleListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final list = ref.watch(anamnesePeopleListProvider);
-    final list = ref.watch(anamnesePeopleFilteredProvider);
+    final list = ref.watch(anamnesePeopleListProvider);
+    final listFiltered = ref.watch(anamnesePeopleFilteredProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Lista com ${list.asData?.value.length} anamneses'),
@@ -46,9 +46,9 @@ class AnamnesePeopleListPage extends ConsumerWidget {
               ),
               Flexible(
                 child: ListView.builder(
-                  itemCount: data.length,
+                  itemCount: listFiltered.length,
                   itemBuilder: (context, index) {
-                    final level = data[index];
+                    final level = listFiltered[index];
                     return AnamnesePeopleObj(
                       model: level,
                     );

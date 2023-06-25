@@ -22,11 +22,13 @@ class AnamneseQuestionEntity {
       text: parseObject.get(AnamneseQuestionEntity.text),
       description: parseObject.get(AnamneseQuestionEntity.description),
       type: parseObject.get(AnamneseQuestionEntity.type),
-      required: parseObject.get(AnamneseQuestionEntity.isRequired),
+      required: parseObject.get<bool>(AnamneseQuestionEntity.isRequired,
+          defaultValue: false)!,
       anamneseGroup: AnamneseGroupEntity().toModel(
           parseObject.get(AnamneseQuestionEntity.anamneseGroup),
           cols: cols),
-      isActive: parseObject.get(AnamneseQuestionEntity.isActive),
+      isActive: parseObject.get<bool>(AnamneseQuestionEntity.isActive,
+          defaultValue: true)!,
     );
     return model;
   }
