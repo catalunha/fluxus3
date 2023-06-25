@@ -32,9 +32,9 @@ Quando baixar ou estiver trabalhando neste projeto ativar o
 # github
 
 Limpar cache e colocar novas regras no .gitignore
-$  git rm -r --cached .
-$ git add . 
-$ git commit -m 'novas regras no gitignore'
+~$  git rm -r --cached .
+~$ git add . 
+~$ git commit -m 'novas regras no gitignore'
 
 
 
@@ -82,3 +82,6 @@ main() {
   DateTime(2023, 5, 25).describe();
 }
 ```
+
+# outros projetos usando este DB
+flutter create --project-name=prokids0 --org net.brintec --platforms android,web ./prokids0

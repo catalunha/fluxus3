@@ -69,6 +69,9 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
           pw.Text('A criança é: ${people.childIsFemale ? "MeninA" : "MeninO"}'),
           pw.Text(
               'Nascimento: ${dateFormat.format(people.childBirthDate)} - ${childBirthDate.years} a, ${childBirthDate.months} m, ${childBirthDate.days} d'),
+          pw.SizedBox(height: 20),
+          pw.Text('Resultado da entrevista'),
+          pw.SizedBox(height: 20),
           ...body(),
         ],
       ),
@@ -90,16 +93,25 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Row(children: [
-          pw.SizedBox(width: 10),
-          pw.Expanded(
+        pw.Row(
+          children: [
+            pw.SizedBox(width: 10),
+            pw.Expanded(
               child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Text('answer: ${model.answerText}'),
-            ],
-          ))
-        ]),
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text('Grupo: ${model.question!.anamneseGroup.name}'),
+                  pw.Text('Pergunta: ${model.question!.text}'),
+                  if (model.answerBool != null)
+                    pw.Text('Resposta: ${model.answerBool! ? "Sim" : "Não"}'),
+                  if (model.answerText != null)
+                    pw.Text('Resposta: ${model.answerText}'),
+                  pw.Divider(height: 25),
+                ],
+              ),
+            ),
+          ],
+        ),
         // pw.Divider(),
       ],
     );

@@ -88,7 +88,11 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
   // +++ Listando Answer
   QueryBuilder<ParseObject> queryAnswer =
       QueryBuilder<ParseObject>(ParseObject(AnamneseAnswerEntity.className));
-  queryAnswer.orderByAscending('name');
+  queryAnswer.whereEqualTo(
+      AnamneseAnswerEntity.people,
+      (ParseObject(AnamnesePeopleEntity.className)
+            ..objectId = ref.read(anamnesePeopleSelectedProvider)!.id)
+          .toPointer());
   final listAnswerUnordened = await ref
       .watch(anamneseAnswerRepositoryProvider)
       .list(queryAnswer, cols: {

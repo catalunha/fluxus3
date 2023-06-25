@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'anamnese_answer_obj.dart';
+import 'anamnese_people_print_page.dart';
 import 'controller/providers.dart';
 
 class AnamnesePeopleAnswerListPage extends ConsumerWidget {
@@ -15,6 +16,22 @@ class AnamnesePeopleAnswerListPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Visualizando respostas'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return AnamnesePeoplePrintPage(
+                        people: list.requireValue[0].people!,
+                        answerList: list.requireValue,
+                      );
+                    },
+                  ),
+                );
+              },
+              icon: const Icon(Icons.print))
+        ],
       ),
       body: list.when(
         data: (data) {
