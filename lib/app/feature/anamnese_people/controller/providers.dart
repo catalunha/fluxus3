@@ -104,7 +104,7 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
     "${AnamneseAnswerEntity.className}.pointers": [
       AnamneseAnswerEntity.people,
       AnamneseAnswerEntity.question,
-      '${AnamneseAnswerEntity.question}.${AnamneseQuestionEntity.anamneseGroup}',
+      '${AnamneseAnswerEntity.question}.${AnamneseQuestionEntity.group}',
     ],
   });
   // --- Listando Answer
@@ -144,10 +144,10 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
       "${AnamneseQuestionEntity.className}.cols": [
         AnamneseQuestionEntity.text,
         AnamneseQuestionEntity.type,
-        AnamneseQuestionEntity.anamneseGroup,
+        AnamneseQuestionEntity.group,
       ],
       "${AnamneseQuestionEntity.className}.pointers": [
-        AnamneseQuestionEntity.anamneseGroup,
+        AnamneseQuestionEntity.group,
       ],
     },
   );

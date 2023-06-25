@@ -8,36 +8,35 @@ class AnamneseAnswerEntity {
   static const String className = 'AnamneseAnswer';
   static const String id = 'objectId';
   static const String people = 'people';
-  static const String question = 'question';
+  static const String order = 'order';
+  static const String group = 'group';
+  static const String text = 'text';
+  static const String type = 'type';
+  static const String options = 'options';
   static const String answer = 'answer';
 
   AnamneseAnswerModel toModel(
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    final question = AnamneseQuestionEntity()
-        .toModel(parseObject.get(AnamneseAnswerEntity.question));
-    final answer = parseObject.get(AnamneseAnswerEntity.answer);
-    bool? answerBool;
-    String? answerText;
-    if (question.type == 'boolean') {
-      answerBool = answer == 'true' ? true : false;
-    }
-    if (question.type == 'text') {
-      answerText = answer;
-    }
-    if (question.type == 'numerical') {
-      answerText = answer;
-    }
     AnamneseAnswerModel model = AnamneseAnswerModel(
       id: parseObject.objectId!,
       people: parseObject.get(AnamneseAnswerEntity.people) != null
           ? AnamnesePeopleEntity()
               .toModel(parseObject.get(AnamneseAnswerEntity.people))
           : null,
-      question: question,
-      answerBool: answerBool,
-      answerText: answerText,
+      order: parseObject.get(AnamneseAnswerEntity.order),
+      group: parseObject.get(AnamneseAnswerEntity.group),
+      text: parseObject.get(AnamneseAnswerEntity.text),
+      type: parseObject.get(AnamneseAnswerEntity.type),
+      options:
+          parseObject.get<List<dynamic>>(AnamneseAnswerEntity.options) != null
+              ? parseObject
+                  .get<List<dynamic>>(AnamneseAnswerEntity.options)!
+                  .map((e) => e.toString())
+                  .toList()
+              : [],
+      answer: parseObject.get(AnamneseAnswerEntity.answer),
     );
     return model;
   }
@@ -53,22 +52,12 @@ class AnamneseAnswerEntity {
                 ..objectId = model.people!.id)
               .toPointer());
     }
-    if (model.question != null) {
-      parseObject.set(
-          AnamneseAnswerEntity.question,
-          (ParseObject(AnamneseQuestionEntity.className)
-                ..objectId = model.question!.id)
-              .toPointer());
-    }
-    if (model.answered) {
-      if (model.answerBool != null) {
-        parseObject.set(
-            AnamneseAnswerEntity.answer, model.answerBool! ? 'true' : 'false');
-      }
-      if (model.answerText != null && model.answerText!.isNotEmpty) {
-        parseObject.set(AnamneseAnswerEntity.answer, model.answerText);
-      }
-    }
+    parseObject.set(AnamneseAnswerEntity.order, model.order);
+    parseObject.set(AnamneseAnswerEntity.group, model.group);
+    parseObject.set(AnamneseAnswerEntity.text, model.text);
+    parseObject.set(AnamneseAnswerEntity.type, model.type);
+    parseObject.set(AnamneseAnswerEntity.options, model.options);
+    parseObject.set(AnamneseAnswerEntity.answer, model.answer);
     return parseObject;
   }
 }

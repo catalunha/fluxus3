@@ -69,10 +69,10 @@ class ReadAllQuestions extends _$ReadAllQuestions {
           AnamneseQuestionEntity.type,
           AnamneseQuestionEntity.isActive,
           AnamneseQuestionEntity.isRequired,
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
         "${AnamneseQuestionEntity.className}.pointers": [
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
       },
     );

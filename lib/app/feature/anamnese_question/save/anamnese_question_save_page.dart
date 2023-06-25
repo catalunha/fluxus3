@@ -31,19 +31,19 @@ class _AnamneseQuestionSavePageState
     extends ConsumerState<AnamneseQuestionSavePage> with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _textTec = TextEditingController();
-  final _descriptionTec = TextEditingController();
+  final _optionsTec = TextEditingController();
   bool firstTime = true;
   @override
   void initState() {
     super.initState();
     _textTec.text = "";
-    _descriptionTec.text = "";
+    _optionsTec.text = "";
   }
 
   @override
   void dispose() {
     _textTec.dispose();
-    _descriptionTec.dispose();
+    _optionsTec.dispose();
     super.dispose();
   }
 
@@ -77,7 +77,7 @@ class _AnamneseQuestionSavePageState
           if (formValid && group != null) {
             ref.read(anamneseQuestionFormProvider.notifier).submitForm(
                   text: _textTec.text,
-                  description: _descriptionTec.text,
+                  options: _optionsTec.text,
                 );
           }
           if (group == null) {
@@ -91,7 +91,7 @@ class _AnamneseQuestionSavePageState
           if (data != null && firstTime) {
             final formState = ref.read(anamneseQuestionFormProvider);
             _textTec.text = formState.model?.text ?? '';
-            _descriptionTec.text = formState.model?.description ?? '';
+            _optionsTec.text = formState.model?.options ?? '';
           }
           firstTime = false;
           return Center(
@@ -111,7 +111,7 @@ class _AnamneseQuestionSavePageState
                         ),
                         AppTextFormField(
                           label: 'Descrição',
-                          controller: _descriptionTec,
+                          controller: _optionsTec,
                         ),
                         const Wrap(
                           children: [

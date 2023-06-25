@@ -27,20 +27,16 @@ class AnamneseQuestionObj extends StatelessWidget {
               value: model.text,
             ),
             AppTextTitleValue(
-              title: 'Descrição: ',
-              value: model.description,
-            ),
-            AppTextTitleValue(
               title: 'Tipo: ',
               value: model.type,
             ),
             AppTextTitleValue(
               title: 'Obrigatória: ',
-              value: model.required ? "Sim" : "Não",
+              value: model.isRequired ? "Sim" : "Não",
             ),
             AppTextTitleValue(
               title: 'Grupo: ',
-              value: model.anamneseGroup.name,
+              value: model.group.name,
             ),
             AppTextTitleValue(
               title: 'Ativa: ',

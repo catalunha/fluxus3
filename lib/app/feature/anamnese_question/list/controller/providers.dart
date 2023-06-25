@@ -25,14 +25,14 @@ class AnamneseQuestions extends _$AnamneseQuestions {
       cols: {
         "${AnamneseQuestionEntity.className}.cols": [
           AnamneseQuestionEntity.text,
-          AnamneseQuestionEntity.description,
           AnamneseQuestionEntity.type,
+          AnamneseQuestionEntity.options,
           AnamneseQuestionEntity.isActive,
           AnamneseQuestionEntity.isRequired,
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
         "${AnamneseQuestionEntity.className}.pointers": [
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
       },
     );
@@ -117,7 +117,7 @@ class QuestionsFiltered extends _$QuestionsFiltered {
                 name: 'questionsFilteredProvider');
             log('group: $group', name: 'questionsFilteredProvider');
             final questionsUnOrdered = questions
-                .where((element) => element.anamneseGroup.id == group.id)
+                .where((element) => element.group.id == group.id)
                 .toList();
 
             var questionsOrdered = <AnamneseQuestionModel>[];
