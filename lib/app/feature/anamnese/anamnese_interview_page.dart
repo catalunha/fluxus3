@@ -1,3 +1,4 @@
+import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluxus3/app/routes.dart';
@@ -60,7 +61,14 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
         showLoader(context);
       }
     });
-
+    final childBirthDate = ref.watch(childBirthDateProvider);
+    var childBirthDateAgeText = '...';
+    if (childBirthDate != null) {
+      final childBirthDateAge =
+          AgeCalculator.age(childBirthDate, today: DateTime.now());
+      childBirthDateAgeText =
+          '${childBirthDateAge.years} a, ${childBirthDateAge.months} m, ${childBirthDateAge.days} d';
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dados pessoais'),
@@ -105,8 +113,8 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           const Text('Data de nascimento:'),
                           const SizedBox(width: 10),
@@ -134,6 +142,8 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
                               ],
                             ),
                           ),
+                          if (ref.watch(childBirthDateProvider) != null)
+                            Text(childBirthDateAgeText)
                         ],
                       ),
                     ),

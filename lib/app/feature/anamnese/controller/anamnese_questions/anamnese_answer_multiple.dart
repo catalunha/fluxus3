@@ -3,16 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers.dart';
 
-class AnamneseAnswerSimple extends ConsumerWidget {
-  const AnamneseAnswerSimple({super.key});
+class AnamneseAnswerMultiple extends ConsumerWidget {
+  const AnamneseAnswerMultiple({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final answered = ref.watch(answeredProvider);
     final answerCurrent = ref.watch(answerCurrentProvider)!;
-    for (var item in answerCurrent.options) {
-      print(item);
-    }
+
     return Column(
       children: [
         Row(
@@ -21,7 +19,7 @@ class AnamneseAnswerSimple extends ConsumerWidget {
             for (var item in answerCurrent.options) ...[
               ElevatedButton(
                 onPressed: () {
-                  ref.read(answeredProvider.notifier).set([item]);
+                  ref.read(answeredProvider.notifier).update(item);
                 },
                 style: ButtonStyle(
                   backgroundColor: answered.contains(item)

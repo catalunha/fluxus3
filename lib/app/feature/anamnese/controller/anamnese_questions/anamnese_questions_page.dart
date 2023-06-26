@@ -7,6 +7,7 @@ import '../../../../routes.dart';
 import '../../../anamnese_question/save/controller/states.dart';
 import '../../../utils/app_mixin_loader.dart';
 import '../../../utils/app_mixin_messages.dart';
+import 'anamnese_answer_multiple.dart';
 import 'anamnese_answer_number.dart';
 import 'anamnese_answer_simple.dart';
 import 'anamnese_answer_text.dart';
@@ -35,7 +36,7 @@ class AnamneseQuestionsPage extends ConsumerWidget with Loader, Messages {
     });
 
     final questions = ref.watch(readAllQuestionsProvider);
-    final answerCurrent = ref.watch(answerCurrentProvider)!;
+    ref.watch(answerCurrentProvider);
     ref.watch(answeredProvider);
 
     return Scaffold(
@@ -44,6 +45,8 @@ class AnamneseQuestionsPage extends ConsumerWidget with Loader, Messages {
       ),
       body: questions.when(
         data: (data) {
+          final answerCurrent = ref.watch(answerCurrentProvider)!;
+
           return Center(
             child: SingleChildScrollView(
               child: Column(
@@ -55,6 +58,9 @@ class AnamneseQuestionsPage extends ConsumerWidget with Loader, Messages {
                   if (answerCurrent.type ==
                       AnamneseQuestionTypeStatus.simple.name)
                     const AnamneseAnswerSimple(),
+                  if (answerCurrent.type ==
+                      AnamneseQuestionTypeStatus.multiple.name)
+                    const AnamneseAnswerMultiple(),
                   if (answerCurrent.type ==
                       AnamneseQuestionTypeStatus.text.name)
                     const AnamneseAnswerText(),

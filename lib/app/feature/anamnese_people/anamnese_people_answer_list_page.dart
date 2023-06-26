@@ -36,17 +36,17 @@ class AnamnesePeopleAnswerListPage extends ConsumerWidget {
       body: list.when(
         data: (data) {
           if (data.isNotEmpty) {
-            var group = data[0].question!.anamneseGroup.name;
+            var group = data[0].group;
             var listExpansionTile = <Widget>[];
             var listAnswer = <Widget>[];
             for (var answer in data) {
-              if (answer.question!.anamneseGroup.name != group) {
+              if (answer.group != group) {
                 listExpansionTile.add(ExpansionTile(
                   title: Text(group),
                   children: [...listAnswer],
                 ));
                 listAnswer.clear();
-                group = answer.question!.anamneseGroup.name;
+                group = answer.group;
                 listAnswer.add(AnamneseAnswerObj(
                   model: answer,
                 ));

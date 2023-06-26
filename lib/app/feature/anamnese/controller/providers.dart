@@ -104,6 +104,7 @@ class ReadAllQuestions extends _$ReadAllQuestions {
         text: question.text,
         type: question.type,
         options: question.options,
+        answers: [],
       ));
     }
     ref.read(answerCurrentProvider.notifier).set(answers[0]);
@@ -116,15 +117,13 @@ class ReadAllQuestions extends _$ReadAllQuestions {
 
   void updateAnswer(
     int id, {
-    required String? answer,
+    required List<String> answers,
   }) {
-    log('updateAnswer.id: $id');
-    log('updateAnswer.answered: $answer');
     List<AnamneseAnswerModel> list = [...state.requireValue];
     AnamneseAnswerModel temp = list[id];
     list.replaceRange(id, id + 1, [
       temp.copyWith(
-        answer: answer,
+        answers: answers,
       )
     ]);
     state = AsyncData([...list]);
@@ -138,7 +137,7 @@ class ReadAllQuestions extends _$ReadAllQuestions {
       final repo = ref.read(anamneseAnswerRepositoryProvider);
       var saves = <Future<String>>[];
       for (var answer in state.requireValue) {
-        if (answer.answer != null) {
+        if (answer.answers.isNotEmpty) {
           saves.add(repo.save(answer));
         }
       }
@@ -197,21 +196,31 @@ class Answered extends _$Answered {
     return [];
   }
 
-  void add(String value) {
-    state = [...state, value];
-  }
+  // void add(String value) {
+  //   state = [...state, value];
+  // }
 
-  void set(String value) {
-    state = [value];
+  void set(List<String> value) {
+    state = value;
   }
 
   void reset() {
     state = [];
   }
 
-  void remove(String value) {
+  // void remove(String value) {
+  //   var temp = [...state];
+  //   temp.remove(value);
+  //   state = [...temp];
+  // }
+
+  void update(String value) {
     var temp = [...state];
-    temp.remove(value);
+    if (temp.contains(value)) {
+      temp.remove(value);
+    } else {
+      temp.add(value);
+    }
     state = [...temp];
   }
 }
@@ -273,25 +282,19 @@ class IndexCurrent extends _$IndexCurrent {
   Future<void> _updateBeforeChangeIndex() async {
     final answered = ref.read(answeredProvider);
 
-    if (answered.isNotEmpty) {
-      ref.read(readAllQuestionsProvider.notifier).updateAnswer(
-            state,
-            answer: answered.join(','),
-          );
-    } else {
-      ref.read(readAllQuestionsProvider.notifier).updateAnswer(
-            state,
-            answer: null,
-          );
-    }
+    ref.read(readAllQuestionsProvider.notifier).updateAnswer(
+          state,
+          answers: answered,
+        );
+
     ref.invalidate(answeredProvider);
   }
 
   Future<void> _updateAfterChangeIndex() async {
     final answerCurrent =
         ref.read(readAllQuestionsProvider.notifier).getAnswer(state);
-    if (answerCurrent.answer != null) {
-      ref.read(answeredProvider.notifier).set(answerCurrent.answer!);
+    if (answerCurrent.answers.isNotEmpty) {
+      ref.read(answeredProvider.notifier).set(answerCurrent.answers);
     } else {
       ref.invalidate(answeredProvider);
     }

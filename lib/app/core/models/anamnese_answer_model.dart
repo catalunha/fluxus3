@@ -14,6 +14,6 @@ abstract class AnamneseAnswerModel with _$AnamneseAnswerModel {
     required String text,
     required String type,
     required List<String> options,
-    String? answer,
+    required List<String> answers,
   }) = _AnamneseAnswerModel;
 }

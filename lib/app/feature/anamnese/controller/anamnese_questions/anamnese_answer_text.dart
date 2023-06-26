@@ -52,7 +52,7 @@ class _AnamneseAnswerTextState extends ConsumerState<AnamneseAnswerText> {
               if (value.isEmpty) {
                 ref.read(answeredProvider.notifier).reset();
               } else {
-                ref.read(answeredProvider.notifier).set(value);
+                ref.read(answeredProvider.notifier).set([value]);
               }
             },
           ),

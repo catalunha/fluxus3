@@ -60,7 +60,6 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
 
   Future<void> submitForm({
     required String name,
-    String description = '',
   }) async {
     state = state.copyWith(status: AnamneseGroupFormStatus.loading);
     try {
@@ -68,13 +67,11 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
       if (state.model != null) {
         anamneseGrouptemp = state.model!.copyWith(
           name: name,
-          description: description,
           isActive: ref.read(anamneseGroupIsActiveProvider),
         );
       } else {
         anamneseGrouptemp = AnamneseGroupModel(
           name: name,
-          description: description,
           isActive: ref.read(anamneseGroupIsActiveProvider),
         );
       }

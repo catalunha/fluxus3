@@ -44,7 +44,7 @@ class _AnamneseAnswerNumberState extends ConsumerState<AnamneseAnswerNumber> {
             ),
             // maxLines: 3,
             onChanged: (value) {
-              ref.read(answeredProvider.notifier).set(value);
+              ref.read(answeredProvider.notifier).set([value]);
             },
             // keyboardType: const TextInputType.numberWithOptions(decimal: false),
             inputFormatters: <TextInputFormatter>[

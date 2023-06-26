@@ -37,7 +37,7 @@ class _AnamneseQuestionSavePageState
   void initState() {
     super.initState();
     _textTec.text = "";
-    _optionsTec.text = "";
+    _optionsTec.text = "Sim,Não";
   }
 
   @override

@@ -2,7 +2,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/anamnese_answer_model.dart';
 import 'anamnese_people_entity.dart';
-import 'anamnese_question_entity.dart';
 
 class AnamneseAnswerEntity {
   static const String className = 'AnamneseAnswer';
@@ -13,7 +12,7 @@ class AnamneseAnswerEntity {
   static const String text = 'text';
   static const String type = 'type';
   static const String options = 'options';
-  static const String answer = 'answer';
+  static const String answers = 'answers';
 
   AnamneseAnswerModel toModel(
     ParseObject parseObject, {
@@ -36,7 +35,13 @@ class AnamneseAnswerEntity {
                   .map((e) => e.toString())
                   .toList()
               : [],
-      answer: parseObject.get(AnamneseAnswerEntity.answer),
+      answers:
+          parseObject.get<List<dynamic>>(AnamneseAnswerEntity.answers) != null
+              ? parseObject
+                  .get<List<dynamic>>(AnamneseAnswerEntity.answers)!
+                  .map((e) => e.toString())
+                  .toList()
+              : [],
     );
     return model;
   }
@@ -57,7 +62,7 @@ class AnamneseAnswerEntity {
     parseObject.set(AnamneseAnswerEntity.text, model.text);
     parseObject.set(AnamneseAnswerEntity.type, model.type);
     parseObject.set(AnamneseAnswerEntity.options, model.options);
-    parseObject.set(AnamneseAnswerEntity.answer, model.answer);
+    parseObject.set(AnamneseAnswerEntity.answers, model.answers);
     return parseObject;
   }
 }

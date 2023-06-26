@@ -31,6 +31,10 @@ class AnamneseQuestionObj extends StatelessWidget {
               value: model.type,
             ),
             AppTextTitleValue(
+              title: 'Opções: ',
+              value: model.options.join(','),
+            ),
+            AppTextTitleValue(
               title: 'Obrigatória: ',
               value: model.isRequired ? "Sim" : "Não",
             ),
