@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
-import 'feature/anamnese/anamnese_answer_page.dart';
+import 'feature/anamnese/controller/anamnese_questions/anamnese_questions_page.dart';
 import 'feature/anamnese/anamnese_end_page.dart';
 import 'feature/anamnese/anamnese_interview_page.dart';
 import 'feature/anamnese/anamnese_start_page.dart';
@@ -514,7 +514,7 @@ final goRouterProv = Provider<GoRouter>(
                   path: AppPage.anamneseAnswer.path,
                   name: AppPage.anamneseAnswer.name,
                   builder: (context, state) {
-                    return AnamneseAnswerPage(
+                    return AnamneseQuestionsPage(
                       key: state.pageKey,
                     );
                   },

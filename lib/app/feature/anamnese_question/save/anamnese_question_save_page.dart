@@ -116,13 +116,13 @@ class _AnamneseQuestionSavePageState
                         Wrap(
                           children: [
                             TypeMark(
-                              type: AnamneseQuestionTypeStatus.single,
+                              type: AnamneseQuestionTypeStatus.simple,
                               optionsChange: () {
                                 _optionsTec.text = 'Sim,Não';
                               },
                             ),
                             TypeMark(
-                              type: AnamneseQuestionTypeStatus.multiply,
+                              type: AnamneseQuestionTypeStatus.multiple,
                               optionsChange: () {
                                 _optionsTec.text = 'Sim,Não';
                               },
@@ -134,7 +134,7 @@ class _AnamneseQuestionSavePageState
                               },
                             ),
                             TypeMark(
-                              type: AnamneseQuestionTypeStatus.numerical,
+                              type: AnamneseQuestionTypeStatus.numeric,
                               optionsChange: () {
                                 _optionsTec.text = '';
                               },

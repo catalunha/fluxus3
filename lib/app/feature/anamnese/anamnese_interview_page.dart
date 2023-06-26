@@ -47,16 +47,16 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
   Widget build(BuildContext context) {
     ref.listen<AnamnesePeopleFormState>(anamnesePeopleFormProvider,
         (previous, next) async {
-      if (next.status == AnamneseStatus.error) {
+      if (next.status == AnamneseQuestionsStatus.error) {
         hideLoader(context);
         showMessageError(context, next.error);
       }
-      if (next.status == AnamneseStatus.success) {
+      if (next.status == AnamneseQuestionsStatus.success) {
         hideLoader(context); //sai do Dialog do loading
         // context.pop(); //sai da pagina
         Navigator.pop(context);
       }
-      if (next.status == AnamneseStatus.loading) {
+      if (next.status == AnamneseQuestionsStatus.loading) {
         showLoader(context);
       }
     });
