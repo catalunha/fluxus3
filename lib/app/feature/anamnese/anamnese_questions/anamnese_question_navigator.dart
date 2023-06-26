@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers.dart';
+import '../controller/providers.dart';
 
 class AnamneseQuestionNavigator extends ConsumerWidget {
   const AnamneseQuestionNavigator({Key? key}) : super(key: key);

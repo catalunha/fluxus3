@@ -105,6 +105,7 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
                   if (model.type == 'simple' || model.type == 'multiple')
                     pw.Text('Opções: ${model.options}'),
                   pw.Text('Resposta: ${model.answers.join(",")}'),
+                  pw.Divider(height: 5),
                 ],
               ),
             ),

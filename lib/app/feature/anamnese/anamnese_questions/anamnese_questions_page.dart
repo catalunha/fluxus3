@@ -3,16 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluxus3/app/feature/anamnese/controller/providers.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../routes.dart';
-import '../../../anamnese_question/save/controller/states.dart';
-import '../../../utils/app_mixin_loader.dart';
-import '../../../utils/app_mixin_messages.dart';
+import '../../../routes.dart';
+import '../../anamnese_question/save/controller/states.dart';
+import '../../utils/app_mixin_loader.dart';
+import '../../utils/app_mixin_messages.dart';
 import 'anamnese_answer_multiple.dart';
 import 'anamnese_answer_number.dart';
 import 'anamnese_answer_simple.dart';
 import 'anamnese_answer_text.dart';
 import 'anamnese_question_navigator.dart';
-import '../states.dart';
+import '../controller/states.dart';
 
 class AnamneseQuestionsPage extends ConsumerWidget with Loader, Messages {
   AnamneseQuestionsPage({super.key});
@@ -42,6 +42,7 @@ class AnamneseQuestionsPage extends ConsumerWidget with Loader, Messages {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pergunta'),
+        automaticallyImplyLeading: false,
       ),
       body: questions.when(
         data: (data) {

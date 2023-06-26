@@ -10,6 +10,7 @@ class AnamneseEndPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Anamnese - Fim'),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),

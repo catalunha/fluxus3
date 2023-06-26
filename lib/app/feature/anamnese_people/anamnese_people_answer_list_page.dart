@@ -17,20 +17,46 @@ class AnamnesePeopleAnswerListPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Visualizando respostas'),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AnamnesePeoplePrintPage(
-                        people: list.requireValue[0].people!,
-                        answerList: list.requireValue,
+          list.when(
+              data: (data) {
+                if (data.isNotEmpty) {
+                  return IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return AnamnesePeoplePrintPage(
+                              people: list.requireValue[0].people!,
+                              answerList: list.requireValue,
+                            );
+                          },
+                        ),
                       );
                     },
-                  ),
-                );
+                    icon: const Icon(Icons.print),
+                  );
+                } else {
+                  return Container();
+                }
               },
-              icon: const Icon(Icons.print))
+              error: (error, stackTrace) => Container(),
+              loading: () => Container())
+          // list.hasValue
+          //     ? IconButton(
+          //         onPressed: () {
+          //           Navigator.of(context).push(
+          //             MaterialPageRoute(
+          //               builder: (context) {
+          //                 return AnamnesePeoplePrintPage(
+          //                   people: list.requireValue[0].people!,
+          //                   answerList: list.requireValue,
+          //                 );
+          //               },
+          //             ),
+          //           );
+          //         },
+          //         icon: const Icon(Icons.print))
+          //     : Container()
         ],
       ),
       body: list.when(

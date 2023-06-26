@@ -72,6 +72,7 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dados pessoais'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Form(
@@ -171,7 +172,7 @@ class _AnamneseDataPageState extends ConsumerState<AnamneseInterviewPage>
                         } else {
                           return;
                         }
-                        context.goNamed(AppPage.anamneseAnswer.name);
+                        context.goNamed(AppPage.anamneseQuestions.name);
                       },
                       child: const Text('Iniciar Questionário.'),
                     )

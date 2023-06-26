@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers.dart';
+import '../controller/providers.dart';
 
-class AnamneseAnswerText extends ConsumerStatefulWidget {
-  const AnamneseAnswerText({super.key});
+class AnamneseAnswerNumber extends ConsumerStatefulWidget {
+  const AnamneseAnswerNumber({super.key});
 
   @override
-  ConsumerState<AnamneseAnswerText> createState() => _AnamneseAnswerTextState();
+  ConsumerState<AnamneseAnswerNumber> createState() =>
+      _AnamneseAnswerNumberState();
 }
 
-class _AnamneseAnswerTextState extends ConsumerState<AnamneseAnswerText> {
+class _AnamneseAnswerNumberState extends ConsumerState<AnamneseAnswerNumber> {
   final _txtTec = TextEditingController();
   @override
   void initState() {
@@ -18,13 +19,6 @@ class _AnamneseAnswerTextState extends ConsumerState<AnamneseAnswerText> {
     super.initState();
     final answered = ref.read(answeredProvider);
     _txtTec.text = answered.join(',');
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _txtTec.text = '';
   }
 
   var intBefore = -1;
@@ -47,14 +41,16 @@ class _AnamneseAnswerTextState extends ConsumerState<AnamneseAnswerText> {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            maxLines: 3,
+            // maxLines: 3,
             onChanged: (value) {
-              if (value.isEmpty) {
-                ref.read(answeredProvider.notifier).reset();
-              } else {
-                ref.read(answeredProvider.notifier).set([value]);
-              }
+              ref.read(answeredProvider.notifier).set([value]);
             },
+            keyboardType: const TextInputType.numberWithOptions(),
+            // inputFormatters: <TextInputFormatter>[
+            //   // FilteringTextInputFormatter.allow(RegExp(r'[+-\d+\.]+')),
+            //   // FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+            //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            // ],
           ),
           TextButton(
             onPressed: () {
