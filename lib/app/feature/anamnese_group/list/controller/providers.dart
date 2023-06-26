@@ -34,7 +34,9 @@ class AnamneseGroups extends _$AnamneseGroups {
         for (var group in listGroups) group.id!: group
       };
       for (var groupId in anamnese.orderOfGroups) {
-        listGroupsReordened.add(mapping[groupId]!);
+        if (mapping.containsKey(groupId)) {
+          listGroupsReordened.add(mapping[groupId]!);
+        }
       }
     } else {
       if (listGroups.isNotEmpty) {
