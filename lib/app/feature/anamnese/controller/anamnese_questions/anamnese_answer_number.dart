@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers.dart';
@@ -46,12 +45,12 @@ class _AnamneseAnswerNumberState extends ConsumerState<AnamneseAnswerNumber> {
             onChanged: (value) {
               ref.read(answeredProvider.notifier).set([value]);
             },
-            // keyboardType: const TextInputType.numberWithOptions(decimal: false),
-            inputFormatters: <TextInputFormatter>[
-              // FilteringTextInputFormatter.allow(RegExp(r'[+-\d+\.]+')),
-              // FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-            ],
+            keyboardType: const TextInputType.numberWithOptions(),
+            // inputFormatters: <TextInputFormatter>[
+            //   // FilteringTextInputFormatter.allow(RegExp(r'[+-\d+\.]+')),
+            //   // FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+            //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            // ],
           ),
           TextButton(
             onPressed: () {
