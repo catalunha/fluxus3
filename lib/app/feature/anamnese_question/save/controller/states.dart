@@ -4,7 +4,7 @@ import '../../../../core/models/anamnese_question_model.dart';
 
 part 'states.freezed.dart';
 
-enum AnamneseQuestionTypeStatus { boolean, intensity, text, numerical }
+enum AnamneseQuestionTypeStatus { single, multiply, text, numerical }
 
 enum AnamneseQuestionFormStatus { initial, loading, success, error }
 

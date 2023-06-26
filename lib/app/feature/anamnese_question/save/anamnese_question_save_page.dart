@@ -91,7 +91,7 @@ class _AnamneseQuestionSavePageState
           if (data != null && firstTime) {
             final formState = ref.read(anamneseQuestionFormProvider);
             _textTec.text = formState.model?.text ?? '';
-            _optionsTec.text = formState.model?.options ?? '';
+            _optionsTec.text = formState.model?.options.join(',') ?? '';
           }
           firstTime = false;
           return Center(
@@ -110,17 +110,35 @@ class _AnamneseQuestionSavePageState
                               'Esta informação é obrigatória'),
                         ),
                         AppTextFormField(
-                          label: 'Descrição',
+                          label: 'Opções',
                           controller: _optionsTec,
                         ),
-                        const Wrap(
+                        Wrap(
                           children: [
-                            TypeMark(type: AnamneseQuestionTypeStatus.boolean),
                             TypeMark(
-                                type: AnamneseQuestionTypeStatus.intensity),
-                            TypeMark(type: AnamneseQuestionTypeStatus.text),
+                              type: AnamneseQuestionTypeStatus.single,
+                              optionsChange: () {
+                                _optionsTec.text = 'Sim,Não';
+                              },
+                            ),
                             TypeMark(
-                                type: AnamneseQuestionTypeStatus.numerical),
+                              type: AnamneseQuestionTypeStatus.multiply,
+                              optionsChange: () {
+                                _optionsTec.text = 'Sim,Não';
+                              },
+                            ),
+                            TypeMark(
+                              type: AnamneseQuestionTypeStatus.text,
+                              optionsChange: () {
+                                _optionsTec.text = '';
+                              },
+                            ),
+                            TypeMark(
+                              type: AnamneseQuestionTypeStatus.numerical,
+                              optionsChange: () {
+                                _optionsTec.text = '';
+                              },
+                            ),
                           ],
                         ),
                         SwitchListTile(

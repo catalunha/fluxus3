@@ -50,11 +50,11 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
       log('group: ${anamneseQuestion.group}', name: 'Start question');
 
       final type = switch (anamneseQuestion.type) {
-        'boolean' => AnamneseQuestionTypeStatus.boolean,
-        'intensity' => AnamneseQuestionTypeStatus.intensity,
+        'single' => AnamneseQuestionTypeStatus.single,
+        'multiply' => AnamneseQuestionTypeStatus.multiply,
         'text' => AnamneseQuestionTypeStatus.text,
         'numerical' => AnamneseQuestionTypeStatus.numerical,
-        _ => AnamneseQuestionTypeStatus.boolean,
+        _ => AnamneseQuestionTypeStatus.single,
       };
       ref.watch(anamneseQuestionTypeProvider.notifier).set(type);
       return anamneseQuestion;
@@ -128,7 +128,7 @@ class AnamneseGroupSelected extends _$AnamneseGroupSelected {
 class AnamneseQuestionType extends _$AnamneseQuestionType {
   @override
   AnamneseQuestionTypeStatus build() {
-    return AnamneseQuestionTypeStatus.boolean;
+    return AnamneseQuestionTypeStatus.single;
   }
 
   void set(AnamneseQuestionTypeStatus value) {
