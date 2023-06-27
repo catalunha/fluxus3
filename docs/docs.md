@@ -1,16 +1,15 @@
 # deploy
- 
+
  cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json && cd back4app/fluxus3 && b4a deploy
 
 # vscode
 
 cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define=keyApplicationId=123 --dart-define=keyClientKey=456  && cd back4app/fluxus3 && b4a deploy
- 
+
  --dart-define-from-file=lib/app/core/keys/keys.json
 
  cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json  && cd back4app/fluxus3 && b4a deploy
  
-
      {
       "name": "fluxus3",
       "request": "launch",

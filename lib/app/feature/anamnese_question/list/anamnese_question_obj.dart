@@ -12,16 +12,17 @@ class AnamneseQuestionObj extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: model.isActive ? null : Colors.black,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppTextTitleValue(
-              title: 'Id: ',
-              value: model.id,
-            ),
+            // AppTextTitleValue(
+            //   title: 'Id: ',
+            //   value: model.id,
+            // ),
             AppTextTitleValue(
               title: 'Texto: ',
               value: model.text,

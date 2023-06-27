@@ -12,6 +12,7 @@ class AnamneseGroupObj extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: model.isActive ? null : Colors.black,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -26,10 +27,10 @@ class AnamneseGroupObj extends StatelessWidget {
               title: 'Ativo: ',
               value: model.isActive ? "Sim" : "Não",
             ),
-            AppTextTitleValue(
-              title: 'Id: ',
-              value: model.id,
-            ),
+            // AppTextTitleValue(
+            //   title: 'Id: ',
+            //   value: model.id,
+            // ),
             Center(
               child: Wrap(children: [
                 IconButton(
