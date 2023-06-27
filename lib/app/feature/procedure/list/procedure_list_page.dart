@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';
+import '../print/procedure_print_page.dart';
 import 'controller/providers.dart';
+import 'controller/states.dart';
 import 'procedure_obj.dart';
 
 class ProcedureListPage extends ConsumerWidget {
@@ -15,10 +17,35 @@ class ProcedureListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ref.watch(procedureListProvider);
     final listFiltered = ref.watch(procedureFilteredProvider);
-
+    final procedureFilteredBy = ref.watch(procedureFilteredByProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista com ${list.asData?.value.length} procedimentos'),
+        title: Text('Lista com ${listFiltered.length} procedimentos'),
+        actions: [
+          list.when(
+              data: (data) {
+                if (data.isNotEmpty) {
+                  return IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProcedurePrintPage(
+                              list: listFiltered,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.print),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+              error: (error, stackTrace) => Container(),
+              loading: () => Container())
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -36,12 +63,58 @@ class ProcedureListPage extends ConsumerWidget {
                   prefixIcon: Icon(Icons.search),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  hintText: 'digite parte da descrição para busca',
+                  hintText: 'digite algo para busca por',
                 ),
                 onChanged: (value) {
                   ref.read(procedureSearchProvider.notifier).set(value);
                 },
               ),
+            ),
+            Wrap(
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: procedureFilteredBy ==
+                            ProcedureFilterBy.code
+                        ? const MaterialStatePropertyAll<Color>(Colors.black)
+                        : null,
+                  ),
+                  onPressed: () {
+                    ref
+                        .read(procedureFilteredByProvider.notifier)
+                        .set(ProcedureFilterBy.code);
+                  },
+                  child: const Text('Código'),
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: procedureFilteredBy ==
+                            ProcedureFilterBy.name
+                        ? const MaterialStatePropertyAll<Color>(Colors.black)
+                        : null,
+                  ),
+                  onPressed: () {
+                    ref
+                        .read(procedureFilteredByProvider.notifier)
+                        .set(ProcedureFilterBy.name);
+                  },
+                  child: const Text('Nome'),
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: procedureFilteredBy ==
+                            ProcedureFilterBy.description
+                        ? const MaterialStatePropertyAll<Color>(Colors.black)
+                        : null,
+                  ),
+                  onPressed: () {
+                    ref
+                        .read(procedureFilteredByProvider.notifier)
+                        .set(ProcedureFilterBy.description);
+                  },
+                  child: const Text('Descrição'),
+                ),
+              ],
             ),
             Flexible(
               child: ListView.builder(
