@@ -46,6 +46,7 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
 
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
+  query.whereEqualTo(AnamneseGroupEntity.isActive, true);
   query.orderByAscending('name');
   final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
     query,
@@ -65,7 +66,9 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
       for (var group in listGroups) group.id!: group
     };
     for (var groupId in anamnese.orderOfGroups) {
-      listGroupsOrdened.add(mapping[groupId]!);
+      if (mapping.containsKey(groupId)) {
+        listGroupsOrdened.add(mapping[groupId]!);
+      }
     }
   } else {
     listGroupsOrdened = [...listGroups];

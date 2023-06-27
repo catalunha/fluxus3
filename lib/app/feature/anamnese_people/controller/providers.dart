@@ -14,7 +14,7 @@ FutureOr<List<AnamnesePeopleModel>> anamnesePeopleList(
     AnamnesePeopleListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamnesePeopleEntity.className));
-  query.orderByAscending('name');
+  query.orderByDescending('createdAt');
   final list =
       await ref.watch(anamnesePeopleRepositoryProvider).list(query, cols: {
     "${AnamnesePeopleEntity.className}.cols": [

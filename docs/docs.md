@@ -1,7 +1,17 @@
+# deploy
+ 
+ cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json && cd back4app/fluxus3 && b4a deploy
+
 # vscode
 
-```
- {
+cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define=keyApplicationId=123 --dart-define=keyClientKey=456  && cd back4app/fluxus3 && b4a deploy
+ 
+ --dart-define-from-file=lib/app/core/keys/keys.json
+
+ cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json  && cd back4app/fluxus3 && b4a deploy
+ 
+
+     {
       "name": "fluxus3",
       "request": "launch",
       "type": "dart",
@@ -12,11 +22,7 @@
         "keyClientKey=456"
       ]
     },
-```
-# deploy
 cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define=keyApplicationId=123 --dart-define=keyClientKey=456  && cd back4app/fluxus3 && b4a deploy
- 
- cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json && cd back4app/fluxus3 && b4a deploy
 
 
 # Duvidas Riverpod
@@ -86,8 +92,3 @@ main() {
 # outros projetos usando este DB
 flutter create --project-name=prokids0 --org net.brintec --platforms android,web ./prokids0
 
-
-type,text,options,isRequired,isActive,group.__type,group.className,group.objectId
-numeric,"Foi amamentada pela mãe por quantos meses ?","[""]",FALSE,TRUE,Pointer,AnamneseGroup,K2uxWvgFkQ
-simple,"Foi amamentado pela mãe leite materno ?","["Sim","Não"]",FALSE,TRUE,Pointer,AnamneseGroup,K2uxWvgFkQ
-text,"Se usa fraldas, esse uso é contínuo ou evento esporádico ?","[""]",FALSE,TRUE,Pointer,AnamneseGroup,LfjHvfqV4C
