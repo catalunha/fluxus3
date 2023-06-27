@@ -41,22 +41,6 @@ class AnamnesePeopleAnswerListPage extends ConsumerWidget {
               },
               error: (error, stackTrace) => Container(),
               loading: () => Container())
-          // list.hasValue
-          //     ? IconButton(
-          //         onPressed: () {
-          //           Navigator.of(context).push(
-          //             MaterialPageRoute(
-          //               builder: (context) {
-          //                 return AnamnesePeoplePrintPage(
-          //                   people: list.requireValue[0].people!,
-          //                   answerList: list.requireValue,
-          //                 );
-          //               },
-          //             ),
-          //           );
-          //         },
-          //         icon: const Icon(Icons.print))
-          //     : Container()
         ],
       ),
       body: list.when(
