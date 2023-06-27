@@ -25,14 +25,14 @@ class AnamneseQuestions extends _$AnamneseQuestions {
       cols: {
         "${AnamneseQuestionEntity.className}.cols": [
           AnamneseQuestionEntity.text,
-          AnamneseQuestionEntity.description,
           AnamneseQuestionEntity.type,
+          AnamneseQuestionEntity.options,
           AnamneseQuestionEntity.isActive,
           AnamneseQuestionEntity.isRequired,
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
         "${AnamneseQuestionEntity.className}.pointers": [
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
       },
     );
@@ -46,6 +46,7 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
 
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
+  query.whereEqualTo(AnamneseGroupEntity.isActive, true);
   query.orderByAscending('name');
   final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
     query,
@@ -65,7 +66,9 @@ FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
       for (var group in listGroups) group.id!: group
     };
     for (var groupId in anamnese.orderOfGroups) {
-      listGroupsOrdened.add(mapping[groupId]!);
+      if (mapping.containsKey(groupId)) {
+        listGroupsOrdened.add(mapping[groupId]!);
+      }
     }
   } else {
     listGroupsOrdened = [...listGroups];
@@ -117,7 +120,7 @@ class QuestionsFiltered extends _$QuestionsFiltered {
                 name: 'questionsFilteredProvider');
             log('group: $group', name: 'questionsFilteredProvider');
             final questionsUnOrdered = questions
-                .where((element) => element.anamneseGroup.id == group.id)
+                .where((element) => element.group.id == group.id)
                 .toList();
 
             var questionsOrdered = <AnamneseQuestionModel>[];

@@ -6,9 +6,12 @@ import 'controller/states.dart';
 
 class TypeMark extends ConsumerWidget {
   final AnamneseQuestionTypeStatus type;
+  final Function() optionsChange;
+
   const TypeMark({
     super.key,
     required this.type,
+    required this.optionsChange,
   });
 
   @override
@@ -20,6 +23,7 @@ class TypeMark extends ConsumerWidget {
             : null,
       ),
       onPressed: () {
+        optionsChange();
         ref.read(anamneseQuestionTypeProvider.notifier).set(type);
       },
       child: Text(type.name),

@@ -17,36 +17,62 @@ class AnamnesePeopleAnswerListPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Visualizando respostas'),
         actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AnamnesePeoplePrintPage(
-                        people: list.requireValue[0].people!,
-                        answerList: list.requireValue,
+          list.when(
+              data: (data) {
+                if (data.isNotEmpty) {
+                  return IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return AnamnesePeoplePrintPage(
+                              people: list.requireValue[0].people!,
+                              answerList: list.requireValue,
+                            );
+                          },
+                        ),
                       );
                     },
-                  ),
-                );
+                    icon: const Icon(Icons.print),
+                  );
+                } else {
+                  return Container();
+                }
               },
-              icon: const Icon(Icons.print))
+              error: (error, stackTrace) => Container(),
+              loading: () => Container())
+          // list.hasValue
+          //     ? IconButton(
+          //         onPressed: () {
+          //           Navigator.of(context).push(
+          //             MaterialPageRoute(
+          //               builder: (context) {
+          //                 return AnamnesePeoplePrintPage(
+          //                   people: list.requireValue[0].people!,
+          //                   answerList: list.requireValue,
+          //                 );
+          //               },
+          //             ),
+          //           );
+          //         },
+          //         icon: const Icon(Icons.print))
+          //     : Container()
         ],
       ),
       body: list.when(
         data: (data) {
           if (data.isNotEmpty) {
-            var group = data[0].question!.anamneseGroup.name;
+            var group = data[0].group;
             var listExpansionTile = <Widget>[];
             var listAnswer = <Widget>[];
             for (var answer in data) {
-              if (answer.question!.anamneseGroup.name != group) {
+              if (answer.group != group) {
                 listExpansionTile.add(ExpansionTile(
                   title: Text(group),
                   children: [...listAnswer],
                 ));
                 listAnswer.clear();
-                group = answer.question!.anamneseGroup.name;
+                group = answer.group;
                 listAnswer.add(AnamneseAnswerObj(
                   model: answer,
                 ));

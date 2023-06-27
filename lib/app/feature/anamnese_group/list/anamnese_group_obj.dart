@@ -23,10 +23,6 @@ class AnamneseGroupObj extends StatelessWidget {
               value: model.name,
             ),
             AppTextTitleValue(
-              title: 'Descrição: ',
-              value: model.description,
-            ),
-            AppTextTitleValue(
               title: 'Ativo: ',
               value: model.isActive ? "Sim" : "Não",
             ),

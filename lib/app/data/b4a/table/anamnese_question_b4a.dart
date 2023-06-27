@@ -14,10 +14,10 @@ class AnamneseQuestionB4a {
     Pagination? pagination,
     Map<String, List<String>> cols = const {},
   }) async {
-    if (pagination != null) {
-      query.setAmountToSkip((pagination.page - 1) * pagination.limit);
-      query.setLimit(pagination.limit);
-    }
+    // if (pagination != null) {
+    //   query.setAmountToSkip((pagination.page - 1) * pagination.limit);
+    query.setLimit(200);
+    // }
     if (cols.containsKey('${AnamneseQuestionEntity.className}.cols')) {
       query.keysToReturn(cols['${AnamneseQuestionEntity.className}.cols']!);
     }

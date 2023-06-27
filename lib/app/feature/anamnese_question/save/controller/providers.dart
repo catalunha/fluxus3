@@ -23,14 +23,14 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
       cols: {
         "${AnamneseQuestionEntity.className}.cols": [
           AnamneseQuestionEntity.text,
-          AnamneseQuestionEntity.description,
           AnamneseQuestionEntity.type,
+          AnamneseQuestionEntity.options,
           AnamneseQuestionEntity.isActive,
           AnamneseQuestionEntity.isRequired,
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
         "${AnamneseQuestionEntity.className}.pointers": [
-          AnamneseQuestionEntity.anamneseGroup,
+          AnamneseQuestionEntity.group,
         ],
       },
     );
@@ -43,18 +43,18 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
           .set(anamneseQuestion.isActive);
       ref
           .watch(anamneseQuestionIsRequiredProvider.notifier)
-          .set(anamneseQuestion.required);
+          .set(anamneseQuestion.isRequired);
       ref
           .watch(anamneseGroupSelectedProvider.notifier)
-          .set(anamneseQuestion.anamneseGroup);
-      log('group: ${anamneseQuestion.anamneseGroup}', name: 'Start question');
+          .set(anamneseQuestion.group);
+      log('group: ${anamneseQuestion.group}', name: 'Start question');
 
       final type = switch (anamneseQuestion.type) {
-        'boolean' => AnamneseQuestionTypeStatus.boolean,
-        'intensity' => AnamneseQuestionTypeStatus.intensity,
+        'simple' => AnamneseQuestionTypeStatus.simple,
+        'multiple' => AnamneseQuestionTypeStatus.multiple,
         'text' => AnamneseQuestionTypeStatus.text,
-        'numerical' => AnamneseQuestionTypeStatus.numerical,
-        _ => AnamneseQuestionTypeStatus.boolean,
+        'numeric' => AnamneseQuestionTypeStatus.numeric,
+        _ => AnamneseQuestionTypeStatus.simple,
       };
       ref.watch(anamneseQuestionTypeProvider.notifier).set(type);
       return anamneseQuestion;
@@ -128,7 +128,7 @@ class AnamneseGroupSelected extends _$AnamneseGroupSelected {
 class AnamneseQuestionType extends _$AnamneseQuestionType {
   @override
   AnamneseQuestionTypeStatus build() {
-    return AnamneseQuestionTypeStatus.boolean;
+    return AnamneseQuestionTypeStatus.simple;
   }
 
   void set(AnamneseQuestionTypeStatus value) {
@@ -149,7 +149,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
 
   Future<void> submitForm({
     required String text,
-    String description = '',
+    String options = '',
   }) async {
     state = state.copyWith(status: AnamneseQuestionFormStatus.loading);
     try {
@@ -158,20 +158,20 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
       var groupOld = group!;
       late AnamneseQuestionModel anamneseQuestiontemp;
       if (state.model != null) {
-        groupOld = state.model!.anamneseGroup.copyWith();
+        groupOld = state.model!.group.copyWith();
         anamneseQuestiontemp = state.model!.copyWith(
+          group: group,
           text: text,
-          description: description,
-          anamneseGroup: group,
           type: type.name,
+          options: options.split(','),
           isActive: ref.read(anamneseQuestionIsActiveProvider),
         );
       } else {
         anamneseQuestiontemp = AnamneseQuestionModel(
+          group: group,
           text: text,
-          description: description,
-          anamneseGroup: group,
           type: type.name,
+          options: options.split(','),
           isActive: ref.read(anamneseQuestionIsActiveProvider),
         );
       }

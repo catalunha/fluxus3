@@ -100,13 +100,12 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text('Grupo: ${model.question!.anamneseGroup.name}'),
-                  pw.Text('Pergunta: ${model.question!.text}'),
-                  if (model.answerBool != null)
-                    pw.Text('Resposta: ${model.answerBool! ? "Sim" : "Não"}'),
-                  if (model.answerText != null)
-                    pw.Text('Resposta: ${model.answerText}'),
-                  pw.Divider(height: 25),
+                  pw.Text('Grupo: ${model.group}'),
+                  pw.Text('Pergunta: ${model.text}'),
+                  if (model.type == 'simple' || model.type == 'multiple')
+                    pw.Text('Opções: ${model.options}'),
+                  pw.Text('Resposta: ${model.answers.join(",")}'),
+                  pw.Divider(height: 5),
                 ],
               ),
             ),

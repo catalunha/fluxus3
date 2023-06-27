@@ -4,10 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import 'core/authentication/riverpod/auth_prov.dart';
 import 'core/authentication/riverpod/auth_state.dart';
-import 'feature/anamnese/anamnese_answer_page.dart';
-import 'feature/anamnese/anamnese_end_page.dart';
-import 'feature/anamnese/anamnese_interview_page.dart';
-import 'feature/anamnese/anamnese_start_page.dart';
 import 'feature/anamnese_group/list/anamnese_group_list_page.dart';
 import 'feature/anamnese_group/save/anamnese_group_save_page.dart';
 import 'feature/anamnese_people/anamnese_people_list_page.dart';
@@ -493,44 +489,6 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-              path: AppPage.anamneseStart.path,
-              name: AppPage.anamneseStart.name,
-              builder: (context, state) {
-                return AnamneseStartPage(
-                  key: state.pageKey,
-                );
-              },
-              routes: [
-                GoRoute(
-                  path: AppPage.anamneseInterview.path,
-                  name: AppPage.anamneseInterview.name,
-                  builder: (context, state) {
-                    return AnamneseInterviewPage(
-                      key: state.pageKey,
-                    );
-                  },
-                ),
-                GoRoute(
-                  path: AppPage.anamneseAnswer.path,
-                  name: AppPage.anamneseAnswer.name,
-                  builder: (context, state) {
-                    return AnamneseAnswerPage(
-                      key: state.pageKey,
-                    );
-                  },
-                ),
-                GoRoute(
-                  path: AppPage.anamneseEnd.path,
-                  name: AppPage.anamneseEnd.name,
-                  builder: (context, state) {
-                    return AnamneseEndPage(
-                      key: state.pageKey,
-                    );
-                  },
-                ),
-              ],
-            ),
-            GoRoute(
                 path: AppPage.anamnesePeopleList.path,
                 name: AppPage.anamnesePeopleList.name,
                 builder: (context, state) {
@@ -617,10 +575,6 @@ enum AppPage {
   anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave'),
   anamneseQuestionList('anamneseQuestionList', 'anamneseQuestionList'),
   anamneseQuestionSave('anamneseQuestionSave', 'anamneseQuestionSave'),
-  anamneseStart('anamneseStart', 'anamneseStart'),
-  anamneseInterview('anamneseInterview', 'anamneseInterview'),
-  anamneseAnswer('anamneseAnswer', 'anamneseAnswer'),
-  anamneseEnd('anamneseEnd', 'anamneseEnd'),
   anamnesePeopleList('anamnesePeopleList', 'anamnesePeopleList'),
   anamnesePeopleAnswerList(
       'anamnesePeopleAnswerList', 'anamnesePeopleAnswerList');
