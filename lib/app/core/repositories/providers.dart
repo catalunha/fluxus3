@@ -17,6 +17,7 @@ import 'patient_repository.dart';
 import 'procedure_repository.dart';
 import 'region_repository.dart';
 import 'room_repository.dart';
+import 'shared_repository.dart';
 import 'status_repository.dart';
 import 'user_profile_repository.dart';
 import 'user_repository.dart';
@@ -126,4 +127,9 @@ AnamnesePeopleRepository anamnesePeopleRepository(
 AnamneseAnswerRepository anamneseAnswerRepository(
     AnamneseAnswerRepositoryRef ref) {
   return AnamneseAnswerRepository();
+}
+
+@riverpod
+SharedRepository sharedRepository(SharedRepositoryRef ref) {
+  return SharedRepository();
 }
