@@ -12,9 +12,10 @@ class FileToParseFile {
       required String objectAttribute}) async {
     try {
       String fileName = xfile.files.single.name;
-      fileName = fileName.replaceAll(RegExp(r'[^A-Za-z0-9]'), '_');
+      print('===> fileName1: $fileName');
+      fileName = fileName.replaceAll(RegExp(r'[^A-Za-z0-9.-]'), '_');
       ParseFileBase? parseFile;
-      ////print'===> fileName: $fileName');
+      print('===> fileName2: $fileName');
       if (kIsWeb) {
         //Flutter Web
         parseFile = ParseWebFile(xfile.files.single.bytes,

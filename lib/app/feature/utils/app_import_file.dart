@@ -27,60 +27,47 @@ class _AppImportFileState extends State<AppImportFile> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: _filePickerResult != null
-          ? Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Row(
+    return Center(
+      child: GestureDetector(
+        child: _filePickerResult != null
+            ? Row(
                 children: [
                   const Icon(Icons.file_present),
-                  Text('Nome: ${_filePickerResult?.files.single.name}'),
-                ],
-              ),
-            )
-          : widget.imageUrl == null
-              ? Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.green),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Center(
+                  Flexible(
                     child: Text(
-                      widget.label,
-                      textAlign: TextAlign.center,
+                      'Nome: ${_filePickerResult?.files.single.name}',
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                )
-              : ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Image.network(
-                    widget.imageUrl!,
-                    height: 150,
-                    width: 150,
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return errorBuilderWidget();
-                    },
-                  ),
-                ),
-      onTap: () async {
-        final FilePickerResult? pickedFile =
-            await FilePicker.platform.pickFiles();
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          widget.setFilePickerResult(null);
+                          _filePickerResult = null;
+                        });
+                      },
+                      icon: const Icon(Icons.delete))
+                ],
+              )
+            : Row(
+                children: [
+                  const Icon(Icons.file_present),
+                  Text(widget.imageUrl ?? "Sem arquivo"),
+                ],
+              ),
+        onTap: () async {
+          print('init FilePicker ');
+          final FilePickerResult? pickedFile =
+              await FilePicker.platform.pickFiles();
 
-        if (pickedFile != null) {
-          widget.setFilePickerResult(pickedFile);
-          setState(() {
-            _filePickerResult = pickedFile;
-          });
-        }
-      },
+          if (pickedFile != null) {
+            widget.setFilePickerResult(pickedFile);
+            setState(() {
+              _filePickerResult = pickedFile;
+            });
+          }
+        },
+      ),
     );
   }
 
