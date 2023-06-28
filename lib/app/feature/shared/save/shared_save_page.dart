@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../../utils/app_import_file.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
 import '../../utils/app_textformfield.dart';
@@ -25,16 +26,16 @@ class SharedSavePage extends ConsumerStatefulWidget {
 class _SharedSavePageState extends ConsumerState<SharedSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
-  final _historyTec = TextEditingController();
+  final _descriptionTec = TextEditingController();
   @override
   void initState() {
     super.initState();
-    _historyTec.text = "";
+    _descriptionTec.text = "";
   }
 
   @override
   void dispose() {
-    _historyTec.dispose();
+    _descriptionTec.dispose();
     super.dispose();
   }
 
@@ -65,16 +66,18 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
           if (formValid) {
             ref
                 .read(sharedFormProvider.notifier)
-                .submitForm(history: _historyTec.text);
+                .submitForm(description: _descriptionTec.text);
           }
         },
         child: const Icon(Icons.cloud_upload),
       ),
       body: sharedRead.when(
         data: (data) {
+          String? url;
           if (data != null) {
             final formState = ref.read(sharedFormProvider);
-            _historyTec.text = formState.model?.history ?? '';
+            _descriptionTec.text = formState.model?.description ?? '';
+            url = formState.model?.document;
           }
           return Center(
             child: Form(
@@ -87,11 +90,24 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
                       children: [
                         AppTextFormField(
                           label: '* Descrição',
-                          controller: _historyTec,
+                          controller: _descriptionTec,
                           validator: Validatorless.required(
                               'Esta informação é obrigatória'),
+                          maxLines: 10,
                         ),
                         const SizedBox(height: 15),
+                        AppImportFile(
+                          label: 'Click aqui para buscar um documento.',
+                          imageUrl: url,
+                          setFilePickerResult: (value) {
+                            // log('xFile value: ${value?.path}');
+                            ref.read(xFileProvider.notifier).state = value;
+                            // final xFile = ref.read(xFileProvider);
+                            // log('xFile: ${xFile?.path}');
+                          },
+                          maxHeightImage: 150,
+                          maxWidthImage: 100,
+                        ),
                         // AppDelete(
                         //   isVisible: data != null,
                         //   action: () {

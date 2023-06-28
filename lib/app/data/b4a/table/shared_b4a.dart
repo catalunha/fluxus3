@@ -59,18 +59,6 @@ class SharedB4a {
     }
     if (cols.containsKey('${SharedEntity.className}.pointers')) {
       query.includeObject(cols['${SharedEntity.className}.pointers']!);
-    } else {
-      query.includeObject([
-        'professional',
-        'professional.region',
-        'procedure',
-        'procedure.expertise',
-        'patient',
-        'patient.region',
-        'healthPlan',
-        'healthPlan.healthPlanType',
-        'status',
-      ]);
     }
     query.first();
     try {

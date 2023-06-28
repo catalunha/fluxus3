@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluxus3/app/feature/shared/list/controller/providers.dart';
 import 'package:fluxus3/app/feature/shared/save/controller/states.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,6 +9,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/shared_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../../../data/b4a/entity/shared_entity.dart';
+import '../../../../data/b4a/utils/file_to_parsefile.dart';
 import '../../patient/list/controller/providers.dart';
 
 part 'providers.g.dart';
@@ -15,18 +19,32 @@ part 'providers.g.dart';
 FutureOr<SharedModel?> sharedRead(SharedReadRef ref,
     {required String? id}) async {
   if (id != null) {
-    final shared = await ref.read(sharedRepositoryProvider).readById(id);
+    final shared = await ref.read(sharedRepositoryProvider).readById(id, cols: {
+      "${SharedEntity.className}.cols": [
+        SharedEntity.professional,
+        SharedEntity.patient,
+        SharedEntity.description,
+        SharedEntity.document,
+      ],
+      "${SharedEntity.className}.pointers": [
+        SharedEntity.professional,
+        SharedEntity.patient,
+      ],
+    });
     if (shared != null) {
       ref.read(sharedFormProvider.notifier).setModel(shared);
       return shared;
     }
   }
   return null;
-  // else {
-  //   throw Error.throwWithStackTrace(
-  //       'Não achei cargo com este id', StackTrace.current);
-  // }
 }
+
+final xFileProvider = StateProvider<FilePickerResult?>(
+  (ref) {
+    return null;
+  },
+  name: 'xFileProvider',
+);
 
 @riverpod
 class SharedForm extends _$SharedForm {
@@ -39,22 +57,34 @@ class SharedForm extends _$SharedForm {
     state = state.copyWith(model: model);
   }
 
-  Future<void> submitForm({required String history}) async {
+  Future<void> submitForm({required String description}) async {
     state = state.copyWith(status: SharedFormStatus.loading);
     try {
       SharedModel? sharedTemp;
       final auth = ref.read(authChNotProvider);
 
       if (state.model != null) {
-        sharedTemp = state.model!.copyWith(history: history);
+        sharedTemp = state.model!.copyWith(description: description);
       } else {
         sharedTemp = SharedModel(
           professional: auth.user!.userProfile,
           patient: ref.read(sharedPatientSelectedProvider),
-          history: history,
+          description: description,
         );
       }
-      await ref.read(sharedRepositoryProvider).update(sharedTemp);
+      final sharedId =
+          await ref.read(sharedRepositoryProvider).update(sharedTemp);
+      final xFile = ref.read(xFileProvider);
+      // log('xFile: ${xFile?.path}');
+      if (xFile != null) {
+        log('xFile....');
+        await FileToParseFile.xFileToParseFile(
+          xfile: xFile,
+          className: SharedEntity.className,
+          objectId: sharedId,
+          objectAttribute: 'document',
+        );
+      }
       ref.invalidate(sharedListProvider);
       state = state.copyWith(status: SharedFormStatus.success);
     } catch (e, st) {

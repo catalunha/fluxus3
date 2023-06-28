@@ -12,7 +12,7 @@ class SharedEntity {
   static const String professional = 'professional';
   static const String patient = 'patient';
   //singleCols
-  static const String history = 'history';
+  static const String description = 'description';
   static const String document = 'document';
 
   Future<SharedModel> toModel(
@@ -31,7 +31,7 @@ class SharedEntity {
           ? await PatientEntity()
               .toModel(parseObject.get(SharedEntity.patient), cols: cols)
           : null,
-      history: parseObject.get(SharedEntity.history),
+      description: parseObject.get(SharedEntity.description),
       document: parseObject.get(SharedEntity.document)?.get('url'),
     );
     return model;
@@ -52,7 +52,7 @@ class SharedEntity {
         (ParseObject(PatientEntity.className)..objectId = model.patient!.id)
             .toPointer());
 
-    parseObject.set(SharedEntity.history, model.history);
+    parseObject.set(SharedEntity.description, model.description);
 
     return parseObject;
   }

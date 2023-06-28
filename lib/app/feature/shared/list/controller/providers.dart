@@ -11,12 +11,12 @@ part 'providers.g.dart';
 FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(SharedEntity.className));
-  query.orderByAscending('name');
+  query.orderByDescending(SharedEntity.createdAt);
   final list = await ref.watch(sharedRepositoryProvider).list(query, cols: {
     "${SharedEntity.className}.cols": [
       SharedEntity.professional,
       SharedEntity.patient,
-      SharedEntity.history,
+      SharedEntity.description,
       SharedEntity.document,
     ],
     "${SharedEntity.className}.pointers": [

@@ -12,7 +12,7 @@ abstract class SharedModel with _$SharedModel {
     DateTime? createdAt,
     UserProfileModel? professional,
     PatientModel? patient,
-    String? history,
+    String? description,
     String? document,
   }) = _SharedModel;
 }
