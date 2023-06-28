@@ -19,6 +19,19 @@ FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
       (ParseObject(PatientEntity.className)
             ..objectId = sharedPatientSelected!.id)
           .toPointer());
+  // query.whereEqualTo(
+  //     'professional.expertises',
+  //     (ParseObject(ExpertiseEntity.className)..objectId = 'AwfAwREwOR')
+  //         .toPointer());
+  // final QueryBuilder<ParseObject> queryUser =
+  //     QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
+  // queryUser.whereEqualTo(
+  //     UserProfileEntity.expertises,
+  //     (ParseObject(ExpertiseEntity.className)..objectId = 'AwfAwREwOR')
+  //         .toPointer());
+
+  // query.whereMatchesQuery(SharedEntity.professional, queryUser);
+
   query.orderByDescending(SharedEntity.createdAt);
   final list = await ref.watch(sharedRepositoryProvider).list(query, cols: {
     '${SharedEntity.className}.cols': [

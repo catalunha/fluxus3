@@ -22,7 +22,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Olá ${auth.user?.userProfile?.isActive ?? auth.user?.email}',
+          'Olá ${auth.user?.userProfile?.name ?? auth.user?.email}',
         ),
         actions: const [
           HomePopMenu(),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/patient_model.dart';
 import '../../../../routes.dart';
+import 'controller/providers.dart';
 
 class SharedPatientObj extends ConsumerWidget {
   final PatientModel model;
@@ -33,11 +34,28 @@ class SharedPatientObj extends ConsumerWidget {
               children: [
                 IconButton(
                     onPressed: () {
+                      // ref
+                      //     .read(sharedPatientSelectedProvider.notifier)
+                      //     .set(model);
+
+                      // context.goNamed(AppPage.sharedList.name);
+                    },
+                    icon: const Icon(Icons.block)),
+                IconButton(
+                    onPressed: () {
+                      ref
+                          .read(sharedPatientSelectedProvider.notifier)
+                          .set(model);
+
                       context.goNamed(AppPage.sharedList.name);
                     },
                     icon: const Icon(Icons.medical_information)),
                 IconButton(
                     onPressed: () {
+                      ref
+                          .read(sharedPatientSelectedProvider.notifier)
+                          .set(model);
+
                       context.goNamed(AppPage.sharedAdd.name, extra: null);
                     },
                     icon: const Icon(Icons.room_service_outlined))
