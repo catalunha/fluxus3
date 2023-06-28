@@ -49,7 +49,9 @@ class _AnamneseQuestionListPageState
               return const Text('Erro na lista de grupos');
             },
             loading: () {
-              return const Text('Carregando grupos...');
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             },
           ),
           Flexible(
