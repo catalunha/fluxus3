@@ -28,7 +28,6 @@ class AttendanceEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) async {
-    //print('AttendanceEntity.toModel cols $cols');
     AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null

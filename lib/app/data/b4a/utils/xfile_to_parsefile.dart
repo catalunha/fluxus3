@@ -12,9 +12,8 @@ class XFileToParseFile {
       required String objectAttribute}) async {
     try {
       String fileName = xfile.name;
-      fileName = fileName.replaceAll(RegExp(r'[^A-Za-z0-9]'), '_');
+      fileName = fileName.replaceAll(RegExp(r'[^A-Za-z0-9.-]'), '_');
       ParseFileBase? parseFile;
-      ////print'===> fileName: $fileName');
       if (kIsWeb) {
         //Flutter Web
         parseFile = ParseWebFile(await xfile.readAsBytes(),
@@ -33,9 +32,6 @@ class XFileToParseFile {
         final ParseResponse responseParseObject = await parseObject.save();
         if (responseParseObject.success &&
             responseParseObject.results != null) {
-          // objectId =
-          //     (responseParseObject.results!.first as ParseObject).objectId!;
-
           return parseFileBase.url;
         } else {
           return null;
@@ -46,20 +42,4 @@ class XFileToParseFile {
     }
     return null;
   }
-  // static Future<ParseFileBase> xFile2ParseFile(XFile xfile) async {
-  //   String fileName = xfile.name;
-  //   fileName = fileName.replaceAll(RegExp(r'[^A-Za-z0-9]'), '_');
-  //   ParseFileBase? parseFile;
-  //   ////print'===> fileName: $fileName');
-  //   if (kIsWeb) {
-  //     //Flutter Web
-  //     parseFile = ParseWebFile(await xfile.readAsBytes(),
-  //         name: fileName); //Name for file is required
-  //   } else {
-  //     //Flutter Mobile/Desktop
-  //     parseFile = ParseFile(File(xfile.path), name: fileName);
-  //   }
-  //   await parseFile.save();
-  //   return kIsWeb ? parseFile as ParseWebFile : parseFile as ParseFile;
-  // }
 }

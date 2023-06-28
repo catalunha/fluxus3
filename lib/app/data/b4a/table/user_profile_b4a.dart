@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import '../../../core/models/user_profile_model.dart';
@@ -72,12 +74,9 @@ class UserProfileB4a {
         return UserProfileEntity().toModel(response.results!.first, cols: cols);
       }
       return null;
-      // throw B4aException(
-      //   'Perfil do usuário não encontrado.',
-      //   where: 'UserProfileRepositoryB4a.readById()',
-      // );
-    } catch (e) {
-      //print(e);
+    } catch (e, st) {
+      log('$e');
+      log('$st');
       rethrow;
     }
   }

@@ -71,7 +71,6 @@ class _AnamneseQuestionListPageState
   }
 
   void _onReorder(int oldIndex, int newIndex) {
-    print('oldIndex:$oldIndex, newIndex:$newIndex');
     setState(() {
       if (newIndex > oldIndex) {
         newIndex -= 1;

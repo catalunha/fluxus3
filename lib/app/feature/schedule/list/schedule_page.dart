@@ -63,8 +63,6 @@ class SchedulePage extends ConsumerWidget {
               title: dateFormatDay.format(dayMorning),
             ),
           );
-          // print('list: ${list.length}');
-          // print('roomSelected: $roomSelected');
           for (EventModel e in list) {
             final hourStartList =
                 e.hour!.start!.split(':').map((e) => int.parse(e)).toList();
@@ -75,14 +73,6 @@ class SchedulePage extends ConsumerWidget {
               List<String> texts = [];
               List<String> tooltipMsgs = [];
               bool allConfirmedPresence = false;
-              // if (e.attendances?.length == 1) {
-              //   for (AttendanceModel attendance in e.attendances ?? []) {
-              //     texts.add('${attendance.professional?.nickname}');
-              //     texts.add('${attendance.patient?.nickname}');
-              //     allConfirmedPresence =
-              //         attendance.confirmedPresence == null ? false : true;
-              //   }
-              // } else {
               int confirmedPresence = 0;
               for (AttendanceModel attendance in e.attendances ?? []) {
                 if (attendance.confirmedPresence != null) {

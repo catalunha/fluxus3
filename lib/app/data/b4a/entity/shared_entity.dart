@@ -19,7 +19,6 @@ class SharedEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) async {
-    //print('SharedEntity.toModel cols $cols');
     SharedModel model = SharedModel(
       id: parseObject.objectId!,
       createdAt: parseObject.createdAt!.toLocal(),

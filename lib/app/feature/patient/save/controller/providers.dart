@@ -33,7 +33,6 @@ FutureOr<PatientModel?> patientRead(PatientReadRef ref,
       ],
       "${PatientEntity.className}.pointers": [PatientEntity.region],
     });
-    // print(patient);
     if (patient != null) {
       ref.watch(patientFormProvider.notifier).setModel(patient);
       ref

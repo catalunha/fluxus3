@@ -56,7 +56,6 @@ class _AppImportFileState extends State<AppImportFile> {
                 ],
               ),
         onTap: () async {
-          print('init FilePicker ');
           final FilePickerResult? pickedFile =
               await FilePicker.platform.pickFiles();
 

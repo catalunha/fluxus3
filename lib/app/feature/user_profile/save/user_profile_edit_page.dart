@@ -51,7 +51,6 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
     isFemale = user?.userProfile?.isFemale ?? true;
     _birthday = user?.userProfile?.birthday;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      //print("WidgetsBinding1");
       ref.read(regionSelectedProvider.notifier).set(user?.userProfile?.region);
     });
   }

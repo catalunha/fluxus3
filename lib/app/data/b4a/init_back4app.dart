@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
 import 'b4a_exception.dart';
@@ -23,10 +25,11 @@ class InitBack4app {
         return true;
       }
       throw Exception();
-    } catch (e) {
-      ////print('+++ InitBack4app.init');
-      ////print(e);
-      ////print('--- InitBack4app.init');
+    } catch (e, st) {
+      log('+++ InitBack4app.init');
+      log('$e');
+      log('$st');
+      log('--- InitBack4app.init');
       throw B4aException('Erro em inicializar o banco de dados',
           where: 'InitBack4app.init');
     }
