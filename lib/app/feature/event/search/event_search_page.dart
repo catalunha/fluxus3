@@ -53,7 +53,7 @@ class EventSearchPage extends ConsumerWidget {
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate: ref.watch(startSearchProvider) ??
                                     DateTime.now(),
@@ -86,7 +86,7 @@ class EventSearchPage extends ConsumerWidget {
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate: ref.watch(endSearchProvider) ??
                                     DateTime.now(),
@@ -127,7 +127,7 @@ class EventSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  HourModel? result =
+                                  final HourModel? result =
                                       await Navigator.of(context)
                                           .push<HourModel>(MaterialPageRoute(
                                     builder: (context) {
@@ -163,7 +163,7 @@ class EventSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  RoomModel? result =
+                                  final RoomModel? result =
                                       await Navigator.of(context)
                                           .push<RoomModel>(MaterialPageRoute(
                                     builder: (context) {
@@ -201,7 +201,7 @@ class EventSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  StatusModel? result =
+                                  final StatusModel? result =
                                       await Navigator.of(context)
                                           .push<StatusModel>(MaterialPageRoute(
                                     builder: (context) {
@@ -239,7 +239,7 @@ class EventSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  UserProfileModel? result =
+                                  final UserProfileModel? result =
                                       await Navigator.of(context)
                                           .push<UserProfileModel>(
                                               MaterialPageRoute(
@@ -280,7 +280,7 @@ class EventSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  ProcedureModel? result =
+                                  final ProcedureModel? result =
                                       await Navigator.of(context)
                                           .push<ProcedureModel>(
                                               MaterialPageRoute(
@@ -320,7 +320,7 @@ class EventSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  PatientModel? result =
+                                  final PatientModel? result =
                                       await Navigator.of(context)
                                           .push<PatientModel>(MaterialPageRoute(
                                     builder: (context) {

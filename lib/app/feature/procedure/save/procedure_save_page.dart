@@ -37,11 +37,11 @@ class _ProcedureSavePageState extends ConsumerState<ProcedureSavePage>
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
-    _codeTec.text = "";
-    _descriptionTec.text = "";
-    _costTec.text = "";
-    _costProfTec.text = "";
+    _nameTec.text = '';
+    _codeTec.text = '';
+    _descriptionTec.text = '';
+    _costTec.text = '';
+    _costProfTec.text = '';
   }
 
   @override
@@ -130,7 +130,7 @@ class _ProcedureSavePageState extends ConsumerState<ProcedureSavePage>
                           children: [
                             IconButton(
                                 onPressed: () async {
-                                  ExpertiseModel? result =
+                                  final ExpertiseModel? result =
                                       await Navigator.of(context)
                                           .push<ExpertiseModel?>(
                                               MaterialPageRoute(

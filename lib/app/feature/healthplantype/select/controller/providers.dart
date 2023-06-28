@@ -10,7 +10,7 @@ part 'providers.g.dart';
 @Riverpod(keepAlive: true)
 FutureOr<List<HealthPlanTypeModel>> healthPlanTypeSelect(
     HealthPlanTypeSelectRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(HealthPlanTypeEntity.className));
   query.orderByDescending('name');
   final list = await ref.read(healthPlanTypeRepositoryProvider).list(query);
@@ -25,9 +25,9 @@ class HealthPlanTypeSelected extends _$HealthPlanTypeSelected {
   }
 
   void toggle(HealthPlanTypeModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<HealthPlanTypeModel> temp = [...state];
+      final List<HealthPlanTypeModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

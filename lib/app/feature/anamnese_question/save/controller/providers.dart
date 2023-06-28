@@ -21,7 +21,7 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
         await ref.read(anamneseQuestionRepositoryProvider).readById(
       id,
       cols: {
-        "${AnamneseQuestionEntity.className}.cols": [
+        '${AnamneseQuestionEntity.className}.cols': [
           AnamneseQuestionEntity.text,
           AnamneseQuestionEntity.type,
           AnamneseQuestionEntity.options,
@@ -29,7 +29,7 @@ FutureOr<AnamneseQuestionModel?> anamneseQuestionRead(
           AnamneseQuestionEntity.isRequired,
           AnamneseQuestionEntity.group,
         ],
-        "${AnamneseQuestionEntity.className}.pointers": [
+        '${AnamneseQuestionEntity.className}.pointers': [
           AnamneseQuestionEntity.group,
         ],
       },
@@ -111,7 +111,7 @@ class AnamneseGroupSelected extends _$AnamneseGroupSelected {
       final value2 = await ref.read(anamneseGroupRepositoryProvider).readById(
         value.id!,
         cols: {
-          "${AnamneseGroupEntity.className}.cols": [
+          '${AnamneseGroupEntity.className}.cols': [
             AnamneseGroupEntity.name,
             AnamneseGroupEntity.orderOfQuestions,
           ],
@@ -184,7 +184,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
       //+++ Atualizando lista de questions em grupo
       if (state.model == null) {
         log('group: $group', name: 'Save new question');
-        var listOld = [...group.orderOfQuestions];
+        final listOld = [...group.orderOfQuestions];
         listOld.add(newAnamneseQuestionId);
         await ref
             .read(anamneseGroupRepositoryProvider)
@@ -232,7 +232,7 @@ class AnamneseQuestionForm extends _$AnamneseQuestionForm {
           .delete(state.model!.id!);
       //+++ Atualizando lista de questions em grupo
       final group = ref.read(anamneseGroupSelectedProvider);
-      var listOld = [...group!.orderOfQuestions];
+      final listOld = [...group!.orderOfQuestions];
       listOld.remove(state.model!.id!);
       await ref
           .read(anamneseGroupRepositoryProvider)

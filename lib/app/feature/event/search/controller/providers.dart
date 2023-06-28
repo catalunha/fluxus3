@@ -23,7 +23,7 @@ part 'providers.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<EventModel>> eventList(EventListRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
   final start = ref.read(startSearchProvider);
   final end = ref.read(endSearchProvider);
@@ -53,7 +53,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
             .toPointer());
   }
   if (ref.read(professionalSelectProvider)) {
-    QueryBuilder<ParseObject> queryAttendance =
+    final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
         AttendanceEntity.professional,
@@ -64,7 +64,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
     query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
   }
   if (ref.read(procedureSelectProvider)) {
-    QueryBuilder<ParseObject> queryAttendance =
+    final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
         AttendanceEntity.procedure,
@@ -75,7 +75,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
     query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
   }
   if (ref.read(patientSelectProvider)) {
-    QueryBuilder<ParseObject> queryAttendance =
+    final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
         AttendanceEntity.patient,
@@ -88,7 +88,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
 
   query.orderByDescending('updatedAt');
   return await ref.read(eventRepositoryProvider).list(query, cols: {
-    "${EventEntity.className}.cols": [
+    '${EventEntity.className}.cols': [
       EventEntity.day,
       EventEntity.hour,
       EventEntity.room,
@@ -96,7 +96,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
       EventEntity.attendances,
       EventEntity.history,
     ],
-    "${EventEntity.className}.pointers": [
+    '${EventEntity.className}.pointers': [
       EventEntity.hour,
       EventEntity.room,
       EventEntity.status,

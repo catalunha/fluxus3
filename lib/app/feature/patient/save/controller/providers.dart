@@ -18,7 +18,7 @@ FutureOr<PatientModel?> patientRead(PatientReadRef ref,
   if (id != null) {
     final patient =
         await ref.read(patientRepositoryProvider).readById(id, cols: {
-      "${PatientEntity.className}.cols": [
+      '${PatientEntity.className}.cols': [
         PatientEntity.name,
         PatientEntity.email,
         PatientEntity.nickname,
@@ -31,7 +31,7 @@ FutureOr<PatientModel?> patientRead(PatientReadRef ref,
         PatientEntity.family,
         PatientEntity.healthPlans,
       ],
-      "${PatientEntity.className}.pointers": [PatientEntity.region],
+      '${PatientEntity.className}.pointers': [PatientEntity.region],
     });
     if (patient != null) {
       ref.watch(patientFormProvider.notifier).setModel(patient);
@@ -120,9 +120,9 @@ class ParentsSelected extends _$ParentsSelected {
   }
 
   void update(PatientModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<PatientModel> temp = [...state];
+      final List<PatientModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {
@@ -155,19 +155,19 @@ class HealthPlansSelected extends _$HealthPlansSelected {
   }
 
   void update(HealthPlanModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<HealthPlanModel> temp = [...state];
+      final List<HealthPlanModel> temp = [...state];
       temp.replaceRange(index, index + 1, [model]);
       state = [...temp];
     }
   }
 
   Future<void> delete(String id) async {
-    int index = state.indexWhere((value) => value.id == id);
+    final int index = state.indexWhere((value) => value.id == id);
     if (index >= 0) {
       await ref.read(healthPlanRepositoryProvider).delete(id);
-      List<HealthPlanModel> temp = [...state];
+      final List<HealthPlanModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     }
@@ -271,12 +271,13 @@ class PatientForm extends _$PatientForm {
     required String relationColumn,
     required String relationTable,
   }) async {
-    List<dynamic> listResult = [...selectedList];
-    List<dynamic> listFinal = [...originalList];
+    final List<dynamic> listResult = [...selectedList];
+    final List<dynamic> listFinal = [...originalList];
     final repository = ref.read(patientRepositoryProvider);
 
     for (var original in originalList) {
-      int index = selectedList.indexWhere((model) => model.id == original.id);
+      final int index =
+          selectedList.indexWhere((model) => model.id == original.id);
       if (index < 0) {
         await repository.updateRelation(
           objectId: modelId,

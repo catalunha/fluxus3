@@ -55,11 +55,11 @@ class ProcedurePrintPage extends StatelessWidget {
       ),
     );
 
-    return await pdf.save();
+    return pdf.save();
   }
 
-  body() {
-    List<pw.Widget> lineList = [];
+  List<pw.Widget> body() {
+    final List<pw.Widget> lineList = [];
     for (var model in list) {
       lineList.add(userBody(model));
     }
@@ -67,7 +67,7 @@ class ProcedurePrintPage extends StatelessWidget {
     return lineList;
   }
 
-  userBody(ProcedureModel model) {
+  pw.Column userBody(ProcedureModel model) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -91,7 +91,7 @@ class ProcedurePrintPage extends StatelessWidget {
     );
   }
 
-  footerPage(context) {
+  pw.Container footerPage(context) {
     final dateFormat = DateFormat('dd/MM/y HH:mm');
 
     return pw.Container(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluxus3/app/routes.dart';
+import '../../../routes.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/models/user_profile_model.dart';
@@ -52,7 +52,7 @@ class UserProfileObj extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             context.goNamed(AppPage.userProfileAccess.name,
-                                pathParameters: {"id": model.id});
+                                pathParameters: {'id': model.id});
                           },
                           icon: const Icon(
                             Icons.edit,
@@ -61,7 +61,7 @@ class UserProfileObj extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             context.goNamed(AppPage.userProfileView.name,
-                                pathParameters: {"id": model.id});
+                                pathParameters: {'id': model.id});
                           },
                           icon: const Icon(
                             Icons.assignment_ind_outlined,

@@ -31,7 +31,7 @@ class _RoomSavePageState extends ConsumerState<RoomSavePage>
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
+    _nameTec.text = '';
   }
 
   @override

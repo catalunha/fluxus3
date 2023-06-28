@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/feature/office/list/controller/providers.dart';
-import 'package:fluxus3/app/feature/office/save/controller/states.dart';
+import '../../list/controller/providers.dart';
+import 'states.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/office_model.dart';

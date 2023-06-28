@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/feature/procedure/list/controller/providers.dart';
+import '../../list/controller/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/expertise_model.dart';

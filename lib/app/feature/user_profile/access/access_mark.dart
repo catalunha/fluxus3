@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/user_profile/access/controller/states.dart';
+import 'controller/states.dart';
 
 import 'controller/providers.dart';
 

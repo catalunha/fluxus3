@@ -82,7 +82,7 @@ class ProfessionalSelected extends _$ProfessionalSelected {
       final userProfile = await ref
           .read(userProfileRepositoryProvider)
           .readById(value.id, cols: {
-        "${UserProfileEntity.className}.cols": [
+        '${UserProfileEntity.className}.cols': [
           UserProfileEntity.userName,
           UserProfileEntity.email,
           UserProfileEntity.isActive,
@@ -110,9 +110,9 @@ class Procedures extends _$Procedures {
   }
 
   void duplicate(String id) async {
-    int index = state.indexWhere((value) => value.id == id);
+    final int index = state.indexWhere((value) => value.id == id);
     if (index >= 0) {
-      List<ProcedureModel> temp = [...state];
+      final List<ProcedureModel> temp = [...state];
       final model = temp.firstWhere((value) => value.id == id);
       temp.insert(index, model);
       state = [...temp];
@@ -120,9 +120,9 @@ class Procedures extends _$Procedures {
   }
 
   void delete(String id) async {
-    int index = state.indexWhere((value) => value.id == id);
+    final int index = state.indexWhere((value) => value.id == id);
     if (index >= 0) {
-      List<ProcedureModel> temp = [...state];
+      final List<ProcedureModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     }
@@ -140,7 +140,7 @@ class PatientSelected extends _$PatientSelected {
     if (value != null) {
       final patient =
           await ref.read(patientRepositoryProvider).readById(value.id!, cols: {
-        "${PatientEntity.className}.cols": [
+        '${PatientEntity.className}.cols': [
           PatientEntity.name,
           // PatientEntity.email,
           // PatientEntity.nickname,
@@ -153,7 +153,7 @@ class PatientSelected extends _$PatientSelected {
           // PatientEntity.family,
           PatientEntity.healthPlans,
         ],
-        "${PatientEntity.className}.pointers": [PatientEntity.region],
+        '${PatientEntity.className}.pointers': [PatientEntity.region],
       });
       state = patient;
       ref.watch(healthPlansProvider.notifier).set(state?.healthPlans ?? []);
@@ -173,9 +173,9 @@ class HealthPlans extends _$HealthPlans {
   }
 
   void delete(String id) async {
-    int index = state.indexWhere((value) => value.id == id);
+    final int index = state.indexWhere((value) => value.id == id);
     if (index >= 0) {
-      List<HealthPlanModel> temp = [...state];
+      final List<HealthPlanModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     }

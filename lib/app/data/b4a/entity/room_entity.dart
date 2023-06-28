@@ -12,7 +12,7 @@ class RoomEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    RoomModel model = RoomModel(
+    final RoomModel model = RoomModel(
       id: parseObject.objectId!,
       name: parseObject.get(RoomEntity.name),
       isActive: parseObject.get(RoomEntity.isActive),

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/core/models/anamnese_group_model.dart';
+import '../../../../core/models/anamnese_group_model.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,14 +16,14 @@ class AnamneseQuestions extends _$AnamneseQuestions {
   @override
   Future<List<AnamneseQuestionModel>> build() async {
     log('Rebuilding...', name: 'anamneseQuestionsProvider');
-    QueryBuilder<ParseObject> query = QueryBuilder<ParseObject>(
+    final QueryBuilder<ParseObject> query = QueryBuilder<ParseObject>(
         ParseObject(AnamneseQuestionEntity.className));
     query.orderByAscending('text');
     final listQuestions =
         await ref.read(anamneseQuestionRepositoryProvider).list(
       query,
       cols: {
-        "${AnamneseQuestionEntity.className}.cols": [
+        '${AnamneseQuestionEntity.className}.cols': [
           AnamneseQuestionEntity.text,
           AnamneseQuestionEntity.type,
           AnamneseQuestionEntity.options,
@@ -31,7 +31,7 @@ class AnamneseQuestions extends _$AnamneseQuestions {
           AnamneseQuestionEntity.isRequired,
           AnamneseQuestionEntity.group,
         ],
-        "${AnamneseQuestionEntity.className}.pointers": [
+        '${AnamneseQuestionEntity.className}.pointers': [
           AnamneseQuestionEntity.group,
         ],
       },
@@ -44,21 +44,21 @@ class AnamneseQuestions extends _$AnamneseQuestions {
 FutureOr<List<AnamneseGroupModel>> anamneseGroups(AnamneseGroupsRef ref) async {
   log('Rebuilding...', name: 'anamneseGroupsProvider');
 
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
   query.whereEqualTo(AnamneseGroupEntity.isActive, true);
   query.orderByAscending('name');
   final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
     query,
     cols: {
-      "${AnamneseGroupEntity.className}.cols": [
+      '${AnamneseGroupEntity.className}.cols': [
         AnamneseGroupEntity.name,
         AnamneseGroupEntity.orderOfQuestions,
       ],
     },
   );
 
-  var anamnese =
+  final anamnese =
       await ref.read(anamneseRepositoryProvider).readByName('orderOfGroups');
   var listGroupsOrdened = <AnamneseGroupModel>[];
   if (anamnese != null && anamnese.orderOfGroups.isNotEmpty) {
@@ -151,7 +151,7 @@ class QuestionsFiltered extends _$QuestionsFiltered {
   }
 
   void set(List<AnamneseQuestionModel> listReordered) async {
-    var itens = <String>[];
+    final itens = <String>[];
     for (var item in listReordered) {
       itens.add(item.id!);
     }

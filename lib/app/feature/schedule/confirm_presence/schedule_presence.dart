@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/schedule/confirm_presence/controller/providers.dart';
+import 'controller/providers.dart';
 
 import '../../../core/models/event_model.dart';
 import '../../utils/app_mixin_loader.dart';

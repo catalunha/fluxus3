@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/routes.dart';
+import '../../routes.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/authentication/riverpod/auth_prov.dart';

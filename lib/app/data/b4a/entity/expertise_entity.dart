@@ -11,7 +11,7 @@ class ExpertiseEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    ExpertiseModel model = ExpertiseModel(
+    final ExpertiseModel model = ExpertiseModel(
       id: parseObject.objectId!,
       name: parseObject.get(ExpertiseEntity.name),
     );

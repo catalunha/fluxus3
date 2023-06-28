@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/shared/list/controller/providers.dart';
-import 'package:fluxus3/app/feature/shared/save/controller/states.dart';
+import '../../list/controller/providers.dart';
+import 'states.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/authentication/riverpod/auth_prov.dart';
@@ -20,13 +20,13 @@ FutureOr<SharedModel?> sharedRead(SharedReadRef ref,
     {required String? id}) async {
   if (id != null) {
     final shared = await ref.read(sharedRepositoryProvider).readById(id, cols: {
-      "${SharedEntity.className}.cols": [
+      '${SharedEntity.className}.cols': [
         SharedEntity.professional,
         SharedEntity.patient,
         SharedEntity.description,
         SharedEntity.document,
       ],
-      "${SharedEntity.className}.pointers": [
+      '${SharedEntity.className}.pointers': [
         SharedEntity.professional,
         SharedEntity.patient,
       ],

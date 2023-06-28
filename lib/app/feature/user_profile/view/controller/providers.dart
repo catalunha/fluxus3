@@ -15,7 +15,7 @@ FutureOr<UserProfileModel> userProfileView(UserProfileViewRef ref,
   // try {
   final userProfile =
       await ref.read(userProfileRepositoryProvider).readById(id, cols: {
-    "${UserProfileEntity.className}.cols": [
+    '${UserProfileEntity.className}.cols': [
       UserProfileEntity.userName,
       UserProfileEntity.email,
       UserProfileEntity.access,

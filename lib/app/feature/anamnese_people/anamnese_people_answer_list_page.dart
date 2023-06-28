@@ -47,8 +47,8 @@ class AnamnesePeopleAnswerListPage extends ConsumerWidget {
         data: (data) {
           if (data.isNotEmpty) {
             var group = data[0].group;
-            var listExpansionTile = <Widget>[];
-            var listAnswer = <Widget>[];
+            final listExpansionTile = <Widget>[];
+            final listAnswer = <Widget>[];
             for (var answer in data) {
               if (answer.group != group) {
                 listExpansionTile.add(ExpansionTile(

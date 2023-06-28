@@ -25,7 +25,7 @@ class SharedB4a {
     ParseResponse? parseResponse;
     try {
       parseResponse = await query.query();
-      List<SharedModel> listTemp = <SharedModel>[];
+      final List<SharedModel> listTemp = <SharedModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
           listTemp.add(await SharedEntity().toModel(element, cols: cols));
@@ -35,7 +35,7 @@ class SharedB4a {
         return [];
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -50,7 +50,7 @@ class SharedB4a {
     String id, {
     Map<String, List<String>> cols = const {},
   }) async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(SharedEntity.className));
     query.whereEqualTo(SharedEntity.id, id);
 
@@ -62,7 +62,7 @@ class SharedB4a {
     }
     query.first();
     try {
-      var response = await query.query();
+      final response = await query.query();
 
       if (response.success && response.results != null) {
         return SharedEntity().toModel(response.results!.first, cols: cols);
@@ -83,14 +83,14 @@ class SharedB4a {
       parseResponse = await parseObject.save();
 
       if (parseResponse.success && parseResponse.results != null) {
-        ParseObject parseObjectItem =
+        final ParseObject parseObjectItem =
             parseResponse.results!.first as ParseObject;
         return parseObjectItem.objectId!;
       } else {
         throw Exception();
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -114,7 +114,7 @@ class SharedB4a {
         return false;
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,

@@ -10,7 +10,7 @@ part 'providers.g.dart';
 @Riverpod(keepAlive: true)
 FutureOr<List<HealthPlanTypeModel>> healthPlanTypeList(
     HealthPlanTypeListRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(HealthPlanTypeEntity.className));
   query.orderByAscending('name');
   return await ref.read(healthPlanTypeRepositoryProvider).list(query);

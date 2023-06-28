@@ -17,12 +17,12 @@ FutureOr<HealthPlanModel?> healthPlanRead(HealthPlanReadRef ref,
     final healthPlan = await ref.read(healthPlanRepositoryProvider).readById(
       id,
       cols: {
-        "${HealthPlanEntity.className}.cols": [
+        '${HealthPlanEntity.className}.cols': [
           HealthPlanEntity.code,
           HealthPlanEntity.description,
           HealthPlanEntity.healthPlanType,
         ],
-        "${HealthPlanEntity.className}.pointers": [
+        '${HealthPlanEntity.className}.pointers': [
           HealthPlanEntity.healthPlanType,
         ],
       },

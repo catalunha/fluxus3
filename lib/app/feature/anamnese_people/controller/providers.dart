@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/repositories/providers.dart';
+import '../../../core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,12 +12,12 @@ part 'providers.g.dart';
 @riverpod
 FutureOr<List<AnamnesePeopleModel>> anamnesePeopleList(
     AnamnesePeopleListRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamnesePeopleEntity.className));
   query.orderByDescending('createdAt');
   final list =
       await ref.watch(anamnesePeopleRepositoryProvider).list(query, cols: {
-    "${AnamnesePeopleEntity.className}.cols": [
+    '${AnamnesePeopleEntity.className}.cols': [
       AnamnesePeopleEntity.createdAt,
       AnamnesePeopleEntity.adultName,
       AnamnesePeopleEntity.adultPhone,
@@ -82,7 +82,7 @@ List<AnamnesePeopleModel> anamnesePeopleFiltered(
 FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
     AnamneseAnswerListRef ref) async {
   // +++ Listando Answer
-  QueryBuilder<ParseObject> queryAnswer =
+  final QueryBuilder<ParseObject> queryAnswer =
       QueryBuilder<ParseObject>(ParseObject(AnamneseAnswerEntity.className));
   queryAnswer.whereEqualTo(
       AnamneseAnswerEntity.people,
@@ -93,7 +93,7 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
   final list = await ref
       .watch(anamneseAnswerRepositoryProvider)
       .list(queryAnswer, cols: {
-    "${AnamneseAnswerEntity.className}.cols": [
+    '${AnamneseAnswerEntity.className}.cols': [
       AnamneseAnswerEntity.people,
       AnamneseAnswerEntity.order,
       AnamneseAnswerEntity.group,
@@ -102,7 +102,7 @@ FutureOr<List<AnamneseAnswerModel>> anamneseAnswerList(
       AnamneseAnswerEntity.options,
       AnamneseAnswerEntity.answers,
     ],
-    "${AnamneseAnswerEntity.className}.pointers": [
+    '${AnamneseAnswerEntity.className}.pointers': [
       AnamneseAnswerEntity.people,
     ],
   });

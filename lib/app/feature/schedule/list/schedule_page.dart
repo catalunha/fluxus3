@@ -45,17 +45,17 @@ class SchedulePage extends ConsumerWidget {
         // if (eventsFiltered.isEmpty) {
         //   return const Center(child: Text(''));
         // }
-        var list = [...eventsFiltered];
-        DateTime start = ref.watch(fistDayProvider);
-        DateTime end = ref.watch(lastDayProvider);
+        final list = [...eventsFiltered];
+        final DateTime start = ref.watch(fistDayProvider);
+        final DateTime end = ref.watch(lastDayProvider);
 
-        List<TimePlannerTask> timePlannerTasks = [];
-        List<TimePlannerTitle> timePlannerHeaders = [];
+        final List<TimePlannerTask> timePlannerTasks = [];
+        final List<TimePlannerTitle> timePlannerHeaders = [];
         int day = 0;
         for (DateTime dayMorning = start;
             dayMorning.isBefore(end.add(const Duration(days: 1)));
             dayMorning = dayMorning.add(const Duration(days: 1))) {
-          DateTime dayNight =
+          final DateTime dayNight =
               dayMorning.add(const Duration(hours: 23, minutes: 59));
           timePlannerHeaders.add(
             TimePlannerTitle(
@@ -70,8 +70,8 @@ class SchedulePage extends ConsumerWidget {
                 Duration(hours: hourStartList[0], minutes: hourStartList[1]));
             if (dayMorning.isBefore(dateTimeStart) &&
                 dayNight.isAfter(dateTimeStart)) {
-              List<String> texts = [];
-              List<String> tooltipMsgs = [];
+              final List<String> texts = [];
+              final List<String> tooltipMsgs = [];
               bool allConfirmedPresence = false;
               int confirmedPresence = 0;
               for (AttendanceModel attendance in e.attendances ?? []) {
@@ -149,7 +149,7 @@ class SchedulePage extends ConsumerWidget {
           }
           day++;
         }
-        Widget newPlanner = TimePlanner(
+        final Widget newPlanner = TimePlanner(
           key: ValueKey(const Uuid().v4()),
           startHour: 7,
           endHour: 19,
@@ -173,7 +173,7 @@ class SchedulePage extends ConsumerWidget {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    DateTime? newDate = await showDatePicker(
+                    final DateTime? newDate = await showDatePicker(
                       context: context,
                       initialDate: ref.watch(fistDayProvider),
                       firstDate: DateTime(DateTime.now().year - 1),
@@ -195,7 +195,7 @@ class SchedulePage extends ConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    DateTime? newDate = await showDatePicker(
+                    final DateTime? newDate = await showDatePicker(
                       context: context,
                       initialDate: ref.watch(lastDayProvider),
                       firstDate: DateTime(DateTime.now().year - 1),
@@ -217,7 +217,7 @@ class SchedulePage extends ConsumerWidget {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      StatusModel? result = await Navigator.of(context)
+                      final StatusModel? result = await Navigator.of(context)
                           .push<StatusModel>(MaterialPageRoute(
                         builder: (context) {
                           return const StatusSelectPage();

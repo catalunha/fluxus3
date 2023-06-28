@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/repositories/providers.dart';
+import '../../../../core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,11 +10,11 @@ part 'providers.g.dart';
 // @riverpod
 @Riverpod(keepAlive: true)
 FutureOr<List<PatientModel>> patientSelect(PatientSelectRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
   query.orderByDescending('name');
   final list = await ref.read(patientRepositoryProvider).list(query, cols: {
-    "${PatientEntity.className}.cols": [
+    '${PatientEntity.className}.cols': [
       PatientEntity.name,
       // PatientEntity.nickname,
       PatientEntity.phone,
@@ -70,9 +70,9 @@ class PatientSelected extends _$PatientSelected {
   }
 
   void toggle(PatientModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<PatientModel> temp = [...state];
+      final List<PatientModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

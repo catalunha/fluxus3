@@ -85,7 +85,7 @@ class UserProfileSaveForm extends _$UserProfileSaveForm {
       await repository.update(userProfileModel);
       final xFile = ref.read(xFileProvider);
       if (xFile != null) {
-        String? photoUrl = await XFileToParseFile.xFileToParseFile(
+        final String? photoUrl = await XFileToParseFile.xFileToParseFile(
           xfile: xFile,
           className: UserProfileEntity.className,
           objectId: auth.user!.userProfile!.id,

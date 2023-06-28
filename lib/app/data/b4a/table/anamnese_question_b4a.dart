@@ -28,7 +28,7 @@ class AnamneseQuestionB4a {
     ParseResponse? parseResponse;
     try {
       parseResponse = await query.query();
-      List<AnamneseQuestionModel> listTemp = <AnamneseQuestionModel>[];
+      final List<AnamneseQuestionModel> listTemp = <AnamneseQuestionModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
           listTemp.add(AnamneseQuestionEntity().toModel(element));
@@ -38,7 +38,7 @@ class AnamneseQuestionB4a {
         return [];
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -53,7 +53,7 @@ class AnamneseQuestionB4a {
     String id, {
     Map<String, List<String>> cols = const {},
   }) async {
-    QueryBuilder<ParseObject> query = QueryBuilder<ParseObject>(
+    final QueryBuilder<ParseObject> query = QueryBuilder<ParseObject>(
         ParseObject(AnamneseQuestionEntity.className));
     query.whereEqualTo(AnamneseQuestionEntity.id, id);
 
@@ -66,7 +66,7 @@ class AnamneseQuestionB4a {
     }
     query.first();
     try {
-      var response = await query.query();
+      final response = await query.query();
 
       if (response.success && response.results != null) {
         return AnamneseQuestionEntity()
@@ -87,14 +87,14 @@ class AnamneseQuestionB4a {
       parseResponse = await parseObject.save();
 
       if (parseResponse.success && parseResponse.results != null) {
-        ParseObject parseObjectItem =
+        final ParseObject parseObjectItem =
             parseResponse.results!.first as ParseObject;
         return parseObjectItem.objectId!;
       } else {
         throw Exception();
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -118,7 +118,7 @@ class AnamneseQuestionB4a {
         return false;
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,

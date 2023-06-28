@@ -32,7 +32,7 @@ class EventB4a {
     ParseResponse? response;
     try {
       response = await query.query();
-      List<EventModel> listTemp = <EventModel>[];
+      final List<EventModel> listTemp = <EventModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
           listTemp.add(await EventEntity().toModel(element, cols: cols));
@@ -42,7 +42,7 @@ class EventB4a {
         return [];
       }
     } on Exception {
-      var errorTranslated = ParseErrorTranslate.translate(response!.error!);
+      final errorTranslated = ParseErrorTranslate.translate(response!.error!);
       throw B4aException(
         errorTranslated,
         where: 'EventRepositoryB4a.list',
@@ -55,7 +55,7 @@ class EventB4a {
     String id, {
     Map<String, List<String>> cols = const {},
   }) async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo(EventEntity.id, id);
     if (cols.containsKey('${EventEntity.className}.cols')) {
@@ -72,7 +72,7 @@ class EventB4a {
     }
     query.first();
     try {
-      var response = await query.query();
+      final response = await query.query();
 
       if (response.success && response.results != null) {
         return EventEntity().toModel(response.results!.first, cols: cols);
@@ -93,13 +93,13 @@ class EventB4a {
       response = await userProfileParse.save();
 
       if (response.success && response.results != null) {
-        ParseObject userProfile = response.results!.first as ParseObject;
+        final ParseObject userProfile = response.results!.first as ParseObject;
         return userProfile.objectId!;
       } else {
         throw Exception();
       }
     } on Exception {
-      var errorTranslated = ParseErrorTranslate.translate(response!.error!);
+      final errorTranslated = ParseErrorTranslate.translate(response!.error!);
       throw B4aException(
         errorTranslated,
         where: 'EventRepositoryB4a.update',

@@ -13,11 +13,11 @@ class RoomObj2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Color? color;
-    final roomSelected = ref.watch(roomSelectedProvider);
-    if (roomSelected.contains(model)) {
-      color = Colors.green;
-    }
+    // Color? color;
+    // final roomSelected = ref.watch(roomSelectedProvider);
+    // if (roomSelected.contains(model)) {
+    //   color = Colors.green;
+    // }
     return ElevatedButton(
       onPressed: () {
         if (isSingleValue) {

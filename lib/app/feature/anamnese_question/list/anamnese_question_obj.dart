@@ -37,7 +37,7 @@ class AnamneseQuestionObj extends StatelessWidget {
             ),
             AppTextTitleValue(
               title: 'Obrigatória: ',
-              value: model.isRequired ? "Sim" : "Não",
+              value: model.isRequired ? 'Sim' : 'Não',
             ),
             AppTextTitleValue(
               title: 'Grupo: ',
@@ -45,7 +45,7 @@ class AnamneseQuestionObj extends StatelessWidget {
             ),
             AppTextTitleValue(
               title: 'Ativa: ',
-              value: model.isActive ? "Sim" : "Não",
+              value: model.isActive ? 'Sim' : 'Não',
             ),
             Center(
               child: Wrap(children: [

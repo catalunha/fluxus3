@@ -28,7 +28,7 @@ class AttendanceEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) async {
-    AttendanceModel model = AttendanceModel(
+    final AttendanceModel model = AttendanceModel(
       id: parseObject.objectId!,
       professional: parseObject.get(AttendanceEntity.professional) != null
           ? await UserProfileEntity()

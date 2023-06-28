@@ -27,7 +27,7 @@ class HealthPlanTypeB4a {
     ParseResponse? parseResponse;
     try {
       parseResponse = await query.query();
-      List<HealthPlanTypeModel> listTemp = <HealthPlanTypeModel>[];
+      final List<HealthPlanTypeModel> listTemp = <HealthPlanTypeModel>[];
       if (parseResponse.success && parseResponse.results != null) {
         for (var element in parseResponse.results!) {
           listTemp.add(HealthPlanTypeEntity().toModel(element));
@@ -37,7 +37,7 @@ class HealthPlanTypeB4a {
         return [];
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -52,7 +52,7 @@ class HealthPlanTypeB4a {
     String id, {
     Map<String, List<String>> cols = const {},
   }) async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(HealthPlanTypeEntity.className));
     query.whereEqualTo(HealthPlanTypeEntity.id, id);
 
@@ -65,7 +65,7 @@ class HealthPlanTypeB4a {
 
     query.first();
     try {
-      var response = await query.query();
+      final response = await query.query();
 
       if (response.success && response.results != null) {
         return HealthPlanTypeEntity()
@@ -86,14 +86,14 @@ class HealthPlanTypeB4a {
       parseResponse = await parseObject.save();
 
       if (parseResponse.success && parseResponse.results != null) {
-        ParseObject parseObjectItem =
+        final ParseObject parseObjectItem =
             parseResponse.results!.first as ParseObject;
         return parseObjectItem.objectId!;
       } else {
         throw Exception();
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -117,7 +117,7 @@ class HealthPlanTypeB4a {
         return false;
       }
     } on Exception {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,

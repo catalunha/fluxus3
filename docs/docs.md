@@ -93,6 +93,8 @@ flutter create --project-name=prokids0 --org net.brintec --platforms android,web
 flutter clean
 flutter pub get
 
-
-
 dart pub cache clean
+
+* ordem no build runner
+https://github.com/rrousselGit/riverpod/issues/1782
+https://github.com/trevorwang/retrofit.dart/issues/578#issuecomment-1583804327

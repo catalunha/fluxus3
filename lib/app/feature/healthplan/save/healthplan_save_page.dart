@@ -33,8 +33,8 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
   @override
   void initState() {
     super.initState();
-    _codeTec.text = "";
-    _descriptionTec.text = "";
+    _codeTec.text = '';
+    _descriptionTec.text = '';
   }
 
   @override
@@ -104,7 +104,7 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
                           children: [
                             IconButton(
                               onPressed: () async {
-                                HealthPlanTypeModel? result =
+                                final HealthPlanTypeModel? result =
                                     await Navigator.of(context)
                                         .push<HealthPlanTypeModel>(
                                             MaterialPageRoute(

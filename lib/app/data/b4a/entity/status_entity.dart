@@ -12,7 +12,7 @@ class StatusEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    StatusModel model = StatusModel(
+    final StatusModel model = StatusModel(
       id: parseObject.objectId!,
       name: parseObject.get(StatusEntity.name),
       description: parseObject.get(StatusEntity.description),

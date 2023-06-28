@@ -42,12 +42,12 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
   void initState() {
     final user = ref.read(authChNotProvider).user;
     super.initState();
-    _nameTec.text = user?.userProfile?.name ?? "";
-    _nicknameTec.text = user?.userProfile?.nickname ?? "";
-    _phoneTec.text = user?.userProfile?.phone ?? "";
-    _cpfTec.text = user?.userProfile?.cpf ?? "";
-    _addressTec.text = user?.userProfile?.address ?? "";
-    _registerTec.text = user?.userProfile?.register ?? "";
+    _nameTec.text = user?.userProfile?.name ?? '';
+    _nicknameTec.text = user?.userProfile?.nickname ?? '';
+    _phoneTec.text = user?.userProfile?.phone ?? '';
+    _cpfTec.text = user?.userProfile?.cpf ?? '';
+    _addressTec.text = user?.userProfile?.address ?? '';
+    _registerTec.text = user?.userProfile?.register ?? '';
     isFemale = user?.userProfile?.isFemale ?? true;
     _birthday = user?.userProfile?.birthday;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -158,7 +158,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                     ),
 
                     SwitchListTile(
-                      title: const Text("Sexo feminino ?"),
+                      title: const Text('Sexo feminino ?'),
                       value: isFemale,
                       onChanged: (value) {
                         setState(() {
@@ -173,8 +173,9 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                       children: [
                         IconButton(
                           onPressed: () async {
-                            RegionModel? result = await Navigator.of(context)
-                                .push<RegionModel>(MaterialPageRoute(
+                            final RegionModel? result =
+                                await Navigator.of(context)
+                                    .push<RegionModel>(MaterialPageRoute(
                               builder: (context) {
                                 return const RegionSelectPage();
                               },
@@ -242,7 +243,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(DateTime.now().year - 100),
@@ -265,7 +266,7 @@ class _UserProfileEditPageState extends ConsumerState<UserProfileEditPage>
                                 const SizedBox(width: 10),
                                 Text(_birthday != null
                                     ? dateFormat.format(_birthday!)
-                                    : "Não informado"),
+                                    : 'Não informado'),
                               ],
                             ),
                           ),

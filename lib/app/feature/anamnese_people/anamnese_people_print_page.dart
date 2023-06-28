@@ -77,11 +77,11 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
       ),
     );
 
-    return await pdf.save();
+    return pdf.save();
   }
 
-  body() {
-    List<pw.Widget> lineList = [];
+  List<pw.Widget> body() {
+    final List<pw.Widget> lineList = [];
     for (var model in answerList) {
       lineList.add(userBody(model));
     }
@@ -89,7 +89,7 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
     return lineList;
   }
 
-  userBody(AnamneseAnswerModel model) {
+  pw.Column userBody(AnamneseAnswerModel model) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -116,7 +116,7 @@ class AnamnesePeoplePrintPage extends StatelessWidget {
     );
   }
 
-  footerPage(context) {
+  pw.Container footerPage(context) {
     final dateFormat = DateFormat('dd/MM/y HH:mm');
 
     return pw.Container(

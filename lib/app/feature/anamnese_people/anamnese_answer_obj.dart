@@ -24,7 +24,7 @@ class AnamneseAnswerObj extends StatelessWidget {
           Text(model.text),
           // if (model.answerBool != null) Text(model.answerBool! ? "Sim" : "Não"),
           // if (model.answerText != null) Text(model.answerText!),
-          Text(model.answers.join(",")),
+          Text(model.answers.join(',')),
         ],
       ),
     );

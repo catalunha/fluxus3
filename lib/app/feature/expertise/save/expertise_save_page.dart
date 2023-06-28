@@ -30,7 +30,7 @@ class _ExpertiseSavePageState extends ConsumerState<ExpertiseSavePage>
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
+    _nameTec.text = '';
   }
 
   @override

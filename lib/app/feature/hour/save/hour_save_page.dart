@@ -33,9 +33,9 @@ class _HourSavePageState extends ConsumerState<HourSavePage>
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
-    _startTec.text = "";
-    _endTec.text = "";
+    _nameTec.text = '';
+    _startTec.text = '';
+    _endTec.text = '';
   }
 
   @override

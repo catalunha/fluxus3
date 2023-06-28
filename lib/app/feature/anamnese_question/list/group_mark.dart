@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/anamnese_question/list/controller/providers.dart';
+import 'controller/providers.dart';
 
 import '../../../core/models/anamnese_group_model.dart';
 

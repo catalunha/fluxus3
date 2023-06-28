@@ -14,7 +14,7 @@ class HourEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    HourModel model = HourModel(
+    final HourModel model = HourModel(
       id: parseObject.objectId!,
       name: parseObject.get(HourEntity.name),
       start: parseObject.get(HourEntity.start),

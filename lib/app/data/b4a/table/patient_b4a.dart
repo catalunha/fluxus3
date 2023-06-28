@@ -29,7 +29,7 @@ class PatientB4a {
     ParseResponse? response;
     try {
       response = await query.query();
-      List<PatientModel> listTemp = <PatientModel>[];
+      final List<PatientModel> listTemp = <PatientModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
           listTemp.add(await PatientEntity().toModel(element, cols: cols));
@@ -39,7 +39,7 @@ class PatientB4a {
         return [];
       }
     } on Exception {
-      var errorTranslated = ParseErrorTranslate.translate(response!.error!);
+      final errorTranslated = ParseErrorTranslate.translate(response!.error!);
       throw B4aException(
         errorTranslated,
         where: 'PatientRepositoryB4a.list',
@@ -52,7 +52,7 @@ class PatientB4a {
     String id, {
     Map<String, List<String>> cols = const {},
   }) async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
     query.whereEqualTo(PatientEntity.id, id);
     if (cols.containsKey('${PatientEntity.className}.cols')) {
@@ -66,7 +66,7 @@ class PatientB4a {
     // }
     query.first();
     try {
-      var response = await query.query();
+      final response = await query.query();
 
       if (response.success && response.results != null) {
         return PatientEntity().toModel(response.results!.first, cols: cols);
@@ -87,13 +87,13 @@ class PatientB4a {
       response = await userProfileParse.save();
 
       if (response.success && response.results != null) {
-        ParseObject userProfile = response.results!.first as ParseObject;
+        final ParseObject userProfile = response.results!.first as ParseObject;
         return userProfile.objectId!;
       } else {
         throw Exception();
       }
     } on Exception {
-      var errorTranslated = ParseErrorTranslate.translate(response!.error!);
+      final errorTranslated = ParseErrorTranslate.translate(response!.error!);
       throw B4aException(
         errorTranslated,
         where: 'PatientRepositoryB4a.update',

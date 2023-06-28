@@ -14,7 +14,7 @@ part 'providers.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
   final firstDay = ref.read(fistDayProvider);
   final lastDay = ref.read(lastDayProvider);
@@ -28,21 +28,21 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
             ..objectId = ref.watch(statusCurrentProvider).id)
           .toPointer());
   final list = await ref.read(eventRepositoryProvider).list(query, cols: {
-    "${EventEntity.className}.cols": [
+    '${EventEntity.className}.cols': [
       EventEntity.day,
       EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
     ],
-    "${EventEntity.className}.pointers": [
+    '${EventEntity.className}.pointers': [
       EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
     ]
   });
 
-  QueryBuilder<ParseObject> queryRoom =
+  final QueryBuilder<ParseObject> queryRoom =
       QueryBuilder<ParseObject>(ParseObject(RoomEntity.className));
   queryRoom.orderByAscending('name');
   final rooms = await ref.read(roomRepositoryProvider).list(queryRoom);

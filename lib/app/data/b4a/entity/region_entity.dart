@@ -14,7 +14,7 @@ class RegionEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    RegionModel model = RegionModel(
+    final RegionModel model = RegionModel(
         id: parseObject.objectId!,
         uf: parseObject.get(RegionEntity.uf),
         city: parseObject.get(RegionEntity.city),

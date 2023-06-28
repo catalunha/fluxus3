@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/data/b4a/table/user_b4a.dart';
+import '../../data/b4a/table/user_b4a.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'anamnese_answer_repository.dart';

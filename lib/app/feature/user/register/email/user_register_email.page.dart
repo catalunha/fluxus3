@@ -43,7 +43,7 @@ class _UserRegisterEmailPageState extends ConsumerState<UserRegisterEmailPage>
       }
       if (next.status == UserRegisterEmailFormStatus.success) {
         hideLoader(context);
-        var contextTemp = Navigator.of(context);
+        final contextTemp = Navigator.of(context);
         await alertEmailVerified(context);
         contextTemp.pop();
       }

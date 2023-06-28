@@ -11,7 +11,7 @@ part 'providers.g.dart';
 @riverpod
 FutureOr<List<AnamneseGroupModel>> anamneseGroupSelect(
     AnamneseGroupSelectRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
   query.orderByAscending('name');
   final list = await ref.read(anamneseGroupRepositoryProvider).list(query);
@@ -26,9 +26,9 @@ class AnamneseGroupSelected extends _$AnamneseGroupSelected {
   }
 
   void toggle(AnamneseGroupModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<AnamneseGroupModel> temp = [...state];
+      final List<AnamneseGroupModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

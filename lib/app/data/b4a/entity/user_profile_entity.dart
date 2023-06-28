@@ -39,11 +39,11 @@ class UserProfileEntity {
     Map<String, List<String>> cols = const {},
   }) async {
     //+++ get office
-    List<OfficeModel> officeList = [];
+    final List<OfficeModel> officeList = [];
     if (cols.containsKey('${UserProfileEntity.className}.cols') &&
         cols['${UserProfileEntity.className}.cols']!
             .contains(UserProfileEntity.offices)) {
-      QueryBuilder<ParseObject> queryOffice =
+      final QueryBuilder<ParseObject> queryOffice =
           QueryBuilder<ParseObject>(ParseObject(OfficeEntity.className));
       queryOffice.whereRelatedTo(UserProfileEntity.offices,
           UserProfileEntity.className, parseObject.objectId!);
@@ -57,12 +57,12 @@ class UserProfileEntity {
 
     //--- get office
     //+++ get expertise
-    List<ExpertiseModel> expertiseList = [];
+    final List<ExpertiseModel> expertiseList = [];
 
     if (cols.containsKey('${UserProfileEntity.className}.cols') &&
         cols['${UserProfileEntity.className}.cols']!
             .contains(UserProfileEntity.expertises)) {
-      QueryBuilder<ParseObject> queryExpertise =
+      final QueryBuilder<ParseObject> queryExpertise =
           QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
       queryExpertise.whereRelatedTo(UserProfileEntity.expertises,
           UserProfileEntity.className, parseObject.objectId!);
@@ -76,12 +76,12 @@ class UserProfileEntity {
 
     //--- get expertise
     //+++ get procedure
-    List<ProcedureModel> procedureList = [];
+    final List<ProcedureModel> procedureList = [];
 
     if (cols.containsKey('${UserProfileEntity.className}.cols') &&
         cols['${UserProfileEntity.className}.cols']!
             .contains(UserProfileEntity.procedures)) {
-      QueryBuilder<ParseObject> queryProcedure =
+      final QueryBuilder<ParseObject> queryProcedure =
           QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
       queryProcedure.whereRelatedTo(UserProfileEntity.procedures,
           UserProfileEntity.className, parseObject.objectId!);
@@ -95,7 +95,7 @@ class UserProfileEntity {
     }
 
     //--- get procedure
-    UserProfileModel model = UserProfileModel(
+    final UserProfileModel model = UserProfileModel(
       id: parseObject.objectId!,
       userName: parseObject.get(UserProfileEntity.userName),
       email: parseObject.get(UserProfileEntity.email),

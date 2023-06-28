@@ -10,7 +10,7 @@ part 'providers.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<ProcedureModel>> procedureSelect(ProcedureSelectRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
   query.orderByDescending('name');
   final list = await ref.read(procedureRepositoryProvider).list(query);
@@ -62,9 +62,9 @@ class ProcedureSelected extends _$ProcedureSelected {
   }
 
   void toggle(ProcedureModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<ProcedureModel> temp = [...state];
+      final List<ProcedureModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

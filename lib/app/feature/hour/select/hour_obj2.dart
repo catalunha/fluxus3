@@ -13,11 +13,11 @@ class HourObj2 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Color? color;
-    final hourSelected = ref.watch(hourSelectedProvider);
-    if (hourSelected.contains(model)) {
-      color = Colors.green;
-    }
+    // Color? color;
+    // final hourSelected = ref.watch(hourSelectedProvider);
+    // if (hourSelected.contains(model)) {
+    //   color = Colors.green;
+    // }
 
     return ElevatedButton(
       onPressed: () {

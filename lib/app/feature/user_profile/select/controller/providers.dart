@@ -1,5 +1,5 @@
-import 'package:fluxus3/app/core/models/user_profile_model.dart';
-import 'package:fluxus3/app/core/repositories/providers.dart';
+import '../../../../core/models/user_profile_model.dart';
+import '../../../../core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,11 +10,11 @@ part 'providers.g.dart';
 @riverpod
 FutureOr<List<UserProfileModel>> userProfileSelect(
     UserProfileSelectRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
   query.orderByDescending('name');
   final list = await ref.read(userProfileRepositoryProvider).list(query, cols: {
-    "${UserProfileEntity.className}.cols": [
+    '${UserProfileEntity.className}.cols': [
       UserProfileEntity.userName,
       UserProfileEntity.email,
       UserProfileEntity.isActive,
@@ -35,9 +35,9 @@ class UserProfileSelected extends _$UserProfileSelected {
   }
 
   void toggle(UserProfileModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<UserProfileModel> temp = [...state];
+      final List<UserProfileModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

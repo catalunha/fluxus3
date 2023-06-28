@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/hour/select/hour_obj2.dart';
+import 'hour_obj2.dart';
 
 import 'controller/providers.dart';
 

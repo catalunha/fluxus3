@@ -11,7 +11,7 @@ class HealthPlanTypeEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    HealthPlanTypeModel model = HealthPlanTypeModel(
+    final HealthPlanTypeModel model = HealthPlanTypeModel(
       id: parseObject.objectId!,
       name: parseObject.get(HealthPlanTypeEntity.name),
     );

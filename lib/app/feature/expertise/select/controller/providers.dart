@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/repositories/providers.dart';
+import '../../../../core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -9,7 +9,7 @@ part 'providers.g.dart';
 
 @Riverpod(keepAlive: true)
 FutureOr<List<ExpertiseModel>> expertiseSelect(ExpertiseSelectRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));
   query.orderByAscending('name');
   final list = await ref.read(expertiseRepositoryProvider).list(query);
@@ -24,9 +24,9 @@ class ExpertiseSelected extends _$ExpertiseSelected {
   }
 
   void toggle(ExpertiseModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<ExpertiseModel> temp = [...state];
+      final List<ExpertiseModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {

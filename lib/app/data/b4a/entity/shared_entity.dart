@@ -19,7 +19,7 @@ class SharedEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) async {
-    SharedModel model = SharedModel(
+    final SharedModel model = SharedModel(
       id: parseObject.objectId!,
       createdAt: parseObject.createdAt!.toLocal(),
       professional: parseObject.get(SharedEntity.professional) != null

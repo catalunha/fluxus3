@@ -15,7 +15,7 @@ FutureOr<UserProfileModel> userProfileAccessRead(UserProfileAccessReadRef ref,
     {required String id}) async {
   final userProfile =
       await ref.read(userProfileRepositoryProvider).readById(id, cols: {
-    "${UserProfileEntity.className}.cols": [
+    '${UserProfileEntity.className}.cols': [
       UserProfileEntity.userName,
       UserProfileEntity.email,
       UserProfileEntity.isActive,
@@ -103,9 +103,9 @@ class OfficesSelected extends _$OfficesSelected {
   }
 
   void update(OfficeModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<OfficeModel> temp = [...state];
+      final List<OfficeModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {
@@ -134,9 +134,9 @@ class ExpertisesSelected extends _$ExpertisesSelected {
   }
 
   void update(ExpertiseModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<ExpertiseModel> temp = [...state];
+      final List<ExpertiseModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {
@@ -165,9 +165,9 @@ class ProceduresSelected extends _$ProceduresSelected {
   }
 
   void update(ProcedureModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<ProcedureModel> temp = [...state];
+      final List<ProcedureModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {
@@ -184,9 +184,9 @@ class AccessState extends _$AccessState {
   }
 
   void update(AccessStatus status) {
-    int index = state.indexWhere((value) => value == status);
+    final int index = state.indexWhere((value) => value == status);
     if (index >= 0) {
-      List<AccessStatus> temp = [...state];
+      final List<AccessStatus> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     } else {
@@ -210,7 +210,7 @@ class UserProfileAccessForm extends _$UserProfileAccessForm {
     state = state.copyWith(status: UserProfileAccessFormStatus.loading);
     try {
       final repository = ref.read(userProfileRepositoryProvider);
-      UserProfileModel userProfileModel = state.model!.copyWith(
+      final UserProfileModel userProfileModel = state.model!.copyWith(
         isActive: ref.read(isActiveProvider),
         access: ref.read(accessStateProvider).map((e) => e.name).toList(),
       );
@@ -252,12 +252,13 @@ class UserProfileAccessForm extends _$UserProfileAccessForm {
     required String relationColumn,
     required String relationTable,
   }) async {
-    List<dynamic> listResult = [...selectedList];
-    List<dynamic> listFinal = [...originalList];
+    final List<dynamic> listResult = [...selectedList];
+    final List<dynamic> listFinal = [...originalList];
     final repository = ref.read(userProfileRepositoryProvider);
 
     for (var original in originalList) {
-      int index = selectedList.indexWhere((model) => model.id == original.id);
+      final int index =
+          selectedList.indexWhere((model) => model.id == original.id);
       if (index < 0) {
         await repository.updateRelation(
           objectId: modelId,

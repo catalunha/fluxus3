@@ -40,7 +40,7 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
   @override
   void initState() {
     super.initState();
-    _historyTec.text = "";
+    _historyTec.text = '';
   }
 
   @override
@@ -110,7 +110,8 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                               const SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () async {
-                                  DateTime? newDate = await showDatePicker(
+                                  final DateTime? newDate =
+                                      await showDatePicker(
                                     context: context,
                                     initialDate: ref.watch(dayProvider) ??
                                         DateTime.now(),
@@ -124,7 +125,7 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                               const SizedBox(width: 10),
                               Text(ref.watch(dayProvider) != null
                                   ? dateFormat.format(ref.watch(dayProvider)!)
-                                  : "Não informado"),
+                                  : 'Não informado'),
                             ],
                           ),
                         ),
@@ -133,8 +134,9 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                           children: [
                             IconButton(
                               onPressed: () async {
-                                HourModel? result = await Navigator.of(context)
-                                    .push<HourModel>(MaterialPageRoute(
+                                final HourModel? result =
+                                    await Navigator.of(context)
+                                        .push<HourModel>(MaterialPageRoute(
                                   builder: (context) {
                                     return const HourSelectPage();
                                   },
@@ -168,8 +170,9 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                           children: [
                             IconButton(
                               onPressed: () async {
-                                RoomModel? result = await Navigator.of(context)
-                                    .push<RoomModel>(MaterialPageRoute(
+                                final RoomModel? result =
+                                    await Navigator.of(context)
+                                        .push<RoomModel>(MaterialPageRoute(
                                   builder: (context) {
                                     return const RoomSelectPage();
                                   },
@@ -203,7 +206,7 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                           children: [
                             IconButton(
                               onPressed: () async {
-                                StatusModel? result =
+                                final StatusModel? result =
                                     await Navigator.of(context)
                                         .push<StatusModel>(MaterialPageRoute(
                                   builder: (context) {
@@ -242,7 +245,7 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                           children: [
                             IconButton(
                                 onPressed: () async {
-                                  List<AttendanceModel>? result =
+                                  final List<AttendanceModel>? result =
                                       await Navigator.of(context)
                                           .push<List<AttendanceModel>?>(
                                               MaterialPageRoute(

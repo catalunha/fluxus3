@@ -32,9 +32,9 @@ class RregionSavePageState extends ConsumerState<RegionSavePage>
   @override
   void initState() {
     super.initState();
-    _ufTec.text = "";
-    _cityTec.text = "";
-    _nameTec.text = "";
+    _ufTec.text = '';
+    _cityTec.text = '';
+    _nameTec.text = '';
   }
 
   @override

@@ -18,7 +18,7 @@ class ProcedureEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    ProcedureModel model = ProcedureModel(
+    final ProcedureModel model = ProcedureModel(
       id: parseObject.objectId!,
       code: parseObject.get(ProcedureEntity.code),
       name: parseObject.get(ProcedureEntity.name),

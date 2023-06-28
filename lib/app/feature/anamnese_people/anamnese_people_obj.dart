@@ -49,7 +49,7 @@ class AnamnesePeopleObj extends ConsumerWidget {
             ),
             AppTextTitleValue(
               title: 'A criança é: ',
-              value: model.childIsFemale ? "MeninA" : "MeninO",
+              value: model.childIsFemale ? 'MeninA' : 'MeninO',
             ),
             AppTextTitleValue(
               title: 'Nascimento: ',

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter/material.dart';
-import 'package:fluxus3/app/feature/user_profile/list/controller/providers.dart';
+import 'controller/providers.dart';
 
 import 'user_profile_obj.dart';
 

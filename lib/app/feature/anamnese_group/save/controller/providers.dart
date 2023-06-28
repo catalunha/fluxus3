@@ -84,7 +84,7 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
             .read(anamneseRepositoryProvider)
             .readByName('orderOfGroups');
         anamnese ??= AnamneseModel(name: 'orderOfGroups');
-        var listOld = [...anamnese.orderOfGroups];
+        final listOld = [...anamnese.orderOfGroups];
         listOld.add(newAnamneseGroupId);
         await ref
             .read(anamneseRepositoryProvider)
@@ -113,7 +113,7 @@ class AnamneseGroupForm extends _$AnamneseGroupForm {
           .read(anamneseRepositoryProvider)
           .readByName('orderOfGroups');
       anamnese ??= AnamneseModel(name: 'orderOfGroups');
-      var listOld = [...anamnese.orderOfGroups];
+      final listOld = [...anamnese.orderOfGroups];
       listOld.remove(deletedAnamneseGroupId);
       await ref
           .read(anamneseRepositoryProvider)

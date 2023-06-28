@@ -24,7 +24,7 @@ class HourObj extends StatelessWidget {
             ),
             AppTextTitleValue(
               title: 'Disponível: ',
-              value: model.isActive ?? true ? "Sim" : "Não",
+              value: model.isActive ?? true ? 'Sim' : 'Não',
             ),
             Center(
               child: Wrap(children: [

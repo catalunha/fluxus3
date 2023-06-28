@@ -49,7 +49,7 @@ class AttendanceSearchPage extends ConsumerWidget {
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate: ref.watch(startSearchProvider) ??
                                     DateTime.now(),
@@ -82,7 +82,7 @@ class AttendanceSearchPage extends ConsumerWidget {
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate: ref.watch(endSearchProvider) ??
                                     DateTime.now(),
@@ -125,7 +125,7 @@ class AttendanceSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  StatusModel? result =
+                                  final StatusModel? result =
                                       await Navigator.of(context)
                                           .push<StatusModel>(MaterialPageRoute(
                                     builder: (context) {
@@ -163,7 +163,7 @@ class AttendanceSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  UserProfileModel? result =
+                                  final UserProfileModel? result =
                                       await Navigator.of(context)
                                           .push<UserProfileModel>(
                                               MaterialPageRoute(
@@ -204,7 +204,7 @@ class AttendanceSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  ProcedureModel? result =
+                                  final ProcedureModel? result =
                                       await Navigator.of(context)
                                           .push<ProcedureModel>(
                                               MaterialPageRoute(
@@ -244,7 +244,7 @@ class AttendanceSearchPage extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () async {
-                                  PatientModel? result =
+                                  final PatientModel? result =
                                       await Navigator.of(context)
                                           .push<PatientModel>(MaterialPageRoute(
                                     builder: (context) {

@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/models/anamnese_group_model.dart';
+import 'anamnese_group_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'anamnese_question_model.freezed.dart';

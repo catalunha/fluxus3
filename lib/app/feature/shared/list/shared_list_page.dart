@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/shared/list/shared_obj.dart';
+import 'shared_obj.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../routes.dart';

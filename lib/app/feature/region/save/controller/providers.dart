@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/feature/region/list/controller/providers.dart';
-import 'package:fluxus3/app/feature/region/save/controller/states.dart';
+import '../../list/controller/providers.dart';
+import 'states.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/region_model.dart';

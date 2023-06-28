@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/repositories/providers.dart';
+import '../../../../../core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -9,11 +9,11 @@ part 'providers.g.dart';
 
 @riverpod
 FutureOr<List<PatientModel>> patientList(PatientListRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
   query.orderByAscending('name');
   final list = await ref.watch(patientRepositoryProvider).list(query, cols: {
-    "${PatientEntity.className}.cols": [
+    '${PatientEntity.className}.cols': [
       PatientEntity.name,
       // PatientEntity.nickname,
       PatientEntity.phone,

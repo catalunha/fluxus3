@@ -22,7 +22,7 @@ class UserRegisterEmailForm extends _$UserRegisterEmailForm {
     try {
       final repository = ref.read(userRepositoryProvider);
 
-      UserModel? user =
+      final UserModel? user =
           await repository.register(email: email, password: password);
       if (user != null) {
         state = state.copyWith(status: UserRegisterEmailFormStatus.success);

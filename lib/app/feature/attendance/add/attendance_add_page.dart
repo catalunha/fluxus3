@@ -36,8 +36,8 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
   @override
   void initState() {
     super.initState();
-    _authorizationCodeTec.text = "";
-    _historyTec.text = "";
+    _authorizationCodeTec.text = '';
+    _historyTec.text = '';
   }
 
   @override
@@ -113,7 +113,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(DateTime.now().year - 100),
@@ -145,7 +145,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              final DateTime? newDate = await showDatePicker(
                                 context: context,
                                 initialDate:
                                     ref.watch(authorizationDateLimitProvider),
@@ -181,7 +181,7 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                       children: [
                         IconButton(
                           onPressed: () async {
-                            UserProfileModel? result =
+                            final UserProfileModel? result =
                                 await Navigator.of(context)
                                     .push<UserProfileModel>(MaterialPageRoute(
                               builder: (context) {
@@ -244,8 +244,9 @@ class _AttendanceAddPageState extends ConsumerState<AttendanceAddPage>
                       children: [
                         IconButton(
                           onPressed: () async {
-                            PatientModel? result = await Navigator.of(context)
-                                .push<PatientModel>(MaterialPageRoute(
+                            final PatientModel? result =
+                                await Navigator.of(context)
+                                    .push<PatientModel>(MaterialPageRoute(
                               builder: (context) {
                                 return const PatientSelectPage();
                               },

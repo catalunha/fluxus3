@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/repositories/providers.dart';
+import '../../../../core/repositories/providers.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +11,7 @@ part 'providers.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<ProcedureModel>> procedureList(ProcedureListRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ProcedureEntity.className));
   query.orderByAscending('name');
   final list = await ref.read(procedureRepositoryProvider).list(query);
@@ -77,7 +77,7 @@ List<ProcedureModel> procedureFiltered(ProcedureFilteredRef ref) {
   };
 */
   if (filterSelected == ProcedureFilterBy.code) {
-    var list = data
+    final list = data
         .where((element) => (element.description != null &&
             element.code!.toLowerCase().contains(search)))
         .toList();
@@ -85,7 +85,7 @@ List<ProcedureModel> procedureFiltered(ProcedureFilteredRef ref) {
     return list;
   }
   if (filterSelected == ProcedureFilterBy.name) {
-    var list = data
+    final list = data
         .where((element) => (element.description != null &&
             element.name!.toLowerCase().contains(search)))
         .toList();
@@ -93,7 +93,7 @@ List<ProcedureModel> procedureFiltered(ProcedureFilteredRef ref) {
     return list;
   }
   if (filterSelected == ProcedureFilterBy.description) {
-    var list = data
+    final list = data
         .where((element) => (element.description != null &&
             element.description!.toLowerCase().contains(search)))
         .toList();

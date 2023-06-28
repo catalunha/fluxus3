@@ -43,12 +43,12 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
-    _emailTec.text = "";
-    _nicknameTec.text = "";
-    _phoneTec.text = "";
-    _cpfTec.text = "";
-    _addressTec.text = "";
+    _nameTec.text = '';
+    _emailTec.text = '';
+    _nicknameTec.text = '';
+    _phoneTec.text = '';
+    _cpfTec.text = '';
+    _addressTec.text = '';
   }
 
   @override
@@ -99,12 +99,12 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
         data: (data) {
           if (data != null && firstTime) {
             final formState = ref.read(patientFormProvider);
-            _emailTec.text = formState.model?.email ?? "";
-            _nameTec.text = formState.model?.name ?? "";
-            _nicknameTec.text = formState.model?.nickname ?? "";
-            _phoneTec.text = formState.model?.phone ?? "";
-            _cpfTec.text = formState.model?.cpf ?? "";
-            _addressTec.text = formState.model?.address ?? "";
+            _emailTec.text = formState.model?.email ?? '';
+            _nameTec.text = formState.model?.name ?? '';
+            _nicknameTec.text = formState.model?.nickname ?? '';
+            _phoneTec.text = formState.model?.phone ?? '';
+            _cpfTec.text = formState.model?.cpf ?? '';
+            _addressTec.text = formState.model?.address ?? '';
           }
           firstTime = false;
           return Center(
@@ -167,7 +167,8 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                               const SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () async {
-                                  DateTime? newDate = await showDatePicker(
+                                  final DateTime? newDate =
+                                      await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
                                     firstDate:
@@ -186,7 +187,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                                     Text(ref.watch(birthDayProvider) != null
                                         ? dateFormat.format(
                                             ref.watch(birthDayProvider)!)
-                                        : "Não informado"),
+                                        : 'Não informado'),
                                   ],
                                 ),
                               ),
@@ -207,7 +208,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                           children: [
                             IconButton(
                               onPressed: () async {
-                                RegionModel? result =
+                                final RegionModel? result =
                                     await Navigator.of(context)
                                         .push<RegionModel>(MaterialPageRoute(
                                   builder: (context) {
@@ -247,7 +248,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                           children: [
                             IconButton(
                                 onPressed: () async {
-                                  List<PatientModel>? result =
+                                  final List<PatientModel>? result =
                                       await Navigator.of(context)
                                           .push<List<PatientModel>?>(
                                               MaterialPageRoute(
@@ -298,7 +299,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                           children: [
                             IconButton(
                                 onPressed: () async {
-                                  HealthPlanModel? result =
+                                  final HealthPlanModel? result =
                                       await Navigator.of(context)
                                           .push<HealthPlanModel?>(
                                               MaterialPageRoute(
@@ -329,7 +330,7 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
                                         IconButton(
                                           icon: const Icon(Icons.edit),
                                           onPressed: () async {
-                                            HealthPlanModel? result =
+                                            final HealthPlanModel? result =
                                                 await Navigator.of(context)
                                                     .push<HealthPlanModel?>(
                                                         MaterialPageRoute(

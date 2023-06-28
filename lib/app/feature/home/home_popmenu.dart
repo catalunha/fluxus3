@@ -31,7 +31,7 @@ class HomePopMenu extends ConsumerWidget {
               label: const Text('Sair'),
               onPressed: () {
                 Navigator.pop(context);
-                // TODO
+                // TODO Como resolver isto profissionalmente.
                 // Como resolver isto profissionalmente.
                 ref.read(logoutProvider);
                 ref.read(authChNotProvider.notifier).logout();

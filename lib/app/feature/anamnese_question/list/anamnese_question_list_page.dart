@@ -76,9 +76,9 @@ class _AnamneseQuestionListPageState
         newIndex -= 1;
       }
     });
-    List<AnamneseQuestionModel> classOrderTemp =
+    final List<AnamneseQuestionModel> classOrderTemp =
         ref.read(questionsFilteredProvider);
-    AnamneseQuestionModel resourceId = classOrderTemp[oldIndex];
+    final AnamneseQuestionModel resourceId = classOrderTemp[oldIndex];
     classOrderTemp.removeAt(oldIndex);
     classOrderTemp.insert(newIndex, resourceId);
     ref.read(questionsFilteredProvider.notifier).set(classOrderTemp);

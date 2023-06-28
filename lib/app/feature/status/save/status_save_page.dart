@@ -32,8 +32,8 @@ class _StatusSavePageState extends ConsumerState<StatusSavePage>
   @override
   void initState() {
     super.initState();
-    _nameTec.text = "";
-    _descriptionTec.text = "";
+    _nameTec.text = '';
+    _descriptionTec.text = '';
   }
 
   @override

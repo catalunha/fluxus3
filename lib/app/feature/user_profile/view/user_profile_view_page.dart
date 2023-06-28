@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluxus3/app/feature/user_profile/view/controller/providers.dart';
+import 'controller/providers.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/app_photo_show.dart';
@@ -84,11 +84,11 @@ class UserProfileViewPage extends ConsumerWidget {
                     ),
                     AppTextTitleValue(
                       title: 'Sexo: ',
-                      value: data.isFemale ?? true ? "Feminino" : "Masculino",
+                      value: data.isFemale ?? true ? 'Feminino' : 'Masculino',
                     ),
                     AppTextTitleValue(
                       title: 'Acesso: ',
-                      value: data.isActive ? "LIBERADO" : "bloqueado",
+                      value: data.isActive ? 'LIBERADO' : 'bloqueado',
                     ),
                     AppTextTitleValue(
                       title: 'Aniversário: ',

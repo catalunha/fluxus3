@@ -75,9 +75,9 @@ class _AnamneseGroupListPageState extends ConsumerState<AnamneseGroupListPage> {
         newIndex -= 1;
       }
     });
-    List<AnamneseGroupModel> classOrderTemp =
+    final List<AnamneseGroupModel> classOrderTemp =
         ref.read(anamneseGroupsProvider).requireValue;
-    AnamneseGroupModel resourceId = classOrderTemp[oldIndex];
+    final AnamneseGroupModel resourceId = classOrderTemp[oldIndex];
     classOrderTemp.removeAt(oldIndex);
     classOrderTemp.insert(newIndex, resourceId);
     ref.read(anamneseGroupsProvider.notifier).set(classOrderTemp);

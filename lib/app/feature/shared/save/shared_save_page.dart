@@ -30,7 +30,7 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
   @override
   void initState() {
     super.initState();
-    _descriptionTec.text = "";
+    _descriptionTec.text = '';
   }
 
   @override

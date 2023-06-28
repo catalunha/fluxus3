@@ -20,14 +20,14 @@ class UserB4a {
       final user = ParseUser.createUser(email, password, email);
       parseResponse = await user.signUp();
       if (parseResponse.success && parseResponse.results != null) {
-        UserModel userModel =
+        final UserModel userModel =
             await UserEntity().toModel(parseResponse.results!.first);
         return userModel;
       } else {
         throw Exception();
       }
     } catch (e) {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -39,7 +39,7 @@ class UserB4a {
   }
 
   Future<UserModel?> readByEmail(String email) async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserEntity.className));
     query.whereEqualTo(UserEntity.email, email);
     query.includeObject([UserEntity.userProfile]);
@@ -53,7 +53,7 @@ class UserB4a {
         throw Exception();
       }
     } catch (e) {
-      var errorTranslated =
+      final errorTranslated =
           ParseErrorTranslate.translate(parseResponse!.error!);
       throw B4aException(
         errorTranslated,
@@ -73,9 +73,10 @@ class UserB4a {
 
       parseResponse = await user.login();
       if (parseResponse.success) {
-        ParseUser parseUser = parseResponse.results!.first;
+        final ParseUser parseUser = parseResponse.results!.first;
 
-        UserProfileModel? userProfileModel = await readUserProfile(parseUser);
+        final UserProfileModel? userProfileModel =
+            await readUserProfile(parseUser);
 
         if (userProfileModel != null) {
           userModel = UserModel(
@@ -93,7 +94,7 @@ class UserB4a {
               '${parseResponse.error!.code} - ${parseResponse.error!.message}',
         );
       } else {
-        var errorTranslated =
+        final errorTranslated =
             ParseErrorTranslate.translate(parseResponse.error!);
         throw B4aException(
           errorTranslated,
@@ -111,7 +112,8 @@ class UserB4a {
     final ParseUser user = ParseUser(null, null, email);
     final ParseResponse parseResponse = await user.requestPasswordReset();
     if (!parseResponse.success) {
-      var errorTranslated = ParseErrorTranslate.translate(parseResponse.error!);
+      final errorTranslated =
+          ParseErrorTranslate.translate(parseResponse.error!);
       throw B4aException(
         errorTranslated,
         where: 'UserRepositoryB4a.requestPasswordReset',
@@ -123,7 +125,7 @@ class UserB4a {
 
   Future<bool> logout() async {
     final user = await ParseUser.currentUser() as ParseUser;
-    var parseResponse = await user.logout();
+    final parseResponse = await user.logout();
     if (parseResponse.success) {
       return true;
     } else {
@@ -132,7 +134,7 @@ class UserB4a {
   }
 
   Future<UserModel?> hasUserLogged() async {
-    var parseUser = await ParseUser.currentUser() as ParseUser?;
+    final parseUser = await ParseUser.currentUser() as ParseUser?;
     if (parseUser == null) {
       return null;
     }
@@ -146,10 +148,11 @@ class UserB4a {
       return null;
     } else {
       try {
-        UserProfileModel? userProfileModel = await readUserProfile(parseUser);
+        final UserProfileModel? userProfileModel =
+            await readUserProfile(parseUser);
 
         if (userProfileModel != null) {
-          UserModel userModel = UserModel(
+          final UserModel userModel = UserModel(
             id: parseUser.objectId!,
             userName: parseUser.username!,
             email: parseUser.emailAddress!,
@@ -172,9 +175,9 @@ class UserB4a {
 
   Future<UserProfileModel?> readUserProfile(ParseUser parseUser) async {
     try {
-      var profileField = parseUser.get(UserEntity.userProfile);
-      var profileRepositoryB4a = UserProfileB4a();
-      var profileModel =
+      final profileField = parseUser.get(UserEntity.userProfile);
+      final profileRepositoryB4a = UserProfileB4a();
+      final profileModel =
           await profileRepositoryB4a.readById(profileField.objectId);
       return profileModel;
     } catch (_) {

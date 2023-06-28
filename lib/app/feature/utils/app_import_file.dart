@@ -52,7 +52,7 @@ class _AppImportFileState extends State<AppImportFile> {
             : Row(
                 children: [
                   const Icon(Icons.file_present),
-                  Text(widget.imageUrl ?? "Sem arquivo"),
+                  Text(widget.imageUrl ?? 'Sem arquivo'),
                 ],
               ),
         onTap: () async {

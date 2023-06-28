@@ -30,7 +30,7 @@ class UserProfileB4a {
     ParseResponse? response;
     try {
       response = await query.query();
-      List<UserProfileModel> listTemp = <UserProfileModel>[];
+      final List<UserProfileModel> listTemp = <UserProfileModel>[];
       if (response.success && response.results != null) {
         for (var element in response.results!) {
           listTemp.add(await UserProfileEntity().toModel(element, cols: cols));
@@ -40,7 +40,7 @@ class UserProfileB4a {
         return [];
       }
     } on Exception {
-      var errorTranslated = ParseErrorTranslate.translate(response!.error!);
+      final errorTranslated = ParseErrorTranslate.translate(response!.error!);
       throw B4aException(
         errorTranslated,
         where: 'UserProfileRepositoryB4a.list',
@@ -53,7 +53,7 @@ class UserProfileB4a {
     String id, {
     Map<String, List<String>> cols = const {},
   }) async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(UserProfileEntity.className));
     query.whereEqualTo(UserProfileEntity.id, id);
 
@@ -68,7 +68,7 @@ class UserProfileB4a {
 
     query.first();
     try {
-      var response = await query.query();
+      final response = await query.query();
 
       if (response.success && response.results != null) {
         return UserProfileEntity().toModel(response.results!.first, cols: cols);
@@ -89,13 +89,13 @@ class UserProfileB4a {
       response = await userProfileParse.save();
 
       if (response.success && response.results != null) {
-        ParseObject userProfile = response.results!.first as ParseObject;
+        final ParseObject userProfile = response.results!.first as ParseObject;
         return userProfile.objectId!;
       } else {
         throw Exception();
       }
     } on Exception {
-      var errorTranslated = ParseErrorTranslate.translate(response!.error!);
+      final errorTranslated = ParseErrorTranslate.translate(response!.error!);
       throw B4aException(
         errorTranslated,
         where: 'UserProfileRepositoryB4a.update',

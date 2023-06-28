@@ -22,11 +22,11 @@ class EventEntity {
     Map<String, List<String>> cols = const {},
   }) async {
     //+++ get attendance
-    List<AttendanceModel> attendanceList = [];
+    final List<AttendanceModel> attendanceList = [];
     if (cols.containsKey('${EventEntity.className}.cols') &&
         cols['${EventEntity.className}.cols']!
             .contains(EventEntity.attendances)) {
-      QueryBuilder<ParseObject> queryAttendanceType =
+      final QueryBuilder<ParseObject> queryAttendanceType =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
       queryAttendanceType.whereRelatedTo(EventEntity.attendances,
           EventEntity.className, parseObject.objectId!);
@@ -51,7 +51,7 @@ class EventEntity {
     }
     //--- get attendance
 
-    EventModel model = EventModel(
+    final EventModel model = EventModel(
       id: parseObject.objectId!,
       day: parseObject.get<DateTime>(EventEntity.day)?.toLocal(),
       hour: parseObject.get(EventEntity.hour) != null

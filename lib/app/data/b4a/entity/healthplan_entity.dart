@@ -18,7 +18,7 @@ class HealthPlanEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    HealthPlanModel model = HealthPlanModel(
+    final HealthPlanModel model = HealthPlanModel(
       id: parseObject.objectId!,
       code: parseObject.get(HealthPlanEntity.code),
       due: parseObject.get<DateTime>(HealthPlanEntity.due)?.toLocal(),

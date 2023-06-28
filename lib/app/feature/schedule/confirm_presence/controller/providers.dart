@@ -39,9 +39,10 @@ class AttendancePresencForm extends _$AttendancePresencForm {
   }
 
   void remove(AttendanceModel value) {
-    int index = state.confirmed.indexWhere((model) => model.id == value.id);
+    final int index =
+        state.confirmed.indexWhere((model) => model.id == value.id);
     if (index >= 0) {
-      var temp = [...state.confirmed];
+      final temp = [...state.confirmed];
       temp.removeAt(index);
       state = state.copyWith(confirmed: temp);
     }
@@ -98,7 +99,7 @@ ${attendance.history}
           }
         }
       }
-      ref.refresh(scheduleProvider);
+      ref.invalidate(scheduleProvider);
       state = state.copyWith(status: AttendancePresencFormStatus.success);
     } catch (e, st) {
       log('$e');

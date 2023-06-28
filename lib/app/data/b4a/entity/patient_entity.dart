@@ -28,11 +28,11 @@ class PatientEntity {
     Map<String, List<String>> cols = const {},
   }) async {
     //+++ get family
-    List<PatientModel> familyList = [];
+    final List<PatientModel> familyList = [];
     if (cols.containsKey('${PatientEntity.className}.cols') &&
         cols['${PatientEntity.className}.cols']!
             .contains(PatientEntity.family)) {
-      QueryBuilder<ParseObject> queryPatient =
+      final QueryBuilder<ParseObject> queryPatient =
           QueryBuilder<ParseObject>(ParseObject(PatientEntity.className));
       queryPatient.whereRelatedTo(
           PatientEntity.family, PatientEntity.className, parseObject.objectId!);
@@ -41,7 +41,7 @@ class PatientEntity {
       if (parseResponse.success && parseResponse.results != null) {
         for (var e in parseResponse.results!) {
           familyList.add(await PatientEntity().toModel(e as ParseObject, cols: {
-            "${PatientEntity.className}.cols": [PatientEntity.name]
+            '${PatientEntity.className}.cols': [PatientEntity.name]
           }));
         }
       }
@@ -49,11 +49,11 @@ class PatientEntity {
 
     //--- get family
     //+++ get healthPlan
-    List<HealthPlanModel> healthPlanList = [];
+    final List<HealthPlanModel> healthPlanList = [];
     if (cols.containsKey('${PatientEntity.className}.cols') &&
         cols['${PatientEntity.className}.cols']!
             .contains(PatientEntity.healthPlans)) {
-      QueryBuilder<ParseObject> queryHealthPlanType =
+      final QueryBuilder<ParseObject> queryHealthPlanType =
           QueryBuilder<ParseObject>(ParseObject(HealthPlanEntity.className));
       queryHealthPlanType.whereRelatedTo(PatientEntity.healthPlans,
           PatientEntity.className, parseObject.objectId!);
@@ -68,7 +68,7 @@ class PatientEntity {
 
     //--- get healthPlan
 
-    PatientModel model = PatientModel(
+    final PatientModel model = PatientModel(
       id: parseObject.objectId!,
       email: parseObject.get(PatientEntity.email),
       nickname: parseObject.get(PatientEntity.nickname),

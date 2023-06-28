@@ -11,7 +11,7 @@ class OfficeEntity {
     ParseObject parseObject, {
     Map<String, List<String>> cols = const {},
   }) {
-    OfficeModel model = OfficeModel(
+    final OfficeModel model = OfficeModel(
       id: parseObject.objectId!,
       name: parseObject.get(OfficeEntity.name),
     );

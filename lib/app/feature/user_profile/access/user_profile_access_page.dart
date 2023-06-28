@@ -82,7 +82,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                       value: data.nickname,
                     ),
                     CheckboxListTile(
-                      title: const Text("* Liberar acesso ?"),
+                      title: const Text('* Liberar acesso ?'),
                       value: ref.watch(isActiveProvider),
                       onChanged: (value) {
                         ref.read(isActiveProvider.notifier).set(value ?? false);
@@ -101,7 +101,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                     Row(children: [
                       IconButton(
                           onPressed: () async {
-                            List<OfficeModel>? result =
+                            final List<OfficeModel>? result =
                                 await Navigator.of(context)
                                     .push<List<OfficeModel>?>(MaterialPageRoute(
                               builder: (context) {
@@ -149,7 +149,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              List<ExpertiseModel>? result =
+                              final List<ExpertiseModel>? result =
                                   await Navigator.of(context)
                                       .push<List<ExpertiseModel>?>(
                                           MaterialPageRoute(
@@ -199,7 +199,7 @@ class UserProfileAccessPage extends ConsumerWidget with Loader, Messages {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              List<ProcedureModel>? result =
+                              final List<ProcedureModel>? result =
                                   await Navigator.of(context)
                                       .push<List<ProcedureModel>?>(
                                           MaterialPageRoute(

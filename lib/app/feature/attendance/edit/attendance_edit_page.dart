@@ -36,8 +36,8 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
   @override
   void initState() {
     super.initState();
-    _authorizationCodeTec.text = "";
-    _historyTec.text = "";
+    _authorizationCodeTec.text = '';
+    _historyTec.text = '';
   }
 
   @override
@@ -114,7 +114,8 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                               const SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () async {
-                                  DateTime? newDate = await showDatePicker(
+                                  final DateTime? newDate =
+                                      await showDatePicker(
                                     context: context,
                                     initialDate: ref.watch(
                                             authorizationDateCreateProvider) ??
@@ -135,7 +136,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                                       null
                                   ? dateFormat.format(ref
                                       .watch(authorizationDateCreateProvider)!)
-                                  : "Não informado"),
+                                  : 'Não informado'),
                             ],
                           ),
                         ),
@@ -148,7 +149,8 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                               const SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () async {
-                                  DateTime? newDate = await showDatePicker(
+                                  final DateTime? newDate =
+                                      await showDatePicker(
                                     context: context,
                                     initialDate: ref.watch(
                                             authorizationDateLimitProvider) ??
@@ -169,7 +171,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                                       null
                                   ? dateFormat.format(ref
                                       .watch(authorizationDateLimitProvider)!)
-                                  : "Não informado"),
+                                  : 'Não informado'),
                             ],
                           ),
                         ),
@@ -186,7 +188,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                           children: [
                             IconButton(
                               onPressed: () async {
-                                StatusModel? result =
+                                final StatusModel? result =
                                     await Navigator.of(context)
                                         .push<StatusModel>(MaterialPageRoute(
                                   builder: (context) {

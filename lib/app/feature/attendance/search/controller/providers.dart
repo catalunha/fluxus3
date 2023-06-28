@@ -17,7 +17,7 @@ part 'providers.g.dart';
 
 @Riverpod(keepAlive: true)
 FutureOr<List<AttendanceModel>> attendanceList(AttendanceListRef ref) async {
-  QueryBuilder<ParseObject> query =
+  final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
 
   if (ref.read(statusSelectProvider)) {

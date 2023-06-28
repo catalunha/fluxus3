@@ -12,13 +12,13 @@ part 'providers.g.dart';
 class AnamneseGroups extends _$AnamneseGroups {
   @override
   Future<List<AnamneseGroupModel>> build() async {
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(AnamneseGroupEntity.className));
     query.orderByAscending('name');
     final listGroups = await ref.read(anamneseGroupRepositoryProvider).list(
       query,
       cols: {
-        "${AnamneseGroupEntity.className}.cols": [
+        '${AnamneseGroupEntity.className}.cols': [
           AnamneseGroupEntity.name,
           AnamneseGroupEntity.description,
           AnamneseGroupEntity.isActive,
@@ -26,7 +26,7 @@ class AnamneseGroups extends _$AnamneseGroups {
         ],
       },
     );
-    var anamnese =
+    final anamnese =
         await ref.read(anamneseRepositoryProvider).readByName('orderOfGroups');
     var listGroupsReordened = <AnamneseGroupModel>[];
     if (anamnese != null && anamnese.orderOfGroups.isNotEmpty) {
@@ -53,7 +53,7 @@ class AnamneseGroups extends _$AnamneseGroups {
   void set(List<AnamneseGroupModel> listReordered) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      var itens = <String>[];
+      final itens = <String>[];
       for (var item in listReordered) {
         itens.add(item.id!);
       }

@@ -1,4 +1,4 @@
-import 'package:fluxus3/app/core/models/user_profile_model.dart';
+import '../../../../core/models/user_profile_model.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 

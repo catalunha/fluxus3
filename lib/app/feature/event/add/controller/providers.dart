@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:fluxus3/app/core/authentication/riverpod/auth_prov.dart';
+import '../../../../core/authentication/riverpod/auth_prov.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -132,16 +132,16 @@ class AttendancesSelected extends _$AttendancesSelected {
   }
 
   void add(AttendanceModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index < 0) {
       state = [...state, model];
     }
   }
 
   void delete(AttendanceModel model) {
-    int index = state.indexWhere((value) => value.id == model.id);
+    final int index = state.indexWhere((value) => value.id == model.id);
     if (index >= 0) {
-      List<AttendanceModel> temp = [...state];
+      final List<AttendanceModel> temp = [...state];
       temp.removeAt(index);
       state = [...temp];
     }
@@ -240,12 +240,13 @@ ${state.model?.history}
     required String relationColumn,
     required String relationTable,
   }) async {
-    List<dynamic> listResult = [...selectedList];
-    List<dynamic> listFinal = [...originalList];
+    final List<dynamic> listResult = [...selectedList];
+    final List<dynamic> listFinal = [...originalList];
     final repository = ref.read(eventRepositoryProvider);
 
     for (var original in originalList) {
-      int index = selectedList.indexWhere((model) => model.id == original.id);
+      final int index =
+          selectedList.indexWhere((model) => model.id == original.id);
       if (index < 0) {
         await repository.updateRelation(
           objectId: modelId,
@@ -307,7 +308,7 @@ ${state.model?.history}
     final hour = ref.read(hourSelectedProvider)!;
     final room = ref.read(roomSelectedProvider)!;
 
-    QueryBuilder<ParseObject> query =
+    final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
     query.whereEqualTo(EventEntity.day, DateTime(day.year, day.month, day.day));
     query.whereEqualTo(EventEntity.hour,

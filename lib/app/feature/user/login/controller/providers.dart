@@ -23,7 +23,7 @@ class UserLoginEmailForm extends _$UserLoginEmailForm {
       final repository = ref.read(userRepositoryProvider);
       final authChNotProvIR = ref.read(authChNotProvider);
 
-      UserModel? user =
+      final UserModel? user =
           await repository.login(email: email, password: password);
       authChNotProvIR.user = user;
       state = state.copyWith(status: UserLoginFormStatus.success);

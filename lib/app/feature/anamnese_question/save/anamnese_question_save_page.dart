@@ -36,8 +36,8 @@ class _AnamneseQuestionSavePageState
   @override
   void initState() {
     super.initState();
-    _textTec.text = "";
-    _optionsTec.text = "Sim,Não";
+    _textTec.text = '';
+    _optionsTec.text = 'Sim,Não';
   }
 
   @override
@@ -166,7 +166,7 @@ class _AnamneseQuestionSavePageState
                           children: [
                             IconButton(
                               onPressed: () async {
-                                AnamneseGroupModel? result =
+                                final AnamneseGroupModel? result =
                                     await Navigator.of(context)
                                         .push<AnamneseGroupModel>(
                                             MaterialPageRoute(
