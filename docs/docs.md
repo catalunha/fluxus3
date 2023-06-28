@@ -1,6 +1,6 @@
 # deploy
 
- cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json && cd back4app/fluxus3 && b4a deploy
+cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json && cd back4app/fluxus3 && b4a deploy
 
 # vscode
 
@@ -33,15 +33,12 @@ cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define=keyApplicatio
 Quando baixar ou estiver trabalhando neste projeto ativar o 
 ~$ dart run build_runner watch -d
 
-
 # github
 
 Limpar cache e colocar novas regras no .gitignore
 ~$  git rm -r --cached .
 ~$ git add . 
 ~$ git commit -m 'novas regras no gitignore'
-
-
 
 # triggers
 ```
@@ -90,6 +87,12 @@ main() {
 
 # outros projetos usando este DB
 flutter create --project-name=prokids0 --org net.brintec --platforms android,web ./prokids0
+
+
+# Recarregar packages
+flutter clean
+flutter pub get
+
 
 
 dart pub cache clean
