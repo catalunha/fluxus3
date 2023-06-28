@@ -223,7 +223,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
-                title: 'Conhecimento - transdiciplinar',
+                title: 'Prontuário',
                 icon: Icons.share_rounded,
                 color: Colors.black,
                 actions: [

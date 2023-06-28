@@ -9,21 +9,22 @@ import '../../utils/app_import_file.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
 import '../../utils/app_textformfield.dart';
+import '../patient/list/controller/providers.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
-class SharedSavePage extends ConsumerStatefulWidget {
+class SharedAddPage extends ConsumerStatefulWidget {
   final String? id;
-  const SharedSavePage({
+  const SharedAddPage({
     super.key,
     required this.id,
   });
 
   @override
-  ConsumerState<SharedSavePage> createState() => _SharedSavePageState();
+  ConsumerState<SharedAddPage> createState() => _SharedAddPageState();
 }
 
-class _SharedSavePageState extends ConsumerState<SharedSavePage>
+class _SharedAddPageState extends ConsumerState<SharedAddPage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _descriptionTec = TextEditingController();
@@ -56,9 +57,10 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
     });
 
     final sharedRead = ref.watch(sharedReadProvider(id: widget.id));
+    final sharedPatientSelected = ref.read(sharedPatientSelectedProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar'),
+        title: const Text('Adicionar informação ao paciente'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -88,15 +90,16 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SwitchListTile(
-                          title: ref.watch(sharedIsPublicProvider)
-                              ? const Text('Esta informação é PÚBLICA !')
-                              : const Text('Esta informação é privada !'),
-                          value: ref.watch(sharedIsPublicProvider),
-                          onChanged: (value) {
-                            ref.read(sharedIsPublicProvider.notifier).toggle();
-                          },
-                        ),
+                        Text('Paciente: ${sharedPatientSelected?.name}'),
+                        // SwitchListTile(
+                        //   title: ref.watch(sharedIsPublicProvider)
+                        //       ? const Text('Esta informação é PÚBLICA !')
+                        //       : const Text('Esta informação é privada !'),
+                        //   value: ref.watch(sharedIsPublicProvider),
+                        //   onChanged: (value) {
+                        //     ref.read(sharedIsPublicProvider.notifier).toggle();
+                        //   },
+                        // ),
                         AppTextFormField(
                           label: '* Descrição',
                           controller: _descriptionTec,
@@ -134,7 +137,7 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
         },
         error: (error, stackTrace) {
           log('tem error');
-          log('Erro em SharedSavePage');
+          log('Erro em SharedAddPage');
           log('$error');
           log('$stackTrace');
           return Center(

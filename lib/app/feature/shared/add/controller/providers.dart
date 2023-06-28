@@ -63,20 +63,20 @@ class SharedForm extends _$SharedForm {
     try {
       SharedModel? sharedTemp;
       final auth = ref.read(authChNotProvider);
-      final sharedIsPublic = ref.read(sharedIsPublicProvider);
-      if (state.model != null) {
-        sharedTemp = state.model!.copyWith(
-          description: description,
-          isPublic: sharedIsPublic,
-        );
-      } else {
-        sharedTemp = SharedModel(
-          professional: auth.user!.userProfile,
-          patient: ref.read(sharedPatientSelectedProvider),
-          description: description,
-          isPublic: sharedIsPublic,
-        );
-      }
+      // final sharedIsPublic = ref.read(sharedIsPublicProvider);
+      // if (state.model != null) {
+      //   sharedTemp = state.model!.copyWith(
+      //     description: description,
+      //     isPublic: false,
+      //   );
+      // } else {
+      sharedTemp = SharedModel(
+        professional: auth.user!.userProfile,
+        patient: ref.read(sharedPatientSelectedProvider),
+        description: description,
+        isPublic: false,
+      );
+      // }
       final sharedId =
           await ref.read(sharedRepositoryProvider).update(sharedTemp);
       final xFile = ref.read(xFileProvider);
@@ -115,18 +115,18 @@ class SharedForm extends _$SharedForm {
   }
 }
 
-@riverpod
-class SharedIsPublic extends _$SharedIsPublic {
-  @override
-  bool build() {
-    return false;
-  }
+// @riverpod
+// class SharedIsPublic extends _$SharedIsPublic {
+//   @override
+//   bool build() {
+//     return false;
+//   }
 
-  void toggle() {
-    state = !state;
-  }
+//   void toggle() {
+//     state = !state;
+//   }
 
-  void set(bool value) {
-    state = value;
-  }
-}
+//   void set(bool value) {
+//     state = value;
+//   }
+// }

@@ -14,6 +14,7 @@ class SharedEntity {
   //singleCols
   static const String description = 'description';
   static const String document = 'document';
+  static const String isPublic = 'isPublic';
 
   Future<SharedModel> toModel(
     ParseObject parseObject, {
@@ -32,6 +33,7 @@ class SharedEntity {
           : null,
       description: parseObject.get(SharedEntity.description),
       document: parseObject.get(SharedEntity.document)?.get('url'),
+      isPublic: parseObject.get(SharedEntity.isPublic),
     );
     return model;
   }
@@ -52,6 +54,7 @@ class SharedEntity {
             .toPointer());
 
     parseObject.set(SharedEntity.description, model.description);
+    parseObject.set(SharedEntity.isPublic, model.isPublic);
 
     return parseObject;
   }

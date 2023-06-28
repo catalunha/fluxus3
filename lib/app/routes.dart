@@ -36,6 +36,7 @@ import 'feature/region/save/region_save_page.dart';
 import 'feature/room/list/room_list_page.dart';
 import 'feature/room/save/room_save_page.dart';
 import 'feature/schedule/list/schedule_page.dart';
+import 'feature/shared/add/shared_add_page.dart';
 import 'feature/shared/list/shared_list_page.dart';
 import 'feature/shared/patient/list/shared_patient_list_page.dart';
 import 'feature/shared/save/shared_save_page.dart';
@@ -512,36 +513,49 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-                path: AppPage.sharedPatientList.path,
-                name: AppPage.sharedPatientList.name,
-                builder: (context, state) {
-                  return SharedPatientListPage(
-                    key: state.pageKey,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                      path: AppPage.sharedList.path,
-                      name: AppPage.sharedList.name,
+              path: AppPage.sharedPatientList.path,
+              name: AppPage.sharedPatientList.name,
+              builder: (context, state) {
+                return SharedPatientListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.sharedList.path,
+                  name: AppPage.sharedList.name,
+                  builder: (context, state) {
+                    return SharedListPage(
+                      key: state.pageKey,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      path: AppPage.sharedSave.path,
+                      name: AppPage.sharedSave.name,
                       builder: (context, state) {
-                        return SharedListPage(
+                        final id = state.extra as String?;
+                        return SharedSavePage(
                           key: state.pageKey,
+                          id: id,
                         );
                       },
-                      routes: [
-                        GoRoute(
-                          path: AppPage.sharedSave.path,
-                          name: AppPage.sharedSave.name,
-                          builder: (context, state) {
-                            final id = state.extra as String?;
-                            return SharedSavePage(
-                              key: state.pageKey,
-                              id: id,
-                            );
-                          },
-                        ),
-                      ]),
-                ]),
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  path: AppPage.sharedAdd.path,
+                  name: AppPage.sharedAdd.name,
+                  builder: (context, state) {
+                    final id = state.extra as String?;
+                    return SharedAddPage(
+                      key: state.pageKey,
+                      id: id,
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -615,7 +629,8 @@ enum AppPage {
       'anamnesePeopleAnswerList', 'anamnesePeopleAnswerList'),
   sharedPatientList('sharedPatientList', 'sharedPatientList'),
   sharedList('sharedList', 'sharedList'),
-  sharedSave('sharedSave', 'sharedSave');
+  sharedSave('sharedSave', 'sharedSave'),
+  sharedAdd('sharedAdd', 'sharedAdd');
 
   final String path;
   final String name;

@@ -26,6 +26,7 @@ FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
       SharedEntity.patient,
       SharedEntity.description,
       SharedEntity.document,
+      SharedEntity.isPublic,
     ],
     '${SharedEntity.className}.pointers': [
       SharedEntity.professional,
