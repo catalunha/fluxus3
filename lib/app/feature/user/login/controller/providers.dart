@@ -22,10 +22,33 @@ class UserLoginEmailForm extends _$UserLoginEmailForm {
     try {
       final repository = ref.read(userRepositoryProvider);
       final authChNotProvIR = ref.read(authChNotProvider);
+      // final userRepositoryProvIR = ref.read(userRepositoryProvider);
 
       final UserModel? user =
           await repository.login(email: email, password: password);
       authChNotProvIR.user = user;
+      if (user != null) {
+        log('+++ login submit');
+        log('user.userProfile!.isActive: ${user.userProfile!.isActive}');
+        if (user.userProfile!.isActive == true) {
+          ////log('+++ AuthenticationEventInitial 5');
+          // authChNotProvIR.user = user;
+
+          ////log('Já logado ${user.email}');
+        } else {
+          ////log('+++ AuthenticationEventInitial 7');
+          // await userRepositoryProvIR.logout();
+          // authChNotProvIR.logout();
+          ref.read(logoutProvider);
+          ref.read(authChNotProvider.notifier).logout();
+          throw B4aException('nao liberado');
+        }
+      } else {
+        ////log('+++ AuthenticationEventInitial 6');
+        // authChNotProvIR.logout();
+        ref.read(logoutProvider);
+        ref.read(authChNotProvider.notifier).logout();
+      }
       state = state.copyWith(status: UserLoginFormStatus.success);
     } on B4aException catch (e, st) {
       log('$e');
