@@ -91,3 +91,5 @@ main() {
 # outros projetos usando este DB
 flutter create --project-name=prokids0 --org net.brintec --platforms android,web ./prokids0
 
+
+dart pub cache clean

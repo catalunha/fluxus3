@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluxus3/app/routes.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/models/user_profile_model.dart';
@@ -74,7 +73,7 @@ class UserProfileObj extends StatelessWidget {
                               AppLaunch.launchWhatsApp(
                                   phone: model.phone!, message: 'Olá');
                             },
-                            icon: const FaIcon(FontAwesomeIcons.whatsapp),
+                            icon: const Icon(Icons.call),
                           ),
                       ],
                     ),

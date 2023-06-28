@@ -54,8 +54,7 @@ class _HealthPlanSavePageState extends ConsumerState<HealthPlanSavePage>
       }
       if (next.status == HealthPlanFormStatus.success) {
         hideLoader(context);
-        // print(next.model); //sai do Dialog do loading
-        context.pop(next.model); //sai da pagina
+        context.pop(next.model);
       }
       if (next.status == HealthPlanFormStatus.loading) {
         showLoader(context);

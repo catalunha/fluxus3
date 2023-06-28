@@ -60,30 +60,6 @@ class AnamnesePeopleObj extends ConsumerWidget {
                 onPressed: () {
                   ref.read(anamnesePeopleSelectedProvider.notifier).set(model);
                   context.goNamed(AppPage.anamnesePeopleAnswerList.name);
-                  // print('aa');
-                  // final list = ref.read(anamneseAnswerListProvider);
-                  // print('bb');
-
-                  // list.when(
-                  //     data: (data) {
-                  //       print('ee');
-                  //       return Navigator.of(context).push(
-                  //         MaterialPageRoute(
-                  //           builder: (context) {
-                  //             return AnamnesePeoplePrintPage(
-                  //               people: model,
-                  //               answerList: data,
-                  //             );
-                  //           },
-                  //         ),
-                  //       );
-                  //     },
-                  //     error: (error, st) {
-                  //       log('$error');
-                  //       log('$st');
-                  //     },
-                  //     loading: () {});
-                  // print('cc');
                 },
                 child: const Text('Listar perguntas'))
           ],

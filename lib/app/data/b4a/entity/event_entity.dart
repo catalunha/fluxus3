@@ -26,7 +26,6 @@ class EventEntity {
     if (cols.containsKey('${EventEntity.className}.cols') &&
         cols['${EventEntity.className}.cols']!
             .contains(EventEntity.attendances)) {
-      // print('=====> attendanceList');
       QueryBuilder<ParseObject> queryAttendanceType =
           QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
       queryAttendanceType.whereRelatedTo(EventEntity.attendances,

@@ -21,23 +21,21 @@ class AnamneseGroupSelectPage extends ConsumerWidget {
       ),
       body: list.when(
         data: (data) {
-          return Wrap(
-            children: [
-              for (var hour in data) ...[AnamneseGroupObj(model: hour)]
-            ],
-          );
-          /*
+          // return Wrap(
+          //   children: [
+          //     for (var hour in data) ...[AnamneseGroupObj(model: hour)]
+          //   ],
+          // );
+
           return ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
-              final level = data[index];
+              final model = data[index];
               return AnamneseGroupObj(
-                model: level,
-                isSingleValue: isSingleValue,
+                model: model,
               );
             },
           );
-          */
         },
         error: (error, stackTrace) {
           log('Erro em Lista de usuarios');

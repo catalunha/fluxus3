@@ -126,7 +126,6 @@ class Events extends _$Events {
   }
 
   void set(List<EventModel> value) {
-    // print('Events.set: $value');
     state = value;
   }
 }
@@ -146,13 +145,10 @@ class EventsFiltered extends _$EventsFiltered {
 
   void filter() {
     final events = ref.watch(eventsProvider);
-    // print('filter.events: $events');
     final room = ref.watch(roomSelectedProvider);
-    // print('filter.room: $room');
     final eventsTemp = [
       ...events.where((e) => e.room?.id == room!.id).toList()
     ];
-    // print('filter.eventsTemp: $eventsTemp');
     state = eventsTemp;
   }
 }
