@@ -224,7 +224,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
               ),
               HomeModule(
                 title: 'Prontuário',
-                icon: Icons.share_rounded,
+                icon: Icons.folder_shared_outlined,
                 color: Colors.black,
                 actions: [
                   IconButton(

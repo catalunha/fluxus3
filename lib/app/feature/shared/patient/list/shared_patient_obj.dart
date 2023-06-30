@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/patient_model.dart';
+import '../../../../core/utils/allowed_access.dart';
 import '../../../../routes.dart';
+import '../../list/controller/providers.dart';
+import '../../list/controller/states.dart';
 import 'controller/providers.dart';
 
 class SharedPatientObj extends ConsumerWidget {
@@ -32,33 +35,73 @@ class SharedPatientObj extends ConsumerWidget {
             Text('${model.name}'),
             Row(
               children: [
-                IconButton(
-                    onPressed: () {
-                      // ref
-                      //     .read(sharedPatientSelectedProvider.notifier)
-                      //     .set(model);
-
-                      // context.goNamed(AppPage.sharedList.name);
-                    },
-                    icon: const Icon(Icons.block)),
-                IconButton(
+                if (ref.watch(allowedAccessProvider.notifier).consultForAdmin())
+                  IconButton(
+                    icon: const Icon(Icons.admin_panel_settings),
                     onPressed: () {
                       ref
                           .read(sharedPatientSelectedProvider.notifier)
                           .set(model);
+                      ref
+                          .read(sharedListByStatusStateProvider.notifier)
+                          .set(SharedListByStatus.admin);
 
                       context.goNamed(AppPage.sharedList.name);
                     },
-                    icon: const Icon(Icons.medical_information)),
-                IconButton(
+                  ),
+                Visibility(
+                  visible: ref
+                      .watch(allowedAccessProvider.notifier)
+                      .consultForProf(),
+                  child: IconButton(
+                    icon: const Icon(Icons.block),
                     onPressed: () {
                       ref
                           .read(sharedPatientSelectedProvider.notifier)
                           .set(model);
+                      ref
+                          .read(sharedListByStatusStateProvider.notifier)
+                          .set(SharedListByStatus.private);
 
-                      context.goNamed(AppPage.sharedAdd.name, extra: null);
+                      context.goNamed(AppPage.sharedList.name);
                     },
-                    icon: const Icon(Icons.room_service_outlined))
+                  ),
+                ),
+                if (ref.watch(allowedAccessProvider.notifier).consultForProf())
+                  IconButton(
+                    icon: const Icon(Icons.medical_information),
+                    onPressed: () {
+                      ref
+                          .read(sharedPatientSelectedProvider.notifier)
+                          .set(model);
+                      ref
+                          .read(sharedListByStatusStateProvider.notifier)
+                          .set(SharedListByStatus.public);
+
+                      context.goNamed(AppPage.sharedList.name);
+                    },
+                  ),
+                // if (ref
+                //     .watch(allowedAccessProvider.notifier)
+                //     .consultForSecretariado())
+                Visibility(
+                  visible:
+                      ref.watch(allowedAccessProvider.notifier).consultForSec(),
+                  child: IconButton(
+                    icon: const Icon(Icons.room_service_outlined),
+                    onPressed: () {
+                      ref
+                          .read(sharedPatientSelectedProvider.notifier)
+                          .set(model);
+                      ref
+                          .read(sharedListByStatusStateProvider.notifier)
+                          .set(SharedListByStatus.byOffice);
+
+                      context.goNamed(AppPage.sharedList.name);
+                      // context.goNamed(AppPage.sharedAdd.name, extra: null);
+                    },
+                  ),
+                )
               ],
             )
           ],

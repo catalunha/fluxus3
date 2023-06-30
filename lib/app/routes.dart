@@ -36,7 +36,6 @@ import 'feature/region/save/region_save_page.dart';
 import 'feature/room/list/room_list_page.dart';
 import 'feature/room/save/room_save_page.dart';
 import 'feature/schedule/list/schedule_page.dart';
-import 'feature/shared/add/shared_add_page.dart';
 import 'feature/shared/list/shared_list_page.dart';
 import 'feature/shared/patient/list/shared_patient_list_page.dart';
 import 'feature/shared/save/shared_save_page.dart';
@@ -543,17 +542,6 @@ final goRouterProv = Provider<GoRouter>(
                     ),
                   ],
                 ),
-                GoRoute(
-                  path: AppPage.sharedAdd.path,
-                  name: AppPage.sharedAdd.name,
-                  builder: (context, state) {
-                    final id = state.extra as String?;
-                    return SharedAddPage(
-                      key: state.pageKey,
-                      id: id,
-                    );
-                  },
-                ),
               ],
             ),
           ],
@@ -629,8 +617,7 @@ enum AppPage {
       'anamnesePeopleAnswerList', 'anamnesePeopleAnswerList'),
   sharedPatientList('sharedPatientList', 'sharedPatientList'),
   sharedList('sharedList', 'sharedList'),
-  sharedSave('sharedSave', 'sharedSave'),
-  sharedAdd('sharedAdd', 'sharedAdd');
+  sharedSave('sharedSave', 'sharedSave');
 
   final String path;
   final String name;

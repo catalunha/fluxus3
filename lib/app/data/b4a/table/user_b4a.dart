@@ -8,6 +8,7 @@ import '../../../core/models/user_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../b4a_exception.dart';
 import '../entity/user_entity.dart';
+import '../entity/user_profile_entity.dart';
 import '../utils/parse_error_translate.dart';
 import 'user_profile_b4a.dart';
 
@@ -177,8 +178,32 @@ class UserB4a {
     try {
       final profileField = parseUser.get(UserEntity.userProfile);
       final profileRepositoryB4a = UserProfileB4a();
-      final profileModel =
-          await profileRepositoryB4a.readById(profileField.objectId);
+      final profileModel = await profileRepositoryB4a.readById(
+        profileField.objectId,
+        cols: {
+          '${UserProfileEntity.className}.cols': [
+            UserProfileEntity.userName,
+            UserProfileEntity.email,
+            UserProfileEntity.isActive,
+            UserProfileEntity.access,
+            UserProfileEntity.name,
+            UserProfileEntity.nickname,
+            UserProfileEntity.cpf,
+            UserProfileEntity.phone,
+            UserProfileEntity.photo,
+            UserProfileEntity.register,
+            UserProfileEntity.birthday,
+            UserProfileEntity.isFemale,
+            UserProfileEntity.address,
+            UserProfileEntity.offices,
+            UserProfileEntity.expertises,
+            UserProfileEntity.procedures,
+          ],
+          '${UserProfileEntity.className}.pointers': [
+            UserProfileEntity.region,
+          ]
+        },
+      );
       return profileModel;
     } catch (_) {
       rethrow;

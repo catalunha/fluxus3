@@ -106,6 +106,10 @@ class UserProfileViewPage extends ConsumerWidget {
                           data.offices?.map((e) => e.name).toList().join(', '),
                     ),
                     AppTextTitleValue(
+                      title: 'Offices: ',
+                      value: data.offices?.map((e) => e.id).toList().join(', '),
+                    ),
+                    AppTextTitleValue(
                       title: 'Especialidades: ',
                       value: data.expertises
                           ?.map((e) => e.name)

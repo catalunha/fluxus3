@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../save/controller/providers.dart';
+import 'controller/states.dart';
 import 'shared_obj.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +22,14 @@ class SharedListPage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          if (ref.read(sharedListByStatusStateProvider) ==
+                  SharedListByStatus.byOffice ||
+              ref.read(sharedListByStatusStateProvider) ==
+                  SharedListByStatus.public) {
+            ref.read(sharedIsPublicProvider.notifier).set(true);
+          } else {
+            ref.read(sharedIsPublicProvider.notifier).set(false);
+          }
           context.goNamed(AppPage.sharedSave.name, extra: null);
         },
         child: const Icon(Icons.add),

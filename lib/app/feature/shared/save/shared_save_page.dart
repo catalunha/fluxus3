@@ -9,6 +9,7 @@ import '../../utils/app_import_file.dart';
 import '../../utils/app_mixin_loader.dart';
 import '../../utils/app_mixin_messages.dart';
 import '../../utils/app_textformfield.dart';
+import '../patient/list/controller/providers.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
@@ -56,6 +57,7 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
     });
 
     final sharedRead = ref.watch(sharedReadProvider(id: widget.id));
+    final sharedPatientSelected = ref.read(sharedPatientSelectedProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar'),
@@ -88,6 +90,7 @@ class _SharedSavePageState extends ConsumerState<SharedSavePage>
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Text('${sharedPatientSelected?.name}'),
                         SwitchListTile(
                           title: ref.watch(sharedIsPublicProvider)
                               ? const Text('Esta informação é PÚBLICA !')

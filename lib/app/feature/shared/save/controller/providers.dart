@@ -34,9 +34,11 @@ FutureOr<SharedModel?> sharedRead(SharedReadRef ref,
     });
     if (shared != null) {
       ref.read(sharedFormProvider.notifier).setModel(shared);
+
       return shared;
     }
   }
+
   return null;
 }
 
@@ -115,7 +117,7 @@ class SharedForm extends _$SharedForm {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SharedIsPublic extends _$SharedIsPublic {
   @override
   bool build() {
