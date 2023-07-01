@@ -25,6 +25,7 @@ FutureOr<SharedModel?> sharedRead(SharedReadRef ref,
         SharedEntity.patient,
         SharedEntity.description,
         SharedEntity.document,
+        SharedEntity.isPublic,
       ],
       '${SharedEntity.className}.pointers': [
         SharedEntity.professional,
@@ -33,9 +34,11 @@ FutureOr<SharedModel?> sharedRead(SharedReadRef ref,
     });
     if (shared != null) {
       ref.read(sharedFormProvider.notifier).setModel(shared);
+
       return shared;
     }
   }
+
   return null;
 }
 
@@ -62,14 +65,18 @@ class SharedForm extends _$SharedForm {
     try {
       SharedModel? sharedTemp;
       final auth = ref.read(authChNotProvider);
-
+      final sharedIsPublic = ref.read(sharedIsPublicProvider);
       if (state.model != null) {
-        sharedTemp = state.model!.copyWith(description: description);
+        sharedTemp = state.model!.copyWith(
+          description: description,
+          isPublic: sharedIsPublic,
+        );
       } else {
         sharedTemp = SharedModel(
           professional: auth.user!.userProfile,
           patient: ref.read(sharedPatientSelectedProvider),
           description: description,
+          isPublic: sharedIsPublic,
         );
       }
       final sharedId =
@@ -107,5 +114,21 @@ class SharedForm extends _$SharedForm {
       state = state.copyWith(
           status: SharedFormStatus.error, error: 'Erro em SharedFormProvider');
     }
+  }
+}
+
+@Riverpod(keepAlive: true)
+class SharedIsPublic extends _$SharedIsPublic {
+  @override
+  bool build() {
+    return false;
+  }
+
+  void toggle() {
+    state = !state;
+  }
+
+  void set(bool value) {
+    state = value;
   }
 }

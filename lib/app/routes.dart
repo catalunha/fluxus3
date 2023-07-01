@@ -512,36 +512,38 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-                path: AppPage.sharedPatientList.path,
-                name: AppPage.sharedPatientList.name,
-                builder: (context, state) {
-                  return SharedPatientListPage(
-                    key: state.pageKey,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                      path: AppPage.sharedList.path,
-                      name: AppPage.sharedList.name,
+              path: AppPage.sharedPatientList.path,
+              name: AppPage.sharedPatientList.name,
+              builder: (context, state) {
+                return SharedPatientListPage(
+                  key: state.pageKey,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: AppPage.sharedList.path,
+                  name: AppPage.sharedList.name,
+                  builder: (context, state) {
+                    return SharedListPage(
+                      key: state.pageKey,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      path: AppPage.sharedSave.path,
+                      name: AppPage.sharedSave.name,
                       builder: (context, state) {
-                        return SharedListPage(
+                        final id = state.extra as String?;
+                        return SharedSavePage(
                           key: state.pageKey,
+                          id: id,
                         );
                       },
-                      routes: [
-                        GoRoute(
-                          path: AppPage.sharedSave.path,
-                          name: AppPage.sharedSave.name,
-                          builder: (context, state) {
-                            final id = state.extra as String?;
-                            return SharedSavePage(
-                              key: state.pageKey,
-                              id: id,
-                            );
-                          },
-                        ),
-                      ]),
-                ]),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ],

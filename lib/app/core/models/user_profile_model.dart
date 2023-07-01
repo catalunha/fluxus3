@@ -16,8 +16,8 @@ abstract class UserProfileModel with _$UserProfileModel {
     required bool isActive,
     required List<String> access, //admin, sec, prof, fin
 
-    String? nickname,
     String? name,
+    String? nickname,
     String? cpf,
     String? register, // conselho de saude
     String? phone,

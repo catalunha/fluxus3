@@ -33,6 +33,7 @@ class UserProfileEntity {
   static const String offices = 'offices';
   static const String expertises = 'expertises';
   static const String procedures = 'procedures';
+  static const String family = 'family';
 
   Future<UserProfileModel> toModel(
     ParseObject parseObject, {

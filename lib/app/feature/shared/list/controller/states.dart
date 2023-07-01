@@ -1,1 +1,1 @@
-enum PatientFilterStatus { name, phone, nickname }
+enum SharedListByStatus { byOffice, public, private, admin }

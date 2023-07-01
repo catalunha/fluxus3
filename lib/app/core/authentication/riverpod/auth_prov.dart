@@ -46,8 +46,9 @@ final authCheckFutProvider = FutureProvider<void>((ref) async {
 
       ////log('+++ AuthenticationEventInitial 3');
       if (user != null) {
-        ////log('+++ AuthenticationEventInitial 4');
-        if (user.userProfile?.isActive == true) {
+        log('+++ AuthenticationEventInitial 4');
+        log('user.userProfile!.isActive: ${user.userProfile!.isActive}');
+        if (user.userProfile!.isActive == true) {
           ////log('+++ AuthenticationEventInitial 5');
           authChNotProvIR.user = user;
 

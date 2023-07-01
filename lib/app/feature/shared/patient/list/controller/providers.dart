@@ -21,6 +21,9 @@ FutureOr<List<PatientModel>> patientList(PatientListRef ref) async {
     ],
   });
   ref.watch(patientListDataProvider.notifier).set(list);
+  ref.onDispose(() {
+    ref.invalidate(sharedPatientSelectedProvider);
+  });
   return list;
 }
 

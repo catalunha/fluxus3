@@ -14,5 +14,6 @@ abstract class SharedModel with _$SharedModel {
     PatientModel? patient,
     String? description,
     String? document,
+    @Default(false) bool isPublic,
   }) = _SharedModel;
 }
