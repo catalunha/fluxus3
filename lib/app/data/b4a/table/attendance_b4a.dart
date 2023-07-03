@@ -12,6 +12,7 @@ class AttendanceB4a {
     Pagination? pagination,
     Map<String, List<String>> cols = const {},
   }) async {
+    query.setLimit(500);
     if (pagination != null) {
       query.setAmountToSkip((pagination.page - 1) * pagination.limit);
       query.setLimit(pagination.limit);

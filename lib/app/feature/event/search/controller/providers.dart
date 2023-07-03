@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -53,6 +55,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
             .toPointer());
   }
   if (ref.read(professionalSelectProvider)) {
+    log('ref.read(professionalSelectedProvider)!.id: ${ref.read(professionalSelectedProvider)!.id}');
     final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
@@ -60,7 +63,8 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
         (ParseObject(UserProfileEntity.className)
               ..objectId = ref.read(professionalSelectedProvider)!.id)
             .toPointer());
-
+    // query.whereMatchesKeyInQuery(
+    //     EventEntity.attendances, 'objectId', queryAttendance);
     query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
   }
   if (ref.read(procedureSelectProvider)) {
