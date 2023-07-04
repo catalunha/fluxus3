@@ -106,7 +106,6 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   ),
                 ],
               ),
-              const Divider(height: 10),
               HomeModule(
                 access: const ['admin'],
                 title: 'Gerenciar Usuários',
@@ -247,7 +246,6 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   ),
                 ],
               ),
-              const Divider(height: 5),
               HomeModule(
                 access: const ['admin'],
                 title: 'Anamnese - Grupos',
