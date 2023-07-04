@@ -35,7 +35,9 @@ class SharedPatientObj extends ConsumerWidget {
             Text('${model.name}'),
             Row(
               children: [
-                if (ref.watch(allowedAccessProvider.notifier).consultForAdmin())
+                if (ref
+                    .read(allowedAccessProvider.notifier)
+                    .consultFor(['admin']))
                   IconButton(
                     icon: const Icon(Icons.admin_panel_settings),
                     onPressed: () {
@@ -51,8 +53,8 @@ class SharedPatientObj extends ConsumerWidget {
                   ),
                 Visibility(
                   visible: ref
-                      .watch(allowedAccessProvider.notifier)
-                      .consultForProf(),
+                      .read(allowedAccessProvider.notifier)
+                      .consultFor(['prof']),
                   child: IconButton(
                     icon: const Icon(Icons.block),
                     onPressed: () {
@@ -67,7 +69,9 @@ class SharedPatientObj extends ConsumerWidget {
                     },
                   ),
                 ),
-                if (ref.watch(allowedAccessProvider.notifier).consultForProf())
+                if (ref
+                    .read(allowedAccessProvider.notifier)
+                    .consultFor(['prof']))
                   IconButton(
                     icon: const Icon(Icons.medical_information),
                     onPressed: () {
@@ -81,12 +85,10 @@ class SharedPatientObj extends ConsumerWidget {
                       context.goNamed(AppPage.sharedList.name);
                     },
                   ),
-                // if (ref
-                //     .watch(allowedAccessProvider.notifier)
-                //     .consultForSecretariado())
                 Visibility(
-                  visible:
-                      ref.watch(allowedAccessProvider.notifier).consultForSec(),
+                  visible: ref
+                      .read(allowedAccessProvider.notifier)
+                      .consultFor(['sec']),
                   child: IconButton(
                     icon: const Icon(Icons.room_service_outlined),
                     onPressed: () {
@@ -98,7 +100,6 @@ class SharedPatientObj extends ConsumerWidget {
                           .set(SharedListByStatus.byOffice);
 
                       context.goNamed(AppPage.sharedList.name);
-                      // context.goNamed(AppPage.sharedAdd.name, extra: null);
                     },
                   ),
                 )

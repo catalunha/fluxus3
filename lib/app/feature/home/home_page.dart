@@ -33,6 +33,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
           child: Wrap(
             children: [
               HomeModule(
+                access: const ['sec'],
                 title: 'Pacientes',
                 icon: Icons.personal_injury,
                 color: Colors.black87,
@@ -52,6 +53,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['sec'],
                 title: 'Atendimentos',
                 icon: Icons.book,
                 color: Colors.black87,
@@ -71,8 +73,8 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['sec'],
                 title: 'Eventos',
-                // icon: Icons.event_available,
                 icon: Icons.maps_home_work_rounded,
                 color: Colors.black87,
                 actions: [
@@ -91,8 +93,8 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['sec'],
                 title: 'Agenda',
-                // icon: Icons.event_available,
                 icon: Icons.calendar_month,
                 color: Colors.black87,
                 actions: [
@@ -106,6 +108,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
               ),
               const Divider(height: 10),
               HomeModule(
+                access: const ['admin'],
                 title: 'Gerenciar Usuários',
                 icon: Icons.people,
                 color: Colors.black,
@@ -119,6 +122,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Cargos',
                 icon: Icons.power_input_sharp,
                 color: Colors.black,
@@ -132,6 +136,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Procedimentos',
                 icon: Icons.construction_sharp,
                 color: Colors.black,
@@ -145,6 +150,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Especialidades',
                 icon: Icons.folder_special,
                 color: Colors.black,
@@ -158,6 +164,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['sec'],
                 title: 'Região',
                 icon: Icons.bubble_chart_outlined,
                 color: Colors.black,
@@ -171,6 +178,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Sala',
                 icon: Icons.house_sharp,
                 color: Colors.black,
@@ -184,6 +192,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Horários',
                 icon: Icons.timer_sharp,
                 color: Colors.black,
@@ -197,6 +206,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Status',
                 icon: Icons.start,
                 color: Colors.black,
@@ -210,6 +220,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Tipos de Planos de Saúde',
                 icon: Icons.credit_card_rounded,
                 color: Colors.black,
@@ -223,6 +234,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin', 'sec', 'prof'],
                 title: 'Prontuário',
                 icon: Icons.folder_shared_outlined,
                 color: Colors.black,
@@ -237,6 +249,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
               ),
               const Divider(height: 5),
               HomeModule(
+                access: const ['admin'],
                 title: 'Anamnese - Grupos',
                 icon: Icons.question_answer,
                 color: Colors.black,
@@ -250,6 +263,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 ],
               ),
               HomeModule(
+                access: const ['admin'],
                 title: 'Anamnese - Perguntas',
                 icon: Icons.question_mark,
                 color: Colors.black,
@@ -262,20 +276,8 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   ),
                 ],
               ),
-              // HomeModule(
-              //   title: 'Anamnese - Entrevista',
-              //   icon: Icons.people_outline,
-              //   color: Colors.black,
-              //   actions: [
-              //     IconButton(
-              //       onPressed: () {
-              //         context.goNamed(AppPage.anamneseStart.name);
-              //       },
-              //       icon: const Icon(Icons.list),
-              //     ),
-              //   ],
-              // ),
               HomeModule(
+                access: const ['prof'],
                 title: 'Anamnese - Respostas',
                 icon: Icons.receipt_long,
                 color: Colors.black,
