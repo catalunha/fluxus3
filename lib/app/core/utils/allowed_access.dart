@@ -19,16 +19,26 @@ class AllowedAccess extends _$AllowedAccess {
 
   bool consultForProf() {
     final auth = ref.read(authChNotProvider);
-
     return auth.user?.userProfile?.access.any((element) => element == 'prof') ??
         false;
   }
 
   bool consultForAdmin() {
     final auth = ref.read(authChNotProvider);
-
     return auth.user?.userProfile?.access
             .any((element) => element == 'admin') ??
+        false;
+  }
+
+  bool consultForAval() {
+    final auth = ref.read(authChNotProvider);
+    return auth.user?.userProfile?.access.any((element) => element == 'aval') ??
+        false;
+  }
+
+  bool consultForFin() {
+    final auth = ref.read(authChNotProvider);
+    return auth.user?.userProfile?.access.any((element) => element == 'fin') ??
         false;
   }
 }

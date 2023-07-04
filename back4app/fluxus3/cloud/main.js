@@ -1,5 +1,6 @@
 require('./triggers/user.js');
 require('./triggers/patient.js');
+require('./triggers/anamnese_people.js');
 
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
