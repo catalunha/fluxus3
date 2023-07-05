@@ -16,7 +16,7 @@ class HourListPage extends ConsumerWidget {
     final list = ref.watch(hourListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista com ${list.asData?.value.length} Horários'),
+        title: Text('Lista com ${list.asData?.value.length ?? "?"} Horários'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

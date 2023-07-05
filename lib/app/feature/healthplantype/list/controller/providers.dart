@@ -7,7 +7,7 @@ import '../../../../data/b4a/entity/healthplantype_entity.dart';
 
 part 'providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<HealthPlanTypeModel>> healthPlanTypeList(
     HealthPlanTypeListRef ref) async {
   final QueryBuilder<ParseObject> query =

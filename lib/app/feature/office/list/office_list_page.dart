@@ -16,7 +16,7 @@ class OfficeListPage extends ConsumerWidget {
     final list = ref.watch(officeListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista com ${list.asData?.value.length} cargos'),
+        title: Text('Lista com ${list.asData?.value.length ?? "?"} cargos'),
         // title: list.when(
         //   data: (data) {
         //     return Text('Lista com ${data.length} cargos');

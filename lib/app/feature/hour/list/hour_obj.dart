@@ -20,7 +20,11 @@ class HourObj extends StatelessWidget {
           children: [
             AppTextTitleValue(
               title: 'Nome: ',
-              value: '${model.name} das ${model.start} às ${model.end}',
+              value: '${model.name}',
+            ),
+            AppTextTitleValue(
+              title: 'Intervalo: ',
+              value: '${model.start} às ${model.end}',
             ),
             AppTextTitleValue(
               title: 'Disponível: ',

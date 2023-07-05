@@ -7,7 +7,7 @@ import '../../../../data/b4a/entity/status_entity.dart';
 
 part 'providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<StatusModel>> statusList(StatusListRef ref) async {
   final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(StatusEntity.className));

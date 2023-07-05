@@ -7,7 +7,7 @@ import '../../../../data/b4a/entity/expertise_entity.dart';
 
 part 'providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<ExpertiseModel>> expertiseList(ExpertiseListRef ref) async {
   final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(ExpertiseEntity.className));

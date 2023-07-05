@@ -41,7 +41,7 @@ class PatientObj extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.assignment_ind_outlined),
                   onPressed: () {
-                    context.goNamed(AppPage.patientSave.name, extra: model.id);
+                    context.goNamed(AppPage.patientView.name, extra: model.id);
                   },
                 ),
               ]),

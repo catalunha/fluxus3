@@ -16,7 +16,8 @@ class ExpertiseListPage extends ConsumerWidget {
     final list = ref.watch(expertiseListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista com ${list.asData?.value.length} especialidades'),
+        title: Text(
+            'Lista com ${list.asData?.value.length ?? "?"} especialidades'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
