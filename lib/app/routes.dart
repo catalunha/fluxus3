@@ -22,8 +22,6 @@ import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
-import 'feature/hour/list/hour_list_page.dart';
-import 'feature/hour/save/hour_save_page.dart';
 import 'feature/office/list/office_list_page.dart';
 import 'feature/office/save/office_save_page.dart';
 import 'feature/patient/list/patient_list_page.dart';
@@ -258,28 +256,6 @@ final goRouterProv = Provider<GoRouter>(
                   builder: (context, state) {
                     final id = state.extra as String?;
                     return RoomSavePage(
-                      key: state.pageKey,
-                      id: id,
-                    );
-                  },
-                ),
-              ],
-            ),
-            GoRoute(
-              path: AppPage.hourList.path,
-              name: AppPage.hourList.name,
-              builder: (context, state) {
-                return HourListPage(
-                  key: state.pageKey,
-                );
-              },
-              routes: [
-                GoRoute(
-                  path: AppPage.hourSave.path,
-                  name: AppPage.hourSave.name,
-                  builder: (context, state) {
-                    final id = state.extra as String?;
-                    return HourSavePage(
                       key: state.pageKey,
                       id: id,
                     );
@@ -603,8 +579,6 @@ enum AppPage {
   regionSave('regionSave', 'regionSave'),
   roomList('roomList', 'roomList'),
   roomSave('roomSave', 'roomSave'),
-  hourList('hourList', 'hourList'),
-  hourSave('hourSave', 'hourSave'),
   statusList('statusList', 'statusList'),
   statusSave('statusSave', 'statusSave'),
   healthPlanTypeList('healthPlanTypeList', 'healthPlanTypeList'),

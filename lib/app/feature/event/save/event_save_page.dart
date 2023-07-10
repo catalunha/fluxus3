@@ -7,11 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/models/attendance_model.dart';
-import '../../../core/models/hour_model.dart';
 import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../attendance/select/attendance_select_page.dart';
-import '../../hour/select/hour_select_page.dart';
 import '../../room/select/room_select_page.dart';
 import '../../status/select/status_select_page.dart';
 import '../../utils/app_mixin_loader.dart';
@@ -129,42 +127,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                             ],
                           ),
                         ),
-                        const Text('Selecione um horário:'),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () async {
-                                final HourModel? result =
-                                    await Navigator.of(context)
-                                        .push<HourModel>(MaterialPageRoute(
-                                  builder: (context) {
-                                    return const HourSelectPage();
-                                  },
-                                ));
 
-                                ref
-                                    .read(hourSelectedProvider.notifier)
-                                    .set(result);
-                              },
-                              icon: const Icon(Icons.search),
-                            ),
-                            if (ref.watch(hourSelectedProvider) != null)
-                              Flexible(
-                                child: Text(
-                                  '${ref.watch(hourSelectedProvider)!.start} às ${ref.watch(hourSelectedProvider)!.end}',
-                                  softWrap: true,
-                                ),
-                              ),
-                            if (ref.watch(hourSelectedProvider) != null)
-                              IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(hourSelectedProvider.notifier)
-                                        .set(null);
-                                  },
-                                  icon: const Icon(Icons.delete))
-                          ],
-                        ),
                         const Text('Selecione uma sala'),
                         Row(
                           children: [

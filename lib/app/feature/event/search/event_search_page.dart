@@ -3,14 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/models/hour_model.dart';
 import '../../../core/models/patient_model.dart';
 import '../../../core/models/procedure_model.dart';
 import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../routes.dart';
-import '../../hour/select/hour_select_page.dart';
 import '../../patient/select/patient_select_page.dart';
 import '../../procedure/select/procedure_select_page.dart';
 import '../../room/select/room_select_page.dart';
@@ -131,42 +129,6 @@ class EventSearchPage extends ConsumerWidget {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ]),
-                ),
-                Card(
-                  child: Column(children: [
-                    const Text('Selecione um Horario'),
-                    Row(
-                      children: [
-                        Switch(
-                            value: ref.watch(hourSelectProvider),
-                            onChanged: (value) {
-                              ref.read(hourSelectProvider.notifier).set(value);
-                            }),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () async {
-                                  final HourModel? result =
-                                      await Navigator.of(context)
-                                          .push<HourModel>(MaterialPageRoute(
-                                    builder: (context) {
-                                      return const HourSelectPage();
-                                    },
-                                  ));
-                                  ref
-                                      .read(hourSelectedProvider.notifier)
-                                      .set(result);
-                                },
-                                icon: const Icon(Icons.search),
-                              ),
-                              Text('${ref.watch(hourSelectedProvider)?.name}')
                             ],
                           ),
                         ),

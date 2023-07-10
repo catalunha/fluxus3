@@ -6,13 +6,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
-import '../../../../core/models/hour_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
-import '../../../../data/b4a/entity/hour_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
 import '../../search/controller/providers.dart';
 import 'states.dart';
@@ -24,23 +22,18 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
   if (id != null) {
     final event = await ref.read(eventRepositoryProvider).readById(id, cols: {
       '${EventEntity.className}.cols': [
-        EventEntity.day,
-        EventEntity.hour,
         EventEntity.room,
         EventEntity.status,
         EventEntity.attendances,
         EventEntity.history,
       ],
       '${EventEntity.className}.pointers': [
-        EventEntity.hour,
         EventEntity.room,
         EventEntity.status,
       ]
     });
     if (event != null) {
       ref.read(eventFormProvider.notifier).setModel(event);
-      ref.watch(dayProvider.notifier).set(event.day);
-      ref.watch(hourSelectedProvider.notifier).set(event.hour);
       ref.watch(roomSelectedProvider.notifier).set(event.room);
       ref.watch(statusSelectedProvider.notifier).set(event.status);
       ref
@@ -73,18 +66,6 @@ class Day extends _$Day {
   }
 
   void set(DateTime? value) {
-    state = value;
-  }
-}
-
-@riverpod
-class HourSelected extends _$HourSelected {
-  @override
-  HourModel? build() {
-    return null;
-  }
-
-  void set(HourModel? value) {
     state = value;
   }
 }
@@ -164,12 +145,9 @@ class EventForm extends _$EventForm {
     state = state.copyWith(status: EventFormStatus.loading);
     try {
       final day = ref.read(dayProvider);
-      final hour = ref.read(hourSelectedProvider);
       final room = ref.read(roomSelectedProvider);
       bool checked = true;
-      if (day != state.model!.day &&
-          hour != state.model!.hour &&
-          room != state.model!.room) {
+      if (room != state.model!.room) {
         checked = await checkOverBook();
       }
       if (checked) {
@@ -181,7 +159,6 @@ class EventForm extends _$EventForm {
 Em: ${DateTime.now()}
 Usuário: ${auth.user?.userName}
 Dia: $day
-Horário: ${hour?.id}-${hour?.name}-${hour?.start} as ${hour?.end}
 Sala: ${room?.id}-${room?.name}
 Status: ${status?.id}-${status?.name}
 Atendimentos: ${ref.read(attendancesSelectedProvider).map((e) => e.id).toList()}
@@ -193,19 +170,15 @@ ${state.model?.history}
         if (state.model != null) {
           eventTemp = state.model!.copyWith(
             start: DateTime(
-                day!.year,
-                day.month,
-                day.day,
-                int.tryParse(hour!.start!.split(':')[0]) ?? 6,
-                int.tryParse(hour.start!.split(':')[1]) ?? 0),
+              day!.year,
+              day.month,
+              day.day,
+            ),
             end: DateTime(
-                day.year,
-                day.month,
-                day.day,
-                int.tryParse(hour.end!.split(':')[0]) ?? 6,
-                int.tryParse(hour.end!.split(':')[1]) ?? 20),
-            day: day,
-            hour: hour,
+              day.year,
+              day.month,
+              day.day,
+            ),
             room: room,
             status: status,
             history: history,
@@ -213,19 +186,15 @@ ${state.model?.history}
         } else {
           eventTemp = EventModel(
             start: DateTime(
-                day!.year,
-                day.month,
-                day.day,
-                int.tryParse(hour!.start!.split(':')[0]) ?? 6,
-                int.tryParse(hour.start!.split(':')[1]) ?? 0),
+              day!.year,
+              day.month,
+              day.day,
+            ),
             end: DateTime(
-                day.year,
-                day.month,
-                day.day,
-                int.tryParse(hour.end!.split(':')[0]) ?? 6,
-                int.tryParse(hour.end!.split(':')[1]) ?? 20),
-            day: day,
-            hour: hour,
+              day.year,
+              day.month,
+              day.day,
+            ),
             room: room,
             status: status,
             history: history,
@@ -233,17 +202,15 @@ ${state.model?.history}
         }
         final eventId =
             await ref.read(eventRepositoryProvider).update(eventTemp);
-
-        if (day != state.model!.day || status != state.model!.status) {
+        if (status != state.model!.status) {
           _updateAttendances(
             eventId: eventId,
             list: ref.read(attendancesOriginalProvider),
             day: DateTime(
-                day.year,
-                day.month,
-                day.day,
-                int.tryParse(hour.start!.split(':')[0]) ?? 6,
-                int.tryParse(hour.start!.split(':')[1]) ?? 0),
+              day.year,
+              day.month,
+              day.day,
+            ),
             status: state.model!.status!,
           );
         }
@@ -255,11 +222,10 @@ ${state.model?.history}
           relationColumn: 'attendances',
           relationTable: 'Attendance',
           day: DateTime(
-              day.year,
-              day.month,
-              day.day,
-              int.tryParse(hour.start!.split(':')[0]) ?? 6,
-              int.tryParse(hour.start!.split(':')[1]) ?? 0),
+            day.year,
+            day.month,
+            day.day,
+          ),
         );
         ref.invalidate(eventListProvider);
         state = state.copyWith(status: EventFormStatus.success);
@@ -397,22 +363,16 @@ ${state.model?.history}
   }
 
   Future<bool> checkOverBook() async {
-    final day = ref.read(dayProvider)!;
-    final hour = ref.read(hourSelectedProvider)!;
     final room = ref.read(roomSelectedProvider)!;
 
     final QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-    query.whereEqualTo(EventEntity.day, DateTime(day.year, day.month, day.day));
-    query.whereEqualTo(EventEntity.hour,
-        (ParseObject(HourEntity.className)..objectId = hour.id).toPointer());
+
     query.whereEqualTo(EventEntity.room,
         (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
 
     final list = await ref.read(eventRepositoryProvider).list(query, cols: {
       "'${EventEntity.className}.cols'": [
-        EventEntity.day,
-        EventEntity.hour,
         EventEntity.room,
       ],
       // "'${EventEntity.className}.pointers'": [

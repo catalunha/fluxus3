@@ -4,7 +4,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/event_model.dart';
-import '../../../../core/models/hour_model.dart';
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/room_model.dart';
@@ -13,7 +12,6 @@ import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
-import '../../../../data/b4a/entity/hour_entity.dart';
 import '../../../../data/b4a/entity/patient_entity.dart';
 import '../../../../data/b4a/entity/procedure_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
@@ -30,18 +28,10 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
   if (ref.read(dateSelectProvider)) {
     final start = ref.read(startSearchProvider);
     final end = ref.read(endSearchProvider);
-    query.whereGreaterThanOrEqualsTo(
-        EventEntity.day, DateTime(start.year, start.month, start.day));
-    query.whereLessThanOrEqualTo(
-        EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
+    query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
+    query.whereLessThanOrEqualTo(EventEntity.end, end);
   }
-  if (ref.read(hourSelectProvider)) {
-    query.whereEqualTo(
-        EventEntity.hour,
-        (ParseObject(HourEntity.className)
-              ..objectId = ref.read(hourSelectedProvider)!.id)
-            .toPointer());
-  }
+
   if (ref.read(roomSelectProvider)) {
     query.whereEqualTo(
         EventEntity.room,
@@ -258,15 +248,12 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
   query.orderByDescending('updatedAt');
   return await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
-      EventEntity.day,
-      EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
       EventEntity.history,
     ],
     '${EventEntity.className}.pointers': [
-      EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
     ]
@@ -305,30 +292,6 @@ class EndSearch extends _$EndSearch {
   }
 
   void set(DateTime value) {
-    state = value;
-  }
-}
-
-@riverpod
-class HourSelect extends _$HourSelect {
-  @override
-  bool build() {
-    return false;
-  }
-
-  void set(bool value) {
-    state = value;
-  }
-}
-
-@riverpod
-class HourSelected extends _$HourSelected {
-  @override
-  HourModel? build() {
-    return null;
-  }
-
-  void set(HourModel? value) {
     state = value;
   }
 }

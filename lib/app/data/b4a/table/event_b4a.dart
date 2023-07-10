@@ -65,12 +65,6 @@ class EventB4a {
     }
     if (cols.containsKey('${EventEntity.className}.pointers')) {
       query.includeObject(cols['${EventEntity.className}.pointers']!);
-    } else {
-      query.includeObject([
-        EventEntity.hour,
-        EventEntity.room,
-        EventEntity.status,
-      ]);
     }
     query.first();
     try {

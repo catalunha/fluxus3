@@ -63,12 +63,12 @@ class SchedulePage extends ConsumerWidget {
             ),
           );
           for (EventModel e in list) {
-            final hourStartList =
-                e.hour!.start!.split(':').map((e) => int.parse(e)).toList();
-            final dateTimeStart = e.day!.add(
-                Duration(hours: hourStartList[0], minutes: hourStartList[1]));
-            if (dayMorning.isBefore(dateTimeStart) &&
-                dayNight.isAfter(dateTimeStart)) {
+            // final hourStartList =
+            //     e.hour!.start!.split(':').map((e) => int.parse(e)).toList();
+            // final dateTimeStart = e.day!.add(
+            //     Duration(hours: hourStartList[0], minutes: hourStartList[1]));
+            if (dayMorning.isBefore(DateTime.now()) &&
+                dayNight.isAfter(DateTime.now())) {
               final List<String> texts = [];
               final List<String> tooltipMsgs = [];
               bool allConfirmedPresence = false;
@@ -91,8 +91,8 @@ class SchedulePage extends ConsumerWidget {
                   color: allConfirmedPresence ? Colors.green : Colors.black,
                   dateTime: TimePlannerDateTime(
                     day: day,
-                    hour: dateTimeStart.hour,
-                    minutes: dateTimeStart.minute,
+                    hour: 10, //dateTimeStart.hour,
+                    minutes: 10, //dateTimeStart.minute,
                   ),
                   minutesDuration: 40,
                   // child: Container(

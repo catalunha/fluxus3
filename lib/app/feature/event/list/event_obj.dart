@@ -26,15 +26,6 @@ class EventObj extends StatelessWidget {
               value: model.id,
             ),
             AppTextTitleValue(
-              title: 'Dia: ',
-              value: model.day == null ? '...' : dateFormat.format(model.day!),
-            ),
-            AppTextTitleValue(
-              title: 'Horario: ',
-              value:
-                  '${model.hour?.name} das ${model.hour?.start} às ${model.hour?.end}',
-            ),
-            AppTextTitleValue(
               title: 'Sala: ',
               value: '${model.room?.name}',
             ),
