@@ -19,9 +19,9 @@ abstract class AttendanceModel with _$AttendanceModel {
     String? authorizationCode,
     DateTime? authorizationDateCreated,
     DateTime? authorizationDateLimit,
+    DateTime? confirmedPresence,
     DateTime? attendance,
     String? history,
-    DateTime? confirmedPresence,
     StatusModel? status,
   }) = _AttendanceModel;
 }

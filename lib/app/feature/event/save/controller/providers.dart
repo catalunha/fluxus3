@@ -10,6 +10,7 @@ import '../../../../core/models/hour_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/hour_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
@@ -191,6 +192,18 @@ ${state.model?.history}
         EventModel? eventTemp;
         if (state.model != null) {
           eventTemp = state.model!.copyWith(
+            start: DateTime(
+                day!.year,
+                day.month,
+                day.day,
+                int.tryParse(hour!.start!.split(':')[0]) ?? 6,
+                int.tryParse(hour.start!.split(':')[1]) ?? 0),
+            end: DateTime(
+                day.year,
+                day.month,
+                day.day,
+                int.tryParse(hour.end!.split(':')[0]) ?? 6,
+                int.tryParse(hour.end!.split(':')[1]) ?? 20),
             day: day,
             hour: hour,
             room: room,
@@ -199,6 +212,18 @@ ${state.model?.history}
           );
         } else {
           eventTemp = EventModel(
+            start: DateTime(
+                day!.year,
+                day.month,
+                day.day,
+                int.tryParse(hour!.start!.split(':')[0]) ?? 6,
+                int.tryParse(hour.start!.split(':')[1]) ?? 0),
+            end: DateTime(
+                day.year,
+                day.month,
+                day.day,
+                int.tryParse(hour.end!.split(':')[0]) ?? 6,
+                int.tryParse(hour.end!.split(':')[1]) ?? 20),
             day: day,
             hour: hour,
             room: room,
@@ -208,12 +233,33 @@ ${state.model?.history}
         }
         final eventId =
             await ref.read(eventRepositoryProvider).update(eventTemp);
+
+        if (day != state.model!.day || status != state.model!.status) {
+          _updateAttendances(
+            eventId: eventId,
+            list: ref.read(attendancesOriginalProvider),
+            day: DateTime(
+                day.year,
+                day.month,
+                day.day,
+                int.tryParse(hour.start!.split(':')[0]) ?? 6,
+                int.tryParse(hour.start!.split(':')[1]) ?? 0),
+            status: state.model!.status!,
+          );
+        }
+
         await _updateRelations(
           modelId: eventId,
           originalList: ref.read(attendancesOriginalProvider),
           selectedList: ref.read(attendancesSelectedProvider),
           relationColumn: 'attendances',
           relationTable: 'Attendance',
+          day: DateTime(
+              day.year,
+              day.month,
+              day.day,
+              int.tryParse(hour.start!.split(':')[0]) ?? 6,
+              int.tryParse(hour.start!.split(':')[1]) ?? 0),
         );
         ref.invalidate(eventListProvider);
         state = state.copyWith(status: EventFormStatus.success);
@@ -250,6 +296,7 @@ ${state.model?.history}
     required List<dynamic> selectedList,
     required String relationColumn,
     required String relationTable,
+    required DateTime day,
   }) async {
     final List<dynamic> listResult = [...selectedList];
     final List<dynamic> listFinal = [...originalList];
@@ -266,6 +313,27 @@ ${state.model?.history}
           ids: [original.id!],
           add: false,
         );
+        //+++ atualizando atendimento de acordo com acoes do evento
+        final auth = ref.read(authChNotProvider);
+        final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Status: iaAbxHHkjm - Removido do evento
+${state.model?.history}
+          ''';
+
+        await ref
+            .read(attendanceRepositoryProvider)
+            .unset(original.id, AttendanceEntity.attendance);
+        await ref.read(attendanceRepositoryProvider).update(
+              AttendanceModel(
+                id: original.id,
+                history: history,
+                status: StatusModel(id: 'iaAbxHHkjm'),
+              ),
+            );
+        //---
         listFinal.removeWhere((element) => element.id == original.id);
       } else {
         listResult.removeWhere((element) => element.id == original.id);
@@ -279,9 +347,53 @@ ${state.model?.history}
         ids: [result.id!],
         add: true,
       );
+      //+++ atualizando atendimento de acordo com acoes do evento
+      final auth = ref.read(authChNotProvider);
+      final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Status: 9WGnM73WBI - Inserido num evento
+${state.model?.history}
+          ''';
+      await ref.read(attendanceRepositoryProvider).update(AttendanceModel(
+          id: result.id,
+          attendance: day,
+          history: history,
+          status: StatusModel(id: '9WGnM73WBI')));
+      //---
+
       listFinal.add(result);
     }
     return listFinal;
+  }
+
+  Future<void> _updateAttendances({
+    required String eventId,
+    required List<AttendanceModel> list,
+    required DateTime day,
+    required StatusModel status,
+  }) async {
+    for (var attendance in list) {
+      final auth = ref.read(authChNotProvider);
+      final history = '''
++++
+Em: ${DateTime.now()}
+Usuário: ${auth.user?.userName}
+Atualizando
+date: $day
+Status: ${status.id}
+${state.model?.history}
+          ''';
+      await ref.read(attendanceRepositoryProvider).update(
+            AttendanceModel(
+              id: attendance.id,
+              history: history,
+              attendance: day,
+              status: status,
+            ),
+          );
+    }
   }
 
   Future<bool> checkOverBook() async {

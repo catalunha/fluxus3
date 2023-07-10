@@ -7,12 +7,12 @@ import '../../../../data/b4a/entity/attendance_entity.dart';
 
 part 'providers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 FutureOr<List<AttendanceModel>> attendanceSelect(
     AttendanceSelectRef ref) async {
   final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
-  query.orderByDescending('name');
+  query.orderByDescending(AttendanceEntity.updatedAt);
   final list = await ref.read(attendanceRepositoryProvider).list(query);
   return list;
 }

@@ -20,18 +20,18 @@ import '../../utils/app_textformfield.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
-class EventEditPage extends ConsumerStatefulWidget {
+class EventSavePage extends ConsumerStatefulWidget {
   final String? id;
-  const EventEditPage({
+  const EventSavePage({
     super.key,
     required this.id,
   });
 
   @override
-  ConsumerState<EventEditPage> createState() => _EventEditPageState();
+  ConsumerState<EventSavePage> createState() => _EventSavePageState();
 }
 
-class _EventEditPageState extends ConsumerState<EventEditPage>
+class _EventSavePageState extends ConsumerState<EventSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _historyTec = TextEditingController();

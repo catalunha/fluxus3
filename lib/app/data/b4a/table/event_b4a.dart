@@ -12,6 +12,7 @@ class EventB4a {
     Pagination? pagination,
     Map<String, List<String>> cols = const {},
   }) async {
+    query.setLimit(1000);
     if (pagination != null) {
       query.setAmountToSkip((pagination.page - 1) * pagination.limit);
       query.setLimit(pagination.limit);
@@ -21,13 +22,14 @@ class EventB4a {
     }
     if (cols.containsKey('${EventEntity.className}.pointers')) {
       query.includeObject(cols['${EventEntity.className}.pointers']!);
-    } else {
-      query.includeObject([
-        EventEntity.hour,
-        EventEntity.room,
-        EventEntity.status,
-      ]);
     }
+    //  else {
+    //   query.includeObject([
+    //     EventEntity.hour,
+    //     EventEntity.room,
+    //     EventEntity.status,
+    //   ]);
+    // }
 
     ParseResponse? response;
     try {

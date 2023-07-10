@@ -22,6 +22,7 @@ class AttendanceObj extends ConsumerWidget {
     return Card(
       child: ListTile(
         title: Text('${model.authorizationCode}'),
+        subtitle: Text('${model.id}'),
         tileColor: color,
         onTap: () {
           if (isSingleValue) {

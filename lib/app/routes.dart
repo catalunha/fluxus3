@@ -15,9 +15,8 @@ import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
 import 'feature/attendance/search/attendance_search_page.dart';
 import 'feature/error/error_page.dart';
-import 'feature/event/add/event_add_page.dart';
-import 'feature/event/edit/event_edit_page.dart';
 import 'feature/event/list/event_list_page.dart';
+import 'feature/event/save/event_save_page.dart';
 import 'feature/event/search/event_search_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
@@ -432,7 +431,7 @@ final goRouterProv = Provider<GoRouter>(
                         name: AppPage.eventEdit.name,
                         builder: (context, state) {
                           final id = state.extra as String?;
-                          return EventEditPage(
+                          return EventSavePage(
                             key: state.pageKey,
                             id: id,
                           );
@@ -445,7 +444,8 @@ final goRouterProv = Provider<GoRouter>(
               path: AppPage.eventAdd.path,
               name: AppPage.eventAdd.name,
               builder: (context, state) {
-                return EventAddPage(
+                return EventSavePage(
+                  id: null,
                   key: state.pageKey,
                 );
               },

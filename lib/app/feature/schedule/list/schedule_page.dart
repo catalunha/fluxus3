@@ -9,8 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/models/attendance_model.dart';
 import '../../../core/models/event_model.dart';
 import '../../../core/models/status_model.dart';
-import '../../event/add/event_add_page.dart';
-import '../../event/edit/event_edit_page.dart';
+import '../../event/save/event_save_page.dart';
 import '../../status/select/status_select_page.dart';
 import '../confirm_presence/controller/providers.dart';
 import '../confirm_presence/schedule_presence.dart';
@@ -120,7 +119,7 @@ class SchedulePage extends ConsumerWidget {
                     onDoubleTap: () async {
                       await Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (_) => EventEditPage(id: e.id)),
+                            builder: (_) => EventSavePage(id: e.id)),
                       );
                       ref.invalidate(scheduleProvider);
                     },
@@ -313,7 +312,10 @@ class SchedulePage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const EventAddPage()),
+            MaterialPageRoute(
+                builder: (_) => const EventSavePage(
+                      id: null,
+                    )),
           );
         },
         child: const Icon(Icons.add),

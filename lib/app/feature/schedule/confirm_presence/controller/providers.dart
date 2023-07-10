@@ -6,6 +6,7 @@ import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
+import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../list/controller/providers.dart';
 import 'states.dart';
 
@@ -95,7 +96,7 @@ ${attendance.history}
 
             await ref
                 .read(attendanceRepositoryProvider)
-                .unConfirmPresence(attendance.id!);
+                .unset(attendance.id!, AttendanceEntity.attendance);
           }
         }
       }

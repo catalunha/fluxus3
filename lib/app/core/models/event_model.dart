@@ -13,6 +13,8 @@ abstract class EventModel with _$EventModel {
     String? id,
     DateTime? day,
     HourModel? hour,
+    DateTime? start,
+    DateTime? end,
     RoomModel? room,
     List<AttendanceModel>? attendances,
     StatusModel? status,

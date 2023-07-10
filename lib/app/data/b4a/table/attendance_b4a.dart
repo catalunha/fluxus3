@@ -176,12 +176,12 @@ class AttendanceB4a {
     }
   }
 
-  Future<bool> unConfirmPresence(String modelId) async {
+  Future<bool> unset(String id, String column) async {
     ParseResponse? parseResponse;
     try {
       final parseObject = ParseObject(AttendanceEntity.className);
-      parseObject.objectId = modelId;
-      parseObject.unset(AttendanceEntity.confirmedPresence);
+      parseObject.objectId = id;
+      parseObject.unset(column);
 
       parseResponse = await parseObject.save();
       if (parseResponse.success && parseResponse.results != null) {

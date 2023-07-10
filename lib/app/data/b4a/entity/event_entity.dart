@@ -12,6 +12,8 @@ class EventEntity {
   static const String id = 'objectId';
   static const String day = 'day';
   static const String hour = 'hour';
+  static const String start = 'start';
+  static const String end = 'end';
   static const String room = 'room';
   static const String status = 'status';
   static const String attendances = 'attendances';
@@ -53,6 +55,8 @@ class EventEntity {
 
     final EventModel model = EventModel(
       id: parseObject.objectId!,
+      start: parseObject.get<DateTime>(EventEntity.start)?.toLocal(),
+      end: parseObject.get<DateTime>(EventEntity.end)?.toLocal(),
       day: parseObject.get<DateTime>(EventEntity.day)?.toLocal(),
       hour: parseObject.get(EventEntity.hour) != null
           ? HourEntity().toModel(parseObject.get(EventEntity.hour))
@@ -72,7 +76,12 @@ class EventEntity {
   Future<ParseObject> toParse(EventModel model) async {
     final parseObject = ParseObject(EventEntity.className);
     parseObject.objectId = model.id;
-
+    if (model.start != null) {
+      parseObject.set<DateTime?>(EventEntity.start, model.start);
+    }
+    if (model.end != null) {
+      parseObject.set<DateTime?>(EventEntity.end, model.end);
+    }
     if (model.day != null) {
       parseObject.set<DateTime?>(EventEntity.day,
           DateTime(model.day!.year, model.day!.month, model.day!.day));
