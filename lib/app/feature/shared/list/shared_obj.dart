@@ -42,7 +42,17 @@ class SharedObj extends StatelessWidget {
                   ),
               ],
             ),
-            const Divider(),
+
+            Visibility(
+              visible: model.isPublic,
+              child: const Divider(
+                color: Colors.green,
+              ),
+            ),
+            Visibility(
+              visible: !model.isPublic,
+              child: const Divider(),
+            ),
             Text('${model.description}'),
             // IconButton(
             //   onPressed: () {

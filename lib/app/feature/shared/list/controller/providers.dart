@@ -16,20 +16,22 @@ part 'providers.g.dart';
 @riverpod
 FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
   // Por padrão a lista é privada ao usuario
-  QueryBuilder<ParseObject> mainQuery =
+  final QueryBuilder<ParseObject> myQuery =
       QueryBuilder<ParseObject>(ParseObject(SharedEntity.className));
   final sharedPatientSelected = ref.read(sharedPatientSelectedProvider);
-  mainQuery.whereEqualTo(
+  myQuery.whereEqualTo(
       SharedEntity.patient,
       (ParseObject(PatientEntity.className)
             ..objectId = sharedPatientSelected!.id)
           .toPointer());
   final auth = ref.read(authChNotProvider);
-  mainQuery.whereEqualTo(
+  myQuery.whereEqualTo(
       SharedEntity.professional,
       (ParseObject(UserProfileEntity.className)
             ..objectId = auth.user?.userProfile?.id)
           .toPointer());
+  QueryBuilder<ParseObject> mainQuery =
+      QueryBuilder<ParseObject>(ParseObject(SharedEntity.className));
   if (ref.read(sharedListByStatusStateProvider) ==
       SharedListByStatus.byOffice) {
     final auth = ref.read(authChNotProvider);
@@ -37,6 +39,20 @@ FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
     // List<String> officeIds = [];
     final officeIds =
         auth.user?.userProfile?.offices?.map((e) => e.id!).toList() ?? [];
+
+    //Lista as minhas infos pub ou priv
+    // final QueryBuilder<ParseObject> myQuery =
+    //     QueryBuilder<ParseObject>(ParseObject(SharedEntity.className));
+    // myQuery.whereEqualTo(
+    //     SharedEntity.patient,
+    //     (ParseObject(PatientEntity.className)
+    //           ..objectId = sharedPatientSelected.id)
+    //         .toPointer());
+    // myQuery.whereEqualTo(
+    //     SharedEntity.professional,
+    //     (ParseObject(UserProfileEntity.className)
+    //           ..objectId = auth.user?.userProfile?.id)
+    //         .toPointer());
 
     for (var officeId in officeIds) {
       final QueryBuilder<ParseObject> query =
@@ -53,6 +69,7 @@ FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
           UserProfileEntity.offices,
           (ParseObject(OfficeEntity.className)..objectId = officeId)
               .toPointer());
+      query.whereEqualTo(SharedEntity.isPublic, true);
 
       query.whereMatchesKeyInQuery(
           SharedEntity.professional, 'objectId', queryUserProfileByOffice);
@@ -60,7 +77,7 @@ FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
     }
     mainQuery = QueryBuilder.or(
       ParseObject(SharedEntity.className),
-      querysShared,
+      [...querysShared, myQuery],
     );
   } else if (ref.read(sharedListByStatusStateProvider) ==
       SharedListByStatus.public) {
@@ -82,6 +99,8 @@ FutureOr<List<SharedModel>> sharedList(SharedListRef ref) async {
               ..objectId = sharedPatientSelected!.id)
             .toPointer());
   }
+  mainQuery.orderByDescending(SharedEntity.createdAt);
+
   final list = await ref.watch(sharedRepositoryProvider).list(mainQuery, cols: {
     '${SharedEntity.className}.cols': [
       SharedEntity.professional,

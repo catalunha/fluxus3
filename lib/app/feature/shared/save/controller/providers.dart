@@ -93,6 +93,7 @@ class SharedForm extends _$SharedForm {
         );
       }
       ref.invalidate(sharedListProvider);
+      ref.invalidate(xFileProvider);
       state = state.copyWith(status: SharedFormStatus.success);
     } catch (e, st) {
       log('$e');

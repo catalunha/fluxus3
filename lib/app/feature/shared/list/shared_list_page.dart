@@ -18,7 +18,7 @@ class SharedListPage extends ConsumerWidget {
     final list = ref.watch(sharedListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista com ${list.asData?.value.length} descrições'),
+        title: Text('Lista com ${list.asData?.value.length} informações'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

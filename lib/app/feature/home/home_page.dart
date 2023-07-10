@@ -22,7 +22,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Olá ${auth.user?.userProfile?.name ?? auth.user?.email}',
+          'Olá ${auth.user?.userProfile?.nickname ?? "Atualize seu nome curto"}',
         ),
         actions: const [
           HomePopMenu(),
@@ -103,6 +103,20 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                       context.goNamed(AppPage.schedule.name);
                     },
                     icon: const Icon(Icons.view_timeline_sharp),
+                  ),
+                ],
+              ),
+              HomeModule(
+                access: const ['admin', 'sec', 'prof'],
+                title: 'Prontuário',
+                icon: Icons.folder_shared_outlined,
+                color: Colors.black,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      context.goNamed(AppPage.sharedPatientList.name);
+                    },
+                    icon: const Icon(Icons.list),
                   ),
                 ],
               ),
@@ -227,20 +241,6 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   IconButton(
                     onPressed: () {
                       context.goNamed(AppPage.healthPlanTypeList.name);
-                    },
-                    icon: const Icon(Icons.list),
-                  ),
-                ],
-              ),
-              HomeModule(
-                access: const ['admin', 'sec', 'prof'],
-                title: 'Prontuário',
-                icon: Icons.folder_shared_outlined,
-                color: Colors.black,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      context.goNamed(AppPage.sharedPatientList.name);
                     },
                     icon: const Icon(Icons.list),
                   ),
