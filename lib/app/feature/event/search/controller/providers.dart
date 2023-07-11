@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/event_model.dart';
-import '../../../../core/models/hour_model.dart';
 import '../../../../core/models/patient_model.dart';
 import '../../../../core/models/procedure_model.dart';
 import '../../../../core/models/room_model.dart';
@@ -11,7 +12,6 @@ import '../../../../core/models/user_profile_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
-import '../../../../data/b4a/entity/hour_entity.dart';
 import '../../../../data/b4a/entity/patient_entity.dart';
 import '../../../../data/b4a/entity/procedure_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
@@ -23,21 +23,17 @@ part 'providers.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<EventModel>> eventList(EventListRef ref) async {
-  final QueryBuilder<ParseObject> query =
+  QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-  final start = ref.read(startSearchProvider);
-  final end = ref.read(endSearchProvider);
-  query.whereGreaterThanOrEqualsTo(
-      EventEntity.day, DateTime(start.year, start.month, start.day));
-  query.whereLessThanOrEqualTo(
-      EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
-  if (ref.read(hourSelectProvider)) {
-    query.whereEqualTo(
-        EventEntity.hour,
-        (ParseObject(HourEntity.className)
-              ..objectId = ref.read(hourSelectedProvider)!.id)
-            .toPointer());
+  if (ref.read(dateSelectProvider)) {
+    final start = ref.read(startSearchProvider);
+    final end = ref.read(endSearchProvider);
+    query.whereGreaterThanOrEqualsTo(
+        EventEntity.start, DateTime(start.year, start.month, start.day));
+    query.whereLessThanOrEqualTo(
+        EventEntity.end, DateTime(end.year, end.month, end.day, 23, 59));
   }
+
   if (ref.read(roomSelectProvider)) {
     query.whereEqualTo(
         EventEntity.room,
@@ -53,7 +49,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
             .toPointer());
   }
   if (ref.read(professionalSelectProvider)) {
-    // log('ref.read(professionalSelectedProvider)!.id: ${ref.read(professionalSelectedProvider)!.id}');
+    log(ref.read(professionalSelectedProvider)!.id);
     final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
@@ -61,10 +57,63 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
         (ParseObject(UserProfileEntity.className)
               ..objectId = ref.read(professionalSelectedProvider)!.id)
             .toPointer());
-    // query.whereMatchesKeyInQuery(
-    //     EventEntity.attendances, 'objectId', queryAttendance);
-    query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+    if (ref.read(dateSelectProvider)) {
+      final start = ref.read(startSearchProvider);
+      final end = ref.read(endSearchProvider);
+      queryAttendance.whereGreaterThanOrEqualsTo(
+          AttendanceEntity.authorizationDateCreated,
+          DateTime(start.year, start.month, start.day));
+      queryAttendance.whereLessThanOrEqualTo(
+          AttendanceEntity.authorizationDateCreated,
+          DateTime(end.year, end.month, end.day, 23, 59));
+    }
+    final list = await ref.read(attendanceRepositoryProvider).list(
+      queryAttendance,
+      cols: {
+        '${AttendanceEntity.className}.cols': [AttendanceEntity.id]
+      },
+    );
+    // for (var element in list) {
+    //   print('${element.id}');
+    // }
+
+    List<QueryBuilder<ParseObject>> listQueries = [];
+    for (var element in list) {
+      final QueryBuilder<ParseObject> queryTemp =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+      queryTemp.whereEqualTo(
+        EventEntity.attendances,
+        (ParseObject(AttendanceEntity.className)..objectId = element.id)
+            .toPointer(),
+      );
+
+      listQueries.add(queryTemp);
+    }
+    query = QueryBuilder.or(
+      ParseObject(EventEntity.className),
+      listQueries,
+    );
+
+    // if (ref.read(dateSelectProvider)) {
+    //   final start = ref.read(startSearchProvider);
+    //   final end = ref.read(endSearchProvider);
+    //   query.whereGreaterThanOrEqualsTo(
+    //       EventEntity.day, DateTime(start.year, start.month, start.day));
+    //   query.whereLessThanOrEqualTo(
+    //       EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
+    // }
   }
+  // if (ref.read(procedureSelectProvider)) {
+  //   final QueryBuilder<ParseObject> queryAttendance =
+  //       QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+  //   queryAttendance.whereEqualTo(
+  //       AttendanceEntity.procedure,
+  //       (ParseObject(ProcedureEntity.className)
+  //             ..objectId = ref.read(procedureSelectedProvider)!.id)
+  //           .toPointer());
+
+  //   query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+  // }
   if (ref.read(procedureSelectProvider)) {
     final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
@@ -74,8 +123,73 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
               ..objectId = ref.read(procedureSelectedProvider)!.id)
             .toPointer());
 
-    query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+    if (ref.read(dateSelectProvider)) {
+      final start = ref.read(startSearchProvider);
+      final end = ref.read(endSearchProvider);
+      queryAttendance.whereGreaterThanOrEqualsTo(
+          AttendanceEntity.authorizationDateCreated,
+          DateTime(start.year, start.month, start.day));
+      queryAttendance.whereLessThanOrEqualTo(
+          AttendanceEntity.authorizationDateCreated,
+          DateTime(end.year, end.month, end.day, 23, 59));
+    }
+    final list = await ref.read(attendanceRepositoryProvider).list(
+      queryAttendance,
+      cols: {
+        '${AttendanceEntity.className}.cols': [AttendanceEntity.id]
+      },
+    );
+    log('+++Attendance para Procedure : ${ref.read(procedureSelectedProvider)!.id}');
+    var index = 1;
+
+    for (var element in list) {
+      log('${index++}: ${element.id}');
+    }
+    log('---Attendance para Procedure : ${ref.read(procedureSelectedProvider)!.id}');
+
+    List<QueryBuilder<ParseObject>> listQueries = [];
+    index = 1;
+    for (var element in list) {
+      final QueryBuilder<ParseObject> queryTemp =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+      queryTemp.whereEqualTo(
+        EventEntity.attendances,
+        (ParseObject(AttendanceEntity.className)..objectId = element.id)
+            .toPointer(),
+      );
+      if (index > 60) {
+        break;
+      } else {
+        index++;
+      }
+      listQueries.add(queryTemp);
+    }
+    query = QueryBuilder.or(
+      ParseObject(EventEntity.className),
+      listQueries,
+    );
+
+    // if (ref.read(dateSelectProvider)) {
+    //   final start = ref.read(startSearchProvider);
+    //   final end = ref.read(endSearchProvider);
+    //   query.whereGreaterThanOrEqualsTo(
+    //       EventEntity.day, DateTime(start.year, start.month, start.day));
+    //   query.whereLessThanOrEqualTo(
+    //       EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
+    // }
   }
+
+  // if (ref.read(patientSelectProvider)) {
+  //   final QueryBuilder<ParseObject> queryAttendance =
+  //       QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
+  //   queryAttendance.whereEqualTo(
+  //       AttendanceEntity.patient,
+  //       (ParseObject(PatientEntity.className)
+  //             ..objectId = ref.read(patientSelectedProvider)!.id)
+  //           .toPointer());
+
+  //   query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+  // }
   if (ref.read(patientSelectProvider)) {
     final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
@@ -84,26 +198,82 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
         (ParseObject(PatientEntity.className)
               ..objectId = ref.read(patientSelectedProvider)!.id)
             .toPointer());
+    if (ref.read(dateSelectProvider)) {
+      final start = ref.read(startSearchProvider);
+      final end = ref.read(endSearchProvider);
+      queryAttendance.whereGreaterThanOrEqualsTo(
+          AttendanceEntity.authorizationDateCreated,
+          DateTime(start.year, start.month, start.day));
+      queryAttendance.whereLessThanOrEqualTo(
+          AttendanceEntity.authorizationDateCreated,
+          DateTime(end.year, end.month, end.day, 23, 59));
+    }
+    final list = await ref.read(attendanceRepositoryProvider).list(
+      queryAttendance,
+      cols: {
+        '${AttendanceEntity.className}.cols': [AttendanceEntity.id]
+      },
+    );
+    log('+++Atendimento para o patient: ${ref.read(patientSelectedProvider)!.id}');
+    for (var element in list) {
+      log('${element.id}');
+    }
+    log('---Atendimento para o patient: ${ref.read(patientSelectedProvider)!.id}');
 
-    query.whereMatchesQuery(EventEntity.attendances, queryAttendance);
+    List<QueryBuilder<ParseObject>> listQueries = [];
+    for (var element in list) {
+      final QueryBuilder<ParseObject> queryTemp =
+          QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+      queryTemp.whereEqualTo(
+        EventEntity.attendances,
+        (ParseObject(AttendanceEntity.className)..objectId = element.id)
+            .toPointer(),
+      );
+
+      listQueries.add(queryTemp);
+    }
+    query = QueryBuilder.or(
+      ParseObject(EventEntity.className),
+      listQueries,
+    );
+
+    // if (ref.read(dateSelectProvider)) {
+    //   final start = ref.read(startSearchProvider);
+    //   final end = ref.read(endSearchProvider);
+    //   query.whereGreaterThanOrEqualsTo(
+    //       EventEntity.day, DateTime(start.year, start.month, start.day));
+    //   query.whereLessThanOrEqualTo(
+    //       EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
+    // }
   }
 
   query.orderByDescending('updatedAt');
   return await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
-      EventEntity.day,
-      EventEntity.hour,
+      EventEntity.start,
+      EventEntity.end,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
       EventEntity.history,
     ],
     '${EventEntity.className}.pointers': [
-      EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
     ]
   });
+}
+
+@riverpod
+class DateSelect extends _$DateSelect {
+  @override
+  bool build() {
+    return false;
+  }
+
+  void set(bool value) {
+    state = value;
+  }
 }
 
 @riverpod
@@ -126,30 +296,6 @@ class EndSearch extends _$EndSearch {
   }
 
   void set(DateTime value) {
-    state = value;
-  }
-}
-
-@riverpod
-class HourSelect extends _$HourSelect {
-  @override
-  bool build() {
-    return false;
-  }
-
-  void set(bool value) {
-    state = value;
-  }
-}
-
-@riverpod
-class HourSelected extends _$HourSelected {
-  @override
-  HourModel? build() {
-    return null;
-  }
-
-  void set(HourModel? value) {
     state = value;
   }
 }

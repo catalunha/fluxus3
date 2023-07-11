@@ -18,10 +18,8 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
   final firstDay = ref.read(fistDayProvider);
   final lastDay = ref.read(lastDayProvider);
-  query.whereGreaterThanOrEqualsTo(
-      EventEntity.day, DateTime(firstDay.year, firstDay.month, firstDay.day));
-  query.whereLessThanOrEqualTo(EventEntity.day,
-      DateTime(lastDay.year, lastDay.month, lastDay.day, 23, 59));
+  query.whereGreaterThanOrEqualsTo(EventEntity.start, firstDay);
+  query.whereLessThanOrEqualTo(EventEntity.end, lastDay);
   query.whereEqualTo(
       EventEntity.status,
       (ParseObject(StatusEntity.className)
@@ -29,14 +27,11 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
           .toPointer());
   final list = await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
-      EventEntity.day,
-      EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
     ],
     '${EventEntity.className}.pointers': [
-      EventEntity.hour,
       EventEntity.room,
       EventEntity.status,
     ]

@@ -3,14 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/models/hour_model.dart';
 import '../../../core/models/patient_model.dart';
 import '../../../core/models/procedure_model.dart';
 import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../../core/models/user_profile_model.dart';
 import '../../../routes.dart';
-import '../../hour/select/hour_select_page.dart';
 import '../../patient/select/patient_select_page.dart';
 import '../../procedure/select/procedure_select_page.dart';
 import '../../room/select/room_select_page.dart';
@@ -40,107 +38,97 @@ class EventSearchPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text('Data do evento:'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Inicio da busca:'),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: ref.watch(startSearchProvider) ??
-                                    DateTime.now(),
-                                firstDate: DateTime(DateTime.now().year - 100),
-                                lastDate: DateTime(DateTime.now().year + 1),
-                              );
-                              ref.watch(startSearchProvider.notifier).set(
-                                  newDate ??
-                                      DateTime.now()
-                                          .subtract(const Duration(days: 7)));
-                            },
-                            child: Row(
-                              children: [
-                                const Icon(Icons.date_range),
-                                const SizedBox(width: 10),
-                                Text(dateFormat
-                                    .format(ref.watch(startSearchProvider)))
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Fim da busca:'),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: ref.watch(endSearchProvider) ??
-                                    DateTime.now(),
-                                firstDate: DateTime(DateTime.now().year - 100),
-                                lastDate: DateTime(DateTime.now().year + 1),
-                              );
-                              ref.watch(endSearchProvider.notifier).set(
-                                  newDate ??
-                                      DateTime.now()
-                                          .add(const Duration(days: 15)));
-                            },
-                            child: Row(
-                              children: [
-                                const Icon(Icons.date_range),
-                                const SizedBox(width: 10),
-                                Text(dateFormat
-                                    .format(ref.watch(endSearchProvider))),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
                 Card(
                   child: Column(children: [
-                    const Text('Selecione um Horario'),
+                    const Text('Data do evento:'),
                     Row(
                       children: [
                         Switch(
-                            value: ref.watch(hourSelectProvider),
+                            value: ref.watch(dateSelectProvider),
                             onChanged: (value) {
-                              ref.read(hourSelectProvider.notifier).set(value);
+                              ref.read(dateSelectProvider.notifier).set(value);
                             }),
                         Expanded(
-                          child: Row(
+                          child: Wrap(
                             children: [
-                              IconButton(
-                                onPressed: () async {
-                                  final HourModel? result =
-                                      await Navigator.of(context)
-                                          .push<HourModel>(MaterialPageRoute(
-                                    builder: (context) {
-                                      return const HourSelectPage();
-                                    },
-                                  ));
-                                  ref
-                                      .read(hourSelectedProvider.notifier)
-                                      .set(result);
-                                },
-                                icon: const Icon(Icons.search),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Inicio da busca:'),
+                                    const SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        final DateTime? newDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate:
+                                              ref.watch(startSearchProvider) ??
+                                                  DateTime.now(),
+                                          firstDate: DateTime(
+                                              DateTime.now().year - 100),
+                                          lastDate:
+                                              DateTime(DateTime.now().year + 1),
+                                        );
+                                        ref
+                                            .watch(startSearchProvider.notifier)
+                                            .set(newDate ??
+                                                DateTime.now().subtract(
+                                                    const Duration(days: 7)));
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.date_range),
+                                          const SizedBox(width: 10),
+                                          Text(dateFormat.format(
+                                              ref.watch(startSearchProvider)))
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text('${ref.watch(hourSelectedProvider)?.name}')
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Fim da busca:'),
+                                    const SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        final DateTime? newDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate:
+                                              ref.watch(endSearchProvider) ??
+                                                  DateTime.now(),
+                                          firstDate: DateTime(
+                                              DateTime.now().year - 100),
+                                          lastDate:
+                                              DateTime(DateTime.now().year + 1),
+                                        );
+                                        ref
+                                            .watch(endSearchProvider.notifier)
+                                            .set(newDate ??
+                                                DateTime.now().add(
+                                                    const Duration(days: 15)));
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.date_range),
+                                          const SizedBox(width: 10),
+                                          Text(dateFormat.format(
+                                              ref.watch(endSearchProvider))),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),

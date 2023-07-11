@@ -10,6 +10,8 @@ import 'user_profile_entity.dart';
 class AttendanceEntity {
   static const String className = 'Attendance';
   static const String id = 'objectId';
+  static const String createdAt = 'createdAt';
+  static const String updatedAt = 'updatedAt';
   //singleCols
   static const String authorizationCode = 'authorizationCode';
   static const String authorizationDateCreated = 'authorizationDateCreated';

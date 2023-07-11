@@ -26,6 +26,5 @@ class AttendanceRepository {
   Future<bool> delete(String modelId) => apiB4a.delete(modelId);
   Future<bool> confirmPresence(String modelId) =>
       apiB4a.confirmPresence(modelId);
-  Future<bool> unConfirmPresence(String modelId) =>
-      apiB4a.unConfirmPresence(modelId);
+  Future<bool> unset(String id, String column) => apiB4a.unset(id, column);
 }

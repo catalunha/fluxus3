@@ -7,11 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../../../core/models/attendance_model.dart';
-import '../../../core/models/hour_model.dart';
 import '../../../core/models/room_model.dart';
 import '../../../core/models/status_model.dart';
 import '../../attendance/select/attendance_select_page.dart';
-import '../../hour/select/hour_select_page.dart';
 import '../../room/select/room_select_page.dart';
 import '../../status/select/status_select_page.dart';
 import '../../utils/app_mixin_loader.dart';
@@ -20,22 +18,23 @@ import '../../utils/app_textformfield.dart';
 import 'controller/providers.dart';
 import 'controller/states.dart';
 
-class EventEditPage extends ConsumerStatefulWidget {
+class EventSavePage extends ConsumerStatefulWidget {
   final String? id;
-  const EventEditPage({
+  const EventSavePage({
     super.key,
     required this.id,
   });
 
   @override
-  ConsumerState<EventEditPage> createState() => _EventEditPageState();
+  ConsumerState<EventSavePage> createState() => _EventSavePageState();
 }
 
-class _EventEditPageState extends ConsumerState<EventEditPage>
+class _EventSavePageState extends ConsumerState<EventSavePage>
     with Loader, Messages {
   final _formKey = GlobalKey<FormState>();
   final _historyTec = TextEditingController();
   final dateFormat = DateFormat('dd/MM/y');
+  // final timeFormat = TimeOfDayFormat('HH:mm');
 
   @override
   void initState() {
@@ -101,68 +100,108 @@ class _EventEditPageState extends ConsumerState<EventEditPage>
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Data do evento:'),
-                              const SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  final DateTime? newDate =
-                                      await showDatePicker(
-                                    context: context,
-                                    initialDate: ref.watch(dayProvider) ??
-                                        DateTime.now(),
-                                    firstDate: DateTime(DateTime.now().year),
-                                    lastDate: DateTime(DateTime.now().year + 1),
-                                  );
-                                  ref.watch(dayProvider.notifier).set(newDate);
-                                },
-                                child: const Icon(Icons.date_range),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(ref.watch(dayProvider) != null
-                                  ? dateFormat.format(ref.watch(dayProvider)!)
-                                  : 'Não informado'),
-                            ],
-                          ),
-                        ),
-                        const Text('Selecione um horário:'),
-                        Row(
+                        Wrap(
                           children: [
-                            IconButton(
-                              onPressed: () async {
-                                final HourModel? result =
-                                    await Navigator.of(context)
-                                        .push<HourModel>(MaterialPageRoute(
-                                  builder: (context) {
-                                    return const HourSelectPage();
-                                  },
-                                ));
-
-                                ref
-                                    .read(hourSelectedProvider.notifier)
-                                    .set(result);
-                              },
-                              icon: const Icon(Icons.search),
-                            ),
-                            if (ref.watch(hourSelectedProvider) != null)
-                              Flexible(
-                                child: Text(
-                                  '${ref.watch(hourSelectedProvider)!.start} às ${ref.watch(hourSelectedProvider)!.end}',
-                                  softWrap: true,
-                                ),
-                              ),
-                            if (ref.watch(hourSelectedProvider) != null)
-                              IconButton(
-                                  onPressed: () {
+                            Column(
+                              children: [
+                                const Text('Data do evento'),
+                                const SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final DateTime? newDate =
+                                        await showDatePicker(
+                                      context: context,
+                                      initialDate:
+                                          ref.watch(dateSelectedProvider) ??
+                                              DateTime.now(),
+                                      firstDate: DateTime(DateTime.now().year),
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 1),
+                                    );
                                     ref
-                                        .read(hourSelectedProvider.notifier)
-                                        .set(null);
+                                        .watch(dateSelectedProvider.notifier)
+                                        .set(newDate);
                                   },
-                                  icon: const Icon(Icons.delete))
+                                  child: const Icon(Icons.date_range),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(ref.watch(dateSelectedProvider) != null
+                                    ? dateFormat.format(
+                                        ref.watch(dateSelectedProvider)!)
+                                    : 'Não informado'),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Column(
+                              children: [
+                                const Text('Horario de inicio'),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final TimeOfDay? newDate =
+                                        await showTimePicker(
+                                      context: context,
+                                      initialTime: ref.watch(
+                                                  startSelectedProvider) !=
+                                              null
+                                          ? ref.watch(startSelectedProvider)!
+                                          : const TimeOfDay(
+                                              hour: 10, minute: 00),
+                                      builder: (context, child) {
+                                        return MediaQuery(
+                                          data: MediaQuery.of(context).copyWith(
+                                              alwaysUse24HourFormat: true),
+                                          child: child ?? Container(),
+                                        );
+                                      },
+                                    );
+                                    ref
+                                        .watch(startSelectedProvider.notifier)
+                                        .set(newDate);
+                                  },
+                                  child: const Icon(Icons.timer),
+                                ),
+                                Text(ref.watch(startSelectedProvider) != null
+                                    ? ref
+                                        .watch(startSelectedProvider)!
+                                        .format(context)
+                                    : 'Não informado'),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Column(
+                              children: [
+                                const Text('Horario de fim'),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final TimeOfDay? newDate =
+                                        await showTimePicker(
+                                      context: context,
+                                      initialTime:
+                                          ref.watch(endSelectedProvider) != null
+                                              ? ref.watch(endSelectedProvider)!
+                                              : const TimeOfDay(
+                                                  hour: 10, minute: 00),
+                                      builder: (context, child) {
+                                        return MediaQuery(
+                                          data: MediaQuery.of(context).copyWith(
+                                              alwaysUse24HourFormat: true),
+                                          child: child ?? Container(),
+                                        );
+                                      },
+                                    );
+                                    ref
+                                        .watch(endSelectedProvider.notifier)
+                                        .set(newDate);
+                                  },
+                                  child: const Icon(Icons.timer_outlined),
+                                ),
+                                Text(ref.watch(endSelectedProvider) != null
+                                    ? ref
+                                        .watch(endSelectedProvider)!
+                                        .format(context)
+                                    : 'Não informado'),
+                              ],
+                            ),
                           ],
                         ),
                         const Text('Selecione uma sala'),

@@ -3,15 +3,14 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import '../../../core/models/attendance_model.dart';
 import '../../../core/models/event_model.dart';
 import 'attendance_entity.dart';
-import 'hour_entity.dart';
 import 'room_entity.dart';
 import 'status_entity.dart';
 
 class EventEntity {
   static const String className = 'Event';
   static const String id = 'objectId';
-  static const String day = 'day';
-  static const String hour = 'hour';
+  static const String start = 'start';
+  static const String end = 'end';
   static const String room = 'room';
   static const String status = 'status';
   static const String attendances = 'attendances';
@@ -53,10 +52,8 @@ class EventEntity {
 
     final EventModel model = EventModel(
       id: parseObject.objectId!,
-      day: parseObject.get<DateTime>(EventEntity.day)?.toLocal(),
-      hour: parseObject.get(EventEntity.hour) != null
-          ? HourEntity().toModel(parseObject.get(EventEntity.hour))
-          : null,
+      start: parseObject.get<DateTime>(EventEntity.start)?.toLocal(),
+      end: parseObject.get<DateTime>(EventEntity.end)?.toLocal(),
       room: parseObject.get(EventEntity.room) != null
           ? RoomEntity().toModel(parseObject.get(EventEntity.room))
           : null,
@@ -72,17 +69,13 @@ class EventEntity {
   Future<ParseObject> toParse(EventModel model) async {
     final parseObject = ParseObject(EventEntity.className);
     parseObject.objectId = model.id;
+    if (model.start != null) {
+      parseObject.set<DateTime?>(EventEntity.start, model.start);
+    }
+    if (model.end != null) {
+      parseObject.set<DateTime?>(EventEntity.end, model.end);
+    }
 
-    if (model.day != null) {
-      parseObject.set<DateTime?>(EventEntity.day,
-          DateTime(model.day!.year, model.day!.month, model.day!.day));
-    }
-    if (model.hour != null) {
-      parseObject.set(
-          EventEntity.hour,
-          (ParseObject(HourEntity.className)..objectId = model.hour!.id)
-              .toPointer());
-    }
     if (model.room != null) {
       parseObject.set(
           EventEntity.room,

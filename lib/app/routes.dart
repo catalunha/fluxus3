@@ -15,16 +15,13 @@ import 'feature/attendance/edit/attendance_edit_page.dart';
 import 'feature/attendance/list/attendance_list_page.dart';
 import 'feature/attendance/search/attendance_search_page.dart';
 import 'feature/error/error_page.dart';
-import 'feature/event/add/event_add_page.dart';
-import 'feature/event/edit/event_edit_page.dart';
 import 'feature/event/list/event_list_page.dart';
+import 'feature/event/save/event_save_page.dart';
 import 'feature/event/search/event_search_page.dart';
 import 'feature/expertise/list/expertise_list_page.dart';
 import 'feature/expertise/save/expertise_save_page.dart';
 import 'feature/healthplantype/list/healthplantype_list_page.dart';
 import 'feature/healthplantype/save/healthplantype_save_page.dart';
-import 'feature/hour/list/hour_list_page.dart';
-import 'feature/hour/save/hour_save_page.dart';
 import 'feature/office/list/office_list_page.dart';
 import 'feature/office/save/office_save_page.dart';
 import 'feature/patient/list/patient_list_page.dart';
@@ -267,28 +264,6 @@ final goRouterProv = Provider<GoRouter>(
               ],
             ),
             GoRoute(
-              path: AppPage.hourList.path,
-              name: AppPage.hourList.name,
-              builder: (context, state) {
-                return HourListPage(
-                  key: state.pageKey,
-                );
-              },
-              routes: [
-                GoRoute(
-                  path: AppPage.hourSave.path,
-                  name: AppPage.hourSave.name,
-                  builder: (context, state) {
-                    final id = state.extra as String?;
-                    return HourSavePage(
-                      key: state.pageKey,
-                      id: id,
-                    );
-                  },
-                ),
-              ],
-            ),
-            GoRoute(
               path: AppPage.statusList.path,
               name: AppPage.statusList.name,
               builder: (context, state) {
@@ -426,26 +401,28 @@ final goRouterProv = Provider<GoRouter>(
                         key: state.pageKey,
                       );
                     },
-                    routes: [
-                      GoRoute(
-                        path: AppPage.eventEdit.path,
-                        name: AppPage.eventEdit.name,
-                        builder: (context, state) {
-                          final id = state.extra as String?;
-                          return EventEditPage(
-                            key: state.pageKey,
-                            id: id,
-                          );
-                        },
-                      ),
-                    ],
+                    // routes: [
+                    //   GoRoute(
+                    //     path: AppPage.eventSave.path,
+                    //     name: AppPage.eventSave.name,
+                    //     builder: (context, state) {
+                    //       final id = state.extra as String?;
+                    //       return EventSavePage(
+                    //         key: state.pageKey,
+                    //         id: id,
+                    //       );
+                    //     },
+                    //   ),
+                    // ],
                   ),
                 ]),
             GoRoute(
-              path: AppPage.eventAdd.path,
-              name: AppPage.eventAdd.name,
+              path: AppPage.eventSave.path,
+              name: AppPage.eventSave.name,
               builder: (context, state) {
-                return EventAddPage(
+                final id = state.extra as String?;
+                return EventSavePage(
+                  id: id,
                   key: state.pageKey,
                 );
               },
@@ -603,8 +580,6 @@ enum AppPage {
   regionSave('regionSave', 'regionSave'),
   roomList('roomList', 'roomList'),
   roomSave('roomSave', 'roomSave'),
-  hourList('hourList', 'hourList'),
-  hourSave('hourSave', 'hourSave'),
   statusList('statusList', 'statusList'),
   statusSave('statusSave', 'statusSave'),
   healthPlanTypeList('healthPlanTypeList', 'healthPlanTypeList'),
@@ -618,8 +593,7 @@ enum AppPage {
   attendanceEdit('attendanceEdit', 'attendanceEdit'),
   eventSearch('eventSearch', 'eventSearch'),
   eventList('eventList', 'eventList'),
-  eventEdit('eventEdit', 'eventEdit'),
-  eventAdd('eventAdd', 'eventAdd'),
+  eventSave('eventSave', 'eventSave'),
   schedule('schedule', 'schedule'),
   anamneseGroupList('anamneseGroupList', 'anamneseGroupList'),
   anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave'),

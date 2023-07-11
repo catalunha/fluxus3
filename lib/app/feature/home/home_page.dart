@@ -80,7 +80,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 actions: [
                   IconButton(
                     onPressed: () {
-                      context.goNamed(AppPage.eventAdd.name);
+                      context.goNamed(AppPage.eventSave.name);
                     },
                     icon: const Icon(Icons.add),
                   ),
@@ -199,20 +199,6 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                   IconButton(
                     onPressed: () {
                       context.goNamed(AppPage.roomList.name);
-                    },
-                    icon: const Icon(Icons.list),
-                  ),
-                ],
-              ),
-              HomeModule(
-                access: const ['admin'],
-                title: 'Horários',
-                icon: Icons.timer_sharp,
-                color: Colors.black,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      context.goNamed(AppPage.hourList.name);
                     },
                     icon: const Icon(Icons.list),
                   ),
