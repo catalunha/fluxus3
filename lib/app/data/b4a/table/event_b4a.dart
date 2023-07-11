@@ -20,7 +20,8 @@ class EventB4a {
     if (cols.containsKey('${EventEntity.className}.cols')) {
       query.keysToReturn(cols['${EventEntity.className}.cols']!);
     }
-    if (cols.containsKey('${EventEntity.className}.pointers')) {
+    if (cols.containsKey('${EventEntity.className}.pointers') &&
+        cols['${EventEntity.className}.pointers']!.isNotEmpty) {
       query.includeObject(cols['${EventEntity.className}.pointers']!);
     }
     //  else {

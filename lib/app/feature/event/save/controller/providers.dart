@@ -210,25 +210,25 @@ class EventForm extends _$EventForm {
       final DateTime dateEnd =
           DateTime(date.year, date.month, date.day, end.hour, end.minute);
 
-      // const bool checked = false;
+      bool checked = false;
       if (state.model != null) {
         if (dateStart.compareTo(state.model!.start!) != 0 ||
             dateEnd.compareTo(state.model!.end!) != 0 ||
             room != state.model!.room) {
-          // checked = await checkOverBook();
-          log('checkOverBook');
+          log('update event checkOverBook');
+          checked = await checkOverBook(dateStart, dateEnd, room);
         }
       } else {
-        log('checkOverBook');
-        // checked = await checkOverBook();
+        log('new event checkOverBook');
+        checked = await checkOverBook(dateStart, dateEnd, room);
       }
 
-      // if (checked) {
-      //   state = state.copyWith(
-      //       status: EventFormStatus.overbook,
-      //       error: 'Já existe evento para este dia, hora e sala.');
-      //   // return;
-      // }
+      if (checked) {
+        state = state.copyWith(
+            status: EventFormStatus.overbook,
+            error: 'Já existe evento para este dia, horário e sala.');
+        return;
+      }
 
       final auth = ref.read(authChNotProvider);
 
@@ -411,29 +411,87 @@ ${state.model?.history}
     }
   }
 
-  Future<bool> checkOverBook() async {
-    final room = ref.read(roomSelectedProvider)!;
-
-    final QueryBuilder<ParseObject> query =
+  Future<bool> checkOverBook(
+      DateTime start, DateTime end, RoomModel room) async {
+    //  BD------S----------E------
+    // 1 N---S------E-------------
+    // 2 N--------S------E--------
+    // 3 N--------------S------E--
+    // 4 N---S---------------E----
+    log('+++ overbook: Teste 1');
+    //  BD------S----------E------
+    // 1 N---S------E-------------
+    QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-
     query.whereEqualTo(EventEntity.room,
         (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
+    query.whereLessThanOrEqualTo(EventEntity.start, end);
+    var result = await queryOverbook(query);
+    if (result) {
+      return true;
+    }
+    log('+++ overbook: Teste 2');
+    //  BD------S----------E------
+    // 2 N--------S------E--------
+    query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    query.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query.whereLessThanOrEqualTo(EventEntity.start, start);
+    query.whereGreaterThanOrEqualsTo(EventEntity.end, end);
+    result = await queryOverbook(query);
+    if (result) {
+      return true;
+    }
+    log('+++ overbook: Teste 3');
+    //  BD------S----------E------
+    // 3 N--------------S------E--
+    query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    query.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query.whereGreaterThanOrEqualsTo(EventEntity.end, start);
+    query.whereLessThanOrEqualTo(EventEntity.end, end);
+    result = await queryOverbook(query);
+    if (result) {
+      return true;
+    }
+    //   log('+++ overbook: Teste 4');
+    //   //  BD------S----------E------
+    //   // 4 N---S---------------E----
+    //   final QueryBuilder<ParseObject> query =
+    //       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    //   query.whereEqualTo(EventEntity.room,
+    //       (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    //   query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
+    //   query.whereLessThanOrEqualTo(EventEntity.end, end);
+    //   await queryOverbook(query);
 
+    return false;
+  }
+
+  Future<bool> queryOverbook(QueryBuilder<ParseObject> query) async {
     final list = await ref.read(eventRepositoryProvider).list(query, cols: {
-      "'${EventEntity.className}.cols'": [
+      '${EventEntity.className}.cols': [
+        EventEntity.id,
+        EventEntity.start,
+        EventEntity.end,
         EventEntity.room,
+        // EventEntity.status,
       ],
-      // "'${EventEntity.className}.pointers'": [
-      //   EventEntity.hour,
+      // '${EventEntity.className}.pointers': [
       //   EventEntity.room,
       //   EventEntity.status,
       // ]
     });
+    for (final element in list) {
+      log('overbook: $element');
+    }
     if (list.isEmpty) {
-      return true;
-    } else {
+      log('overbook: false');
       return false;
+    } else {
+      log('overbook: true');
+      return true;
     }
   }
 }
