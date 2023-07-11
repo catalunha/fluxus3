@@ -28,8 +28,10 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
   if (ref.read(dateSelectProvider)) {
     final start = ref.read(startSearchProvider);
     final end = ref.read(endSearchProvider);
-    query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
-    query.whereLessThanOrEqualTo(EventEntity.end, end);
+    query.whereGreaterThanOrEqualsTo(
+        EventEntity.start, DateTime(start.year, start.month, start.day));
+    query.whereLessThanOrEqualTo(
+        EventEntity.end, DateTime(end.year, end.month, end.day, 23, 59));
   }
 
   if (ref.read(roomSelectProvider)) {
@@ -248,6 +250,8 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
   query.orderByDescending('updatedAt');
   return await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
+      EventEntity.start,
+      EventEntity.end,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,

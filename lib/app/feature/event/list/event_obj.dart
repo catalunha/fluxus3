@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../core/models/event_model.dart';
 import '../../../routes.dart';
+import '../../utils/app_datetime_value.dart';
 import '../../utils/app_text_title_value.dart';
+import '../save/event_save_page.dart';
 
 class EventObj extends StatelessWidget {
   final EventModel model;
@@ -12,8 +13,6 @@ class EventObj extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd/MM/y');
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -24,6 +23,14 @@ class EventObj extends StatelessWidget {
             AppTextTitleValue(
               title: 'Id: ',
               value: model.id,
+            ),
+            AppDateTimeValue(
+              title: 'Inicio: ',
+              value: model.start,
+            ),
+            AppDateTimeValue(
+              title: 'Fim: ',
+              value: model.end,
             ),
             AppTextTitleValue(
               title: 'Sala: ',
@@ -78,7 +85,13 @@ class EventObj extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    context.goNamed(AppPage.eventEdit.name, extra: model.id);
+                    context.goNamed(AppPage.eventSave.name, extra: model.id);
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return EventSavePage(id: model.id);
+                      },
+                    ));
                   },
                 ),
               ]),

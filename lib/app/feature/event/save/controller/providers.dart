@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+
 import '../../../../core/authentication/riverpod/auth_prov.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,6 +24,8 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
   if (id != null) {
     final event = await ref.read(eventRepositoryProvider).readById(id, cols: {
       '${EventEntity.className}.cols': [
+        EventEntity.start,
+        EventEntity.end,
         EventEntity.room,
         EventEntity.status,
         EventEntity.attendances,
@@ -33,7 +37,14 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
       ]
     });
     if (event != null) {
-      ref.read(eventFormProvider.notifier).setModel(event);
+      ref.watch(eventFormProvider.notifier).setModel(event);
+      ref.watch(dateSelectedProvider.notifier).set(event.start);
+      ref
+          .watch(startSelectedProvider.notifier)
+          .set(TimeOfDay(hour: event.start!.hour, minute: event.start!.minute));
+      ref
+          .watch(endSelectedProvider.notifier)
+          .set(TimeOfDay(hour: event.end!.hour, minute: event.end!.minute));
       ref.watch(roomSelectedProvider.notifier).set(event.room);
       ref.watch(statusSelectedProvider.notifier).set(event.status);
       ref
@@ -50,6 +61,9 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
     final repo = ref.read(statusRepositoryProvider);
     final status = await repo.readById('ZDQA4njpdN');
     ref.watch(statusSelectedProvider.notifier).set(status);
+    // ref
+    //     .read(statusSelectedProvider.notifier)
+    //     .set(StatusModel(id: 'ZDQA4njpdN'));
   }
   return null;
   // else {
@@ -59,13 +73,37 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
 }
 
 @riverpod
-class Day extends _$Day {
+class DateSelected extends _$DateSelected {
   @override
   DateTime? build() {
     return null;
   }
 
   void set(DateTime? value) {
+    state = value;
+  }
+}
+
+@riverpod
+class StartSelected extends _$StartSelected {
+  @override
+  TimeOfDay? build() {
+    return null;
+  }
+
+  void set(TimeOfDay? value) {
+    state = value;
+  }
+}
+
+@riverpod
+class EndSelected extends _$EndSelected {
+  @override
+  TimeOfDay? build() {
+    return null;
+  }
+
+  void set(TimeOfDay? value) {
     state = value;
   }
 }
@@ -144,7 +182,14 @@ class EventForm extends _$EventForm {
   Future<void> submitForm({required String history}) async {
     state = state.copyWith(status: EventFormStatus.loading);
     try {
-      final day = ref.read(dayProvider);
+      final date = ref.read(dateSelectedProvider);
+      final start = ref.read(startSelectedProvider);
+      final end = ref.read(endSelectedProvider);
+      final DateTime dateStart =
+          DateTime(date!.year, date.month, date.day, start!.hour, start.minute);
+      final DateTime dateEnd =
+          DateTime(date.year, date.month, date.day, end!.hour, end.minute);
+
       final room = ref.read(roomSelectedProvider);
       bool checked = true;
       if (room != state.model!.room) {
@@ -158,8 +203,9 @@ class EventForm extends _$EventForm {
 +++
 Em: ${DateTime.now()}
 Usuário: ${auth.user?.userName}
-Dia: $day
 Sala: ${room?.id}-${room?.name}
+start: $dateStart
+end: $dateEnd
 Status: ${status?.id}-${status?.name}
 Atendimentos: ${ref.read(attendancesSelectedProvider).map((e) => e.id).toList()}
 Descrição: $history
@@ -169,32 +215,16 @@ ${state.model?.history}
         EventModel? eventTemp;
         if (state.model != null) {
           eventTemp = state.model!.copyWith(
-            start: DateTime(
-              day!.year,
-              day.month,
-              day.day,
-            ),
-            end: DateTime(
-              day.year,
-              day.month,
-              day.day,
-            ),
+            start: dateStart,
+            end: dateEnd,
             room: room,
             status: status,
             history: history,
           );
         } else {
           eventTemp = EventModel(
-            start: DateTime(
-              day!.year,
-              day.month,
-              day.day,
-            ),
-            end: DateTime(
-              day.year,
-              day.month,
-              day.day,
-            ),
+            start: dateStart,
+            end: dateEnd,
             room: room,
             status: status,
             history: history,
@@ -202,18 +232,14 @@ ${state.model?.history}
         }
         final eventId =
             await ref.read(eventRepositoryProvider).update(eventTemp);
-        if (status != state.model!.status) {
-          _updateAttendances(
-            eventId: eventId,
-            list: ref.read(attendancesOriginalProvider),
-            day: DateTime(
-              day.year,
-              day.month,
-              day.day,
-            ),
-            status: state.model!.status!,
-          );
-        }
+        // if (status != state.model!.status) {
+        _updateAttendances(
+          eventId: eventId,
+          list: ref.read(attendancesOriginalProvider),
+          dateStart: dateStart,
+          status: state.model!.status!,
+        );
+        // }
 
         await _updateRelations(
           modelId: eventId,
@@ -221,11 +247,7 @@ ${state.model?.history}
           selectedList: ref.read(attendancesSelectedProvider),
           relationColumn: 'attendances',
           relationTable: 'Attendance',
-          day: DateTime(
-            day.year,
-            day.month,
-            day.day,
-          ),
+          dateStart: dateStart,
         );
         ref.invalidate(eventListProvider);
         state = state.copyWith(status: EventFormStatus.success);
@@ -262,7 +284,7 @@ ${state.model?.history}
     required List<dynamic> selectedList,
     required String relationColumn,
     required String relationTable,
-    required DateTime day,
+    required DateTime dateStart,
   }) async {
     final List<dynamic> listResult = [...selectedList];
     final List<dynamic> listFinal = [...originalList];
@@ -324,7 +346,7 @@ ${state.model?.history}
           ''';
       await ref.read(attendanceRepositoryProvider).update(AttendanceModel(
           id: result.id,
-          attendance: day,
+          attendance: dateStart,
           history: history,
           status: StatusModel(id: '9WGnM73WBI')));
       //---
@@ -337,7 +359,7 @@ ${state.model?.history}
   Future<void> _updateAttendances({
     required String eventId,
     required List<AttendanceModel> list,
-    required DateTime day,
+    required DateTime dateStart,
     required StatusModel status,
   }) async {
     for (var attendance in list) {
@@ -347,7 +369,7 @@ ${state.model?.history}
 Em: ${DateTime.now()}
 Usuário: ${auth.user?.userName}
 Atualizando
-date: $day
+date: $dateStart
 Status: ${status.id}
 ${state.model?.history}
           ''';
@@ -355,7 +377,7 @@ ${state.model?.history}
             AttendanceModel(
               id: attendance.id,
               history: history,
-              attendance: day,
+              attendance: dateStart,
               status: status,
             ),
           );

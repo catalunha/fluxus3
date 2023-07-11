@@ -34,6 +34,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
   final _formKey = GlobalKey<FormState>();
   final _historyTec = TextEditingController();
   final dateFormat = DateFormat('dd/MM/y');
+  // final timeFormat = TimeOfDayFormat('HH:mm');
 
   @override
   void initState() {
@@ -99,35 +100,110 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Data do evento:'),
-                              const SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  final DateTime? newDate =
-                                      await showDatePicker(
-                                    context: context,
-                                    initialDate: ref.watch(dayProvider) ??
-                                        DateTime.now(),
-                                    firstDate: DateTime(DateTime.now().year),
-                                    lastDate: DateTime(DateTime.now().year + 1),
-                                  );
-                                  ref.watch(dayProvider.notifier).set(newDate);
-                                },
-                                child: const Icon(Icons.date_range),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(ref.watch(dayProvider) != null
-                                  ? dateFormat.format(ref.watch(dayProvider)!)
-                                  : 'Não informado'),
-                            ],
-                          ),
+                        Wrap(
+                          children: [
+                            Column(
+                              children: [
+                                const Text('Data do evento'),
+                                const SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final DateTime? newDate =
+                                        await showDatePicker(
+                                      context: context,
+                                      initialDate:
+                                          ref.watch(dateSelectedProvider) ??
+                                              DateTime.now(),
+                                      firstDate: DateTime(DateTime.now().year),
+                                      lastDate:
+                                          DateTime(DateTime.now().year + 1),
+                                    );
+                                    ref
+                                        .watch(dateSelectedProvider.notifier)
+                                        .set(newDate);
+                                  },
+                                  child: const Icon(Icons.date_range),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(ref.watch(dateSelectedProvider) != null
+                                    ? dateFormat.format(
+                                        ref.watch(dateSelectedProvider)!)
+                                    : 'Não informado'),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Column(
+                              children: [
+                                const Text('Horario de inicio'),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final TimeOfDay? newDate =
+                                        await showTimePicker(
+                                      context: context,
+                                      initialTime: ref.watch(
+                                                  startSelectedProvider) !=
+                                              null
+                                          ? ref.watch(startSelectedProvider)!
+                                          : const TimeOfDay(
+                                              hour: 10, minute: 00),
+                                      builder: (context, child) {
+                                        return MediaQuery(
+                                          data: MediaQuery.of(context).copyWith(
+                                              alwaysUse24HourFormat: true),
+                                          child: child ?? Container(),
+                                        );
+                                      },
+                                    );
+                                    ref
+                                        .watch(startSelectedProvider.notifier)
+                                        .set(newDate);
+                                  },
+                                  child: const Icon(Icons.timer),
+                                ),
+                                Text(ref.watch(startSelectedProvider) != null
+                                    ? ref
+                                        .watch(startSelectedProvider)!
+                                        .format(context)
+                                    : 'Não informado'),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Column(
+                              children: [
+                                const Text('Horario de fim'),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    final TimeOfDay? newDate =
+                                        await showTimePicker(
+                                      context: context,
+                                      initialTime:
+                                          ref.watch(endSelectedProvider) != null
+                                              ? ref.watch(endSelectedProvider)!
+                                              : const TimeOfDay(
+                                                  hour: 10, minute: 00),
+                                      builder: (context, child) {
+                                        return MediaQuery(
+                                          data: MediaQuery.of(context).copyWith(
+                                              alwaysUse24HourFormat: true),
+                                          child: child ?? Container(),
+                                        );
+                                      },
+                                    );
+                                    ref
+                                        .watch(endSelectedProvider.notifier)
+                                        .set(newDate);
+                                  },
+                                  child: const Icon(Icons.timer_outlined),
+                                ),
+                                Text(ref.watch(endSelectedProvider) != null
+                                    ? ref
+                                        .watch(endSelectedProvider)!
+                                        .format(context)
+                                    : 'Não informado'),
+                              ],
+                            ),
+                          ],
                         ),
-
                         const Text('Selecione uma sala'),
                         Row(
                           children: [

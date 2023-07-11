@@ -401,27 +401,28 @@ final goRouterProv = Provider<GoRouter>(
                         key: state.pageKey,
                       );
                     },
-                    routes: [
-                      GoRoute(
-                        path: AppPage.eventEdit.path,
-                        name: AppPage.eventEdit.name,
-                        builder: (context, state) {
-                          final id = state.extra as String?;
-                          return EventSavePage(
-                            key: state.pageKey,
-                            id: id,
-                          );
-                        },
-                      ),
-                    ],
+                    // routes: [
+                    //   GoRoute(
+                    //     path: AppPage.eventSave.path,
+                    //     name: AppPage.eventSave.name,
+                    //     builder: (context, state) {
+                    //       final id = state.extra as String?;
+                    //       return EventSavePage(
+                    //         key: state.pageKey,
+                    //         id: id,
+                    //       );
+                    //     },
+                    //   ),
+                    // ],
                   ),
                 ]),
             GoRoute(
-              path: AppPage.eventAdd.path,
-              name: AppPage.eventAdd.name,
+              path: AppPage.eventSave.path,
+              name: AppPage.eventSave.name,
               builder: (context, state) {
+                final id = state.extra as String?;
                 return EventSavePage(
-                  id: null,
+                  id: id,
                   key: state.pageKey,
                 );
               },
@@ -592,8 +593,7 @@ enum AppPage {
   attendanceEdit('attendanceEdit', 'attendanceEdit'),
   eventSearch('eventSearch', 'eventSearch'),
   eventList('eventList', 'eventList'),
-  eventEdit('eventEdit', 'eventEdit'),
-  eventAdd('eventAdd', 'eventAdd'),
+  eventSave('eventSave', 'eventSave'),
   schedule('schedule', 'schedule'),
   anamneseGroupList('anamneseGroupList', 'anamneseGroupList'),
   anamneseGroupSave('anamneseGroupSave', 'anamneseGroupSave'),

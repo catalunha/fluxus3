@@ -80,7 +80,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                 actions: [
                   IconButton(
                     onPressed: () {
-                      context.goNamed(AppPage.eventAdd.name);
+                      context.goNamed(AppPage.eventSave.name);
                     },
                     icon: const Icon(Icons.add),
                   ),
