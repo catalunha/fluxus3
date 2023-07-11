@@ -100,11 +100,12 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Text('Evento Id: ${widget.id}'),
                         Wrap(
                           children: [
                             Column(
                               children: [
-                                const Text('Data do evento'),
+                                const Text('* Data do evento'),
                                 const SizedBox(width: 10),
                                 ElevatedButton(
                                   onPressed: () async {
@@ -134,7 +135,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                             const SizedBox(width: 20),
                             Column(
                               children: [
-                                const Text('Horario de inicio'),
+                                const Text('* Horario de inicio'),
                                 ElevatedButton(
                                   onPressed: () async {
                                     final TimeOfDay? newDate =
@@ -170,7 +171,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                             const SizedBox(width: 20),
                             Column(
                               children: [
-                                const Text('Horario de fim'),
+                                const Text('* Horario de fim'),
                                 ElevatedButton(
                                   onPressed: () async {
                                     final TimeOfDay? newDate =
@@ -204,7 +205,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                             ),
                           ],
                         ),
-                        const Text('Selecione uma sala'),
+                        const Text('* Selecione uma sala'),
                         Row(
                           children: [
                             IconButton(
@@ -240,7 +241,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                                   icon: const Icon(Icons.delete))
                           ],
                         ),
-                        const Text('Selecione um status'),
+                        const Text('* Selecione um status'),
                         Row(
                           children: [
                             IconButton(
@@ -279,7 +280,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                                   icon: const Icon(Icons.delete))
                           ],
                         ),
-                        const Text('Selecione os atendimentos'),
+                        const Text('* Selecione os atendimentos'),
                         Row(
                           children: [
                             IconButton(

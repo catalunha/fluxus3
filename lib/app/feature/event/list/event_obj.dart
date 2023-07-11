@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/models/event_model.dart';
-import '../../../routes.dart';
 import '../../utils/app_datetime_value.dart';
 import '../../utils/app_text_title_value.dart';
 import '../save/event_save_page.dart';
@@ -85,7 +83,7 @@ class EventObj extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    context.goNamed(AppPage.eventSave.name, extra: model.id);
+                    // context.goNamed(AppPage.eventSave.name, extra: model.id);
 
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) {

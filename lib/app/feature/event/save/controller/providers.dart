@@ -14,6 +14,7 @@ import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/attendance_entity.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
+import '../../../utils/app_extensions.dart';
 import '../../search/controller/providers.dart';
 import 'states.dart';
 
@@ -185,77 +186,103 @@ class EventForm extends _$EventForm {
       final date = ref.read(dateSelectedProvider);
       final start = ref.read(startSelectedProvider);
       final end = ref.read(endSelectedProvider);
-      final DateTime dateStart =
-          DateTime(date!.year, date.month, date.day, start!.hour, start.minute);
-      final DateTime dateEnd =
-          DateTime(date.year, date.month, date.day, end!.hour, end.minute);
-
+      final status = ref.read(statusSelectedProvider);
       final room = ref.read(roomSelectedProvider);
-      bool checked = true;
-      if (room != state.model!.room) {
-        checked = await checkOverBook();
+      final attendancesUpdated = ref.read(attendancesSelectedProvider);
+      if (date == null ||
+          start == null ||
+          end == null ||
+          start.compareTo(end) == 0 ||
+          start.compareTo(end) > 0 ||
+          status == null ||
+          room == null ||
+          attendancesUpdated.isEmpty) {
+        state = state.copyWith(
+          status: EventFormStatus.error,
+          error:
+              'Faltam informações obrigatórias com * ou horários são incoerentes.',
+        );
+        return;
       }
-      if (checked) {
-        final auth = ref.read(authChNotProvider);
-        final status = ref.read(statusSelectedProvider);
 
-        history = '''
+      final DateTime dateStart =
+          DateTime(date.year, date.month, date.day, start.hour, start.minute);
+      final DateTime dateEnd =
+          DateTime(date.year, date.month, date.day, end.hour, end.minute);
+
+      // const bool checked = false;
+      if (state.model != null) {
+        if (dateStart.compareTo(state.model!.start!) != 0 ||
+            dateEnd.compareTo(state.model!.end!) != 0 ||
+            room != state.model!.room) {
+          // checked = await checkOverBook();
+          log('checkOverBook');
+        }
+      } else {
+        log('checkOverBook');
+        // checked = await checkOverBook();
+      }
+
+      // if (checked) {
+      //   state = state.copyWith(
+      //       status: EventFormStatus.overbook,
+      //       error: 'Já existe evento para este dia, hora e sala.');
+      //   // return;
+      // }
+
+      final auth = ref.read(authChNotProvider);
+
+      history = '''
 +++
 Em: ${DateTime.now()}
 Usuário: ${auth.user?.userName}
-Sala: ${room?.id}-${room?.name}
+Sala: ${room.id}-${room.name}
 start: $dateStart
 end: $dateEnd
-Status: ${status?.id}-${status?.name}
+Status: ${status.id}-${status.name}
 Atendimentos: ${ref.read(attendancesSelectedProvider).map((e) => e.id).toList()}
 Descrição: $history
 ${state.model?.history}
           ''';
 
-        EventModel? eventTemp;
-        if (state.model != null) {
-          eventTemp = state.model!.copyWith(
-            start: dateStart,
-            end: dateEnd,
-            room: room,
-            status: status,
-            history: history,
-          );
-        } else {
-          eventTemp = EventModel(
-            start: dateStart,
-            end: dateEnd,
-            room: room,
-            status: status,
-            history: history,
-          );
-        }
-        final eventId =
-            await ref.read(eventRepositoryProvider).update(eventTemp);
-        // if (status != state.model!.status) {
-        _updateAttendances(
-          eventId: eventId,
-          list: ref.read(attendancesOriginalProvider),
-          dateStart: dateStart,
-          status: state.model!.status!,
+      EventModel? eventTemp;
+      if (state.model != null) {
+        eventTemp = state.model!.copyWith(
+          start: dateStart,
+          end: dateEnd,
+          room: room,
+          status: status,
+          history: history,
         );
-        // }
-
-        await _updateRelations(
-          modelId: eventId,
-          originalList: ref.read(attendancesOriginalProvider),
-          selectedList: ref.read(attendancesSelectedProvider),
-          relationColumn: 'attendances',
-          relationTable: 'Attendance',
-          dateStart: dateStart,
-        );
-        ref.invalidate(eventListProvider);
-        state = state.copyWith(status: EventFormStatus.success);
       } else {
-        state = state.copyWith(
-            status: EventFormStatus.overbook,
-            error: 'Já existe evento para este dia, hora e sala.');
+        eventTemp = EventModel(
+          start: dateStart,
+          end: dateEnd,
+          room: room,
+          status: status,
+          history: history,
+        );
       }
+      final eventId = await ref.read(eventRepositoryProvider).update(eventTemp);
+      // if (status != state.model!.status) {
+      _updateAttendances(
+        eventId: eventId,
+        list: ref.read(attendancesOriginalProvider),
+        dateStart: dateStart,
+        status: status,
+      );
+      // }
+
+      await _updateRelations(
+        modelId: eventId,
+        originalList: ref.read(attendancesOriginalProvider),
+        selectedList: ref.read(attendancesSelectedProvider),
+        relationColumn: 'attendances',
+        relationTable: 'Attendance',
+        dateStart: dateStart,
+      );
+      ref.invalidate(eventListProvider);
+      state = state.copyWith(status: EventFormStatus.success);
     } catch (e, st) {
       log('$e');
       log('$st');
