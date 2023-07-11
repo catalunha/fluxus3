@@ -187,8 +187,8 @@ class PatientForm extends _$PatientForm {
 
   Future<void> submitForm({
     required String name,
-    required String email,
     required String nickname,
+    required String email,
     required String phone,
     required String cpf,
     required String address,
@@ -214,8 +214,8 @@ class PatientForm extends _$PatientForm {
       } else {
         patientTemp = PatientModel(
           name: name,
-          email: email,
           nickname: nickname,
+          email: email,
           phone: phone,
           cpf: cpf,
           address: address,

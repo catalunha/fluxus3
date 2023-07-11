@@ -85,8 +85,8 @@ class _PatientSavePageState extends ConsumerState<PatientSavePage>
           if (formValid) {
             ref.read(patientFormProvider.notifier).submitForm(
                   name: _nameTec.text,
-                  email: _emailTec.text,
                   nickname: _nicknameTec.text,
+                  email: _emailTec.text,
                   phone: _phoneTec.text,
                   cpf: _cpfTec.text,
                   address: _addressTec.text,
