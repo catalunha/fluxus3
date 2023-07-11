@@ -305,16 +305,16 @@ ${state.model?.history}
     }
   }
 
-  Future<List<dynamic>> _updateRelations({
+  Future<void> _updateRelations({
     required String modelId,
-    required List<dynamic> originalList,
-    required List<dynamic> selectedList,
+    required List<AttendanceModel> originalList,
+    required List<AttendanceModel> selectedList,
     required String relationColumn,
     required String relationTable,
     required DateTime dateStart,
   }) async {
-    final List<dynamic> listResult = [...selectedList];
-    final List<dynamic> listFinal = [...originalList];
+    final List<AttendanceModel> listResult = [...selectedList];
+    // final List<AttendanceModel> listFinal = [...originalList];
     final repository = ref.read(eventRepositoryProvider);
 
     for (var original in originalList) {
@@ -340,7 +340,7 @@ ${state.model?.history}
 
         await ref
             .read(attendanceRepositoryProvider)
-            .unset(original.id, AttendanceEntity.attendance);
+            .unset(original.id!, AttendanceEntity.attendance);
         await ref.read(attendanceRepositoryProvider).update(
               AttendanceModel(
                 id: original.id,
@@ -349,7 +349,7 @@ ${state.model?.history}
               ),
             );
         //---
-        listFinal.removeWhere((element) => element.id == original.id);
+        // listFinal.removeWhere((element) => element.id == original.id);
       } else {
         listResult.removeWhere((element) => element.id == original.id);
       }
@@ -378,9 +378,9 @@ ${state.model?.history}
           status: StatusModel(id: '9WGnM73WBI')));
       //---
 
-      listFinal.add(result);
+      // listFinal.add(result);
     }
-    return listFinal;
+    // return listFinal;
   }
 
   Future<void> _updateAttendances({
