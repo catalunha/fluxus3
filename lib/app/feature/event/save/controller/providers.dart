@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/models/attendance_model.dart';
 import '../../../../core/models/event_model.dart';
+import '../../../../core/models/log_model.dart';
 import '../../../../core/models/room_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
@@ -30,7 +31,6 @@ FutureOr<EventModel?> eventRead(EventReadRef ref, {required String? id}) async {
         EventEntity.room,
         EventEntity.status,
         EventEntity.attendances,
-        EventEntity.history,
       ],
       '${EventEntity.className}.pointers': [
         EventEntity.room,
@@ -211,16 +211,18 @@ class EventForm extends _$EventForm {
           DateTime(date.year, date.month, date.day, end.hour, end.minute);
 
       bool checked = false;
+      log('Start checkOverBook');
       if (state.model != null) {
         if (dateStart.compareTo(state.model!.start!) != 0 ||
             dateEnd.compareTo(state.model!.end!) != 0 ||
             room != state.model!.room) {
-          log('update event checkOverBook');
-          checked = await checkOverBook(dateStart, dateEnd, room);
+          log('eventId: ${state.model!.id}  checkOverBook');
+          checked =
+              await checkOverBook(state.model!.id, dateStart, dateEnd, room);
         }
       } else {
         log('new event checkOverBook');
-        checked = await checkOverBook(dateStart, dateEnd, room);
+        checked = await checkOverBook(null, dateStart, dateEnd, room);
       }
 
       if (checked) {
@@ -230,21 +232,6 @@ class EventForm extends _$EventForm {
         return;
       }
 
-      final auth = ref.read(authChNotProvider);
-
-      history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-Sala: ${room.id}-${room.name}
-start: $dateStart
-end: $dateEnd
-Status: ${status.id}-${status.name}
-Atendimentos: ${ref.read(attendancesSelectedProvider).map((e) => e.id).toList()}
-Descrição: $history
-${state.model?.history}
-          ''';
-
       EventModel? eventTemp;
       if (state.model != null) {
         eventTemp = state.model!.copyWith(
@@ -252,7 +239,6 @@ ${state.model?.history}
           end: dateEnd,
           room: room,
           status: status,
-          history: history,
         );
       } else {
         eventTemp = EventModel(
@@ -260,18 +246,18 @@ ${state.model?.history}
           end: dateEnd,
           room: room,
           status: status,
-          history: history,
         );
       }
+      _savingLog('${eventTemp.toString()} | $history');
+
       final eventId = await ref.read(eventRepositoryProvider).update(eventTemp);
-      // if (status != state.model!.status) {
       _updateAttendances(
         eventId: eventId,
         list: ref.read(attendancesOriginalProvider),
         dateStart: dateStart,
+        room: room,
         status: status,
       );
-      // }
 
       await _updateRelations(
         modelId: eventId,
@@ -329,14 +315,9 @@ ${state.model?.history}
           add: false,
         );
         //+++ atualizando atendimento de acordo com acoes do evento
-        final auth = ref.read(authChNotProvider);
-        final history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-Status: iaAbxHHkjm - Removido do evento
-${state.model?.history}
-          ''';
+
+        _savingLog(
+            'Removendo Attendance ${original.id!} em event. Set AttendanceEntity.attendance=null, AttendanceEntity.status=iaAbxHHkjm');
 
         await ref
             .read(attendanceRepositoryProvider)
@@ -344,12 +325,10 @@ ${state.model?.history}
         await ref.read(attendanceRepositoryProvider).update(
               AttendanceModel(
                 id: original.id,
-                history: history,
                 status: StatusModel(id: 'iaAbxHHkjm'),
               ),
             );
         //---
-        // listFinal.removeWhere((element) => element.id == original.id);
       } else {
         listResult.removeWhere((element) => element.id == original.id);
       }
@@ -363,19 +342,17 @@ ${state.model?.history}
         add: true,
       );
       //+++ atualizando atendimento de acordo com acoes do evento
-      final auth = ref.read(authChNotProvider);
-      final history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-Status: 9WGnM73WBI - Inserido num evento
-${state.model?.history}
-          ''';
-      await ref.read(attendanceRepositoryProvider).update(AttendanceModel(
-          id: result.id,
-          attendance: dateStart,
-          history: history,
-          status: StatusModel(id: '9WGnM73WBI')));
+
+      _savingLog(
+          'Inserido Attendance ${result.id!} em event. Set AttendanceEntity.attendance=$dateStart, AttendanceEntity.status=9WGnM73WBI');
+
+      await ref.read(attendanceRepositoryProvider).update(
+            AttendanceModel(
+              id: result.id,
+              attendance: dateStart,
+              status: StatusModel(id: '9WGnM73WBI'),
+            ),
+          );
       //---
 
       // listFinal.add(result);
@@ -387,23 +364,16 @@ ${state.model?.history}
     required String eventId,
     required List<AttendanceModel> list,
     required DateTime dateStart,
+    required RoomModel room,
     required StatusModel status,
   }) async {
     for (var attendance in list) {
-      final auth = ref.read(authChNotProvider);
-      final history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-Atualizando
-date: $dateStart
-Status: ${status.id}
-${state.model?.history}
-          ''';
+      _savingLog(
+          'update Attendance ${attendance.id!} em event to room ${room.name}. Set AttendanceEntity.attendance=$dateStart, AttendanceEntity.status=$status');
+
       await ref.read(attendanceRepositoryProvider).update(
             AttendanceModel(
               id: attendance.id,
-              history: history,
               attendance: dateStart,
               status: status,
             ),
@@ -412,17 +382,28 @@ ${state.model?.history}
   }
 
   Future<bool> checkOverBook(
-      DateTime start, DateTime end, RoomModel room) async {
+    String? currentId,
+    DateTime start,
+    DateTime end,
+    RoomModel room,
+  ) async {
     //  BD------S----------E------
     // 1 N---S------E-------------
     // 2 N--------S------E--------
     // 3 N--------------S------E--
     // 4 N---S---------------E----
+    log('+++ overbook:$currentId');
+    log('+++ overbook:$start');
+    log('+++ overbook:$end');
+    log('+++ overbook:$room');
     log('+++ overbook: Teste 1');
     //  BD------S----------E------
     // 1 N---S------E-------------
     QueryBuilder<ParseObject> query =
         QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    if (currentId != null) {
+      query.whereNotEqualTo(EventEntity.id, currentId);
+    }
     query.whereEqualTo(EventEntity.room,
         (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
     query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
@@ -435,6 +416,9 @@ ${state.model?.history}
     //  BD------S----------E------
     // 2 N--------S------E--------
     query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    if (currentId != null) {
+      query.whereNotEqualTo(EventEntity.id, currentId);
+    }
     query.whereEqualTo(EventEntity.room,
         (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
     query.whereLessThanOrEqualTo(EventEntity.start, start);
@@ -447,6 +431,9 @@ ${state.model?.history}
     //  BD------S----------E------
     // 3 N--------------S------E--
     query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    if (currentId != null) {
+      query.whereNotEqualTo(EventEntity.id, currentId);
+    }
     query.whereEqualTo(EventEntity.room,
         (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
     query.whereGreaterThanOrEqualsTo(EventEntity.end, start);
@@ -493,5 +480,17 @@ ${state.model?.history}
       log('overbook: true');
       return true;
     }
+  }
+
+  void _savingLog(String action) {
+    //Salvando dados em log
+    final logRepo = ref.read(logRepositoryProvider);
+    final auth = ref.read(authChNotProvider);
+    logRepo.save(LogModel(
+      userProfile: auth.user!.userProfile!.id,
+      table: 'event',
+      tableId: state.model != null ? state.model!.id! : 'new',
+      action: action,
+    ));
   }
 }

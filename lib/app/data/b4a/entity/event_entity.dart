@@ -14,7 +14,6 @@ class EventEntity {
   static const String room = 'room';
   static const String status = 'status';
   static const String attendances = 'attendances';
-  static const String history = 'history';
 
   Future<EventModel> toModel(
     ParseObject parseObject, {
@@ -61,7 +60,6 @@ class EventEntity {
       status: parseObject.get(EventEntity.status) != null
           ? StatusEntity().toModel(parseObject.get(EventEntity.status))
           : null,
-      history: parseObject.get(EventEntity.history),
     );
     return model;
   }
@@ -88,9 +86,7 @@ class EventEntity {
           (ParseObject(StatusEntity.className)..objectId = model.status!.id)
               .toPointer());
     }
-    if (model.history != null) {
-      parseObject.set(EventEntity.history, model.history);
-    }
+
     return parseObject;
   }
 

@@ -15,6 +15,5 @@ abstract class EventModel with _$EventModel {
     RoomModel? room,
     List<AttendanceModel>? attendances,
     StatusModel? status,
-    String? history,
   }) = _EventModel;
 }

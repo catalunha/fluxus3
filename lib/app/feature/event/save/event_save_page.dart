@@ -362,12 +362,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                           validator: Validatorless.required(
                               'Esta informação é obrigatória.'),
                         ),
-                        ExpansionTile(
-                          title: const Text('Histórico'),
-                          children: [
-                            Text('${formState.model?.history}'),
-                          ],
-                        ),
+
                         const SizedBox(height: 15),
                         // AppDelete(
                         //   isVisible: data != null,
