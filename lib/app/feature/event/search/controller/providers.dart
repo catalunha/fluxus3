@@ -246,7 +246,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
     //       EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
     // }
   }
-
+  //new in issue21
   query.orderByAscending(EventEntity.start);
   return await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
