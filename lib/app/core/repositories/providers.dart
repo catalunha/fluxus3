@@ -11,6 +11,7 @@ import 'event_repository.dart';
 import 'expertise_repository.dart';
 import 'healthplan_repository.dart';
 import 'healthplantype_repository.dart';
+import 'log_repository.dart';
 import 'office_repository.dart';
 import 'patient_repository.dart';
 import 'procedure_repository.dart';
@@ -126,4 +127,9 @@ AnamneseAnswerRepository anamneseAnswerRepository(
 @riverpod
 SharedRepository sharedRepository(SharedRepositoryRef ref) {
   return SharedRepository();
+}
+
+@riverpod
+LogRepository logRepository(LogRepositoryRef ref) {
+  return LogRepository();
 }

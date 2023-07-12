@@ -255,7 +255,6 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
-      EventEntity.history,
     ],
     '${EventEntity.className}.pointers': [
       EventEntity.room,

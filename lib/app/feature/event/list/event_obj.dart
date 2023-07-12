@@ -68,16 +68,6 @@ class EventObj extends StatelessWidget {
                 )
               ],
             ),
-            ExpansionTile(
-              title: const Text('Histórico'),
-              children: [
-                AppTextTitleValue(
-                  title: 'Histórico: ',
-                  value: '\n${model.history}',
-                  // inColumn: true,
-                ),
-              ],
-            ),
             Center(
               child: Wrap(children: [
                 IconButton(
