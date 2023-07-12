@@ -69,7 +69,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
     });
 
     final eventRead = ref.watch(eventReadProvider(id: widget.id));
-    final formState = ref.watch(eventFormProvider);
+    // final formState = ref.watch(eventFormProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar evento'),
@@ -79,7 +79,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
             ref
-                .read(eventFormProvider.notifier)
+                .watch(eventFormProvider.notifier)
                 .submitForm(history: _historyTec.text);
           }
         },
@@ -101,6 +101,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                     child: Column(
                       children: [
                         Text('Evento Id: ${widget.id}'),
+
                         Wrap(
                           children: [
                             Column(
@@ -362,7 +363,13 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
                           validator: Validatorless.required(
                               'Esta informação é obrigatória.'),
                         ),
-
+                        Visibility(
+                          visible: ref.watch(overbookListProvider).isNotEmpty,
+                          child: Text(
+                            'OverBook em: ${ref.watch(overbookListProvider).join(', ')}',
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ),
                         const SizedBox(height: 15),
                         // AppDelete(
                         //   isVisible: data != null,
