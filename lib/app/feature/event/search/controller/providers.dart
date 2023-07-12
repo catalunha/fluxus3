@@ -247,7 +247,7 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
     // }
   }
 
-  query.orderByAscending(EventEntity.start);
+  query.orderByAscending(EventEntity.start); //out of issue 21
   return await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
       EventEntity.start,
