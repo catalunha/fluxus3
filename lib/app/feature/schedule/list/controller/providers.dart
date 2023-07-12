@@ -27,6 +27,8 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
           .toPointer());
   final list = await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
+      EventEntity.start,
+      EventEntity.end,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
@@ -53,7 +55,7 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
 class FistDay extends _$FistDay {
   @override
   DateTime build() {
-    var firstDay = DateTime.now();
+    var firstDay = DateTime.now().subtract(const Duration(days: 3));
     firstDay = DateTime(firstDay.year, firstDay.month, firstDay.day);
     return firstDay;
   }

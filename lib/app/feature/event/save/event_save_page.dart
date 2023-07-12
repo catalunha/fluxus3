@@ -69,7 +69,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
     });
 
     final eventRead = ref.watch(eventReadProvider(id: widget.id));
-    // final formState = ref.watch(eventFormProvider);
+    final formState = ref.watch(eventFormProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar evento'),
@@ -79,7 +79,7 @@ class _EventSavePageState extends ConsumerState<EventSavePage>
           final formValid = _formKey.currentState?.validate() ?? false;
           if (formValid) {
             ref
-                .watch(eventFormProvider.notifier)
+                .read(eventFormProvider.notifier)
                 .submitForm(history: _historyTec.text);
           }
         },

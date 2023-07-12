@@ -62,13 +62,12 @@ class SchedulePage extends ConsumerWidget {
               title: dateFormatDay.format(dayMorning),
             ),
           );
+          log('dayMorning: $dayMorning');
           for (EventModel e in list) {
-            // final hourStartList =
-            //     e.hour!.start!.split(':').map((e) => int.parse(e)).toList();
-            // final dateTimeStart = e.day!.add(
-            //     Duration(hours: hourStartList[0], minutes: hourStartList[1]));
-            if (dayMorning.isBefore(DateTime.now()) &&
-                dayNight.isAfter(DateTime.now())) {
+            log('event.start: ${e.start}');
+            log('event.end: ${e.end}');
+
+            if (dayMorning.isBefore(e.start!) && dayNight.isAfter(e.end!)) {
               final List<String> texts = [];
               final List<String> tooltipMsgs = [];
               bool allConfirmedPresence = false;
@@ -86,15 +85,18 @@ class SchedulePage extends ConsumerWidget {
               allConfirmedPresence =
                   confirmedPresence != e.attendances?.length ? false : true;
               // }
+              log('event.start!.hour: ${e.start!.hour}');
+              log('event.start!.minute: ${e.start!.minute}');
+              log('event.start-end: ${e.start!.minute}');
               timePlannerTasks.add(
                 TimePlannerTask(
                   color: allConfirmedPresence ? Colors.green : Colors.black,
                   dateTime: TimePlannerDateTime(
                     day: day,
-                    hour: 10, //dateTimeStart.hour,
-                    minutes: 10, //dateTimeStart.minute,
+                    hour: e.start!.hour,
+                    minutes: e.start!.minute,
                   ),
-                  minutesDuration: 40,
+                  minutesDuration: e.end!.difference(e.start!).inMinutes,
                   // child: Container(
                   //   color: Colors.red,
                   //   child: const Text(
