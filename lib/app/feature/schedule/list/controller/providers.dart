@@ -8,12 +8,14 @@ import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/event_entity.dart';
 import '../../../../data/b4a/entity/room_entity.dart';
 import '../../../../data/b4a/entity/status_entity.dart';
+import 'states.dart';
 
 part 'providers.g.dart';
 
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
+  // ref.read(scheduleStatusStateProvider.notifier).set(ScheduleStatus.loading);
   final QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
   final firstDay = ref.read(fistDayProvider);
@@ -48,7 +50,20 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
 
   ref.read(eventsProvider.notifier).set(list);
   ref.read(eventsFilteredProvider.notifier).set(list);
+  ref.read(scheduleStatusStateProvider.notifier).set(ScheduleStatus.success);
   return list;
+}
+
+@riverpod
+class ScheduleStatusState extends _$ScheduleStatusState {
+  @override
+  ScheduleStatus build() {
+    return ScheduleStatus.initial;
+  }
+
+  void set(ScheduleStatus value) {
+    state = value;
+  }
 }
 
 @riverpod

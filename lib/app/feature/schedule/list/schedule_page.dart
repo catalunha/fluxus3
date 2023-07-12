@@ -14,12 +14,28 @@ import '../../status/select/status_select_page.dart';
 import '../confirm_presence/controller/providers.dart';
 import '../confirm_presence/schedule_presence.dart';
 import 'controller/providers.dart';
+import 'controller/states.dart';
 
 class SchedulePage extends ConsumerWidget {
   const SchedulePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<ScheduleStatus>(scheduleStatusStateProvider,
+        (previous, next) async {
+      // if (next.status == AttendancePresencFormStatus.error) {
+      //   hideLoader(context);
+      //   showMessageError(context, next.error);
+      // }
+      // if (next.status == AttendancePresencFormStatus.success) {
+      //   hideLoader(context); //sai do Dialog do loading
+      //   Navigator.of(context).pop();
+      // }
+      // if (next.status == AttendancePresencFormStatus.loading) {
+      //   showLoader(context);
+      // }
+    });
+
     final dateFormat = DateFormat('dd/MM', 'pt_BR');
     final dateFormatDay = DateFormat('E', 'pt_BR');
 
@@ -28,6 +44,7 @@ class SchedulePage extends ConsumerWidget {
     final rooms = ref.watch(roomsProvider);
     final roomSelected = ref.watch(roomSelectedProvider);
     final status = ref.watch(statusSelectedProvider);
+    // ref.watch(attendancePresencFormProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Agenda com ${list.asData?.value.length} eventos'),
@@ -62,10 +79,10 @@ class SchedulePage extends ConsumerWidget {
               title: dateFormatDay.format(dayMorning),
             ),
           );
-          log('dayMorning: $dayMorning');
+          // log('dayMorning: $dayMorning');
           for (EventModel e in list) {
-            log('event.start: ${e.start}');
-            log('event.end: ${e.end}');
+            // log('event.start: ${e.start}');
+            // log('event.end: ${e.end}');
 
             if (dayMorning.isBefore(e.start!) && dayNight.isAfter(e.end!)) {
               final List<String> texts = [];
@@ -77,19 +94,20 @@ class SchedulePage extends ConsumerWidget {
                   confirmedPresence++;
                 }
                 tooltipMsgs.add(
-                    '(${attendance.id}) ${attendance.confirmedPresence != null ? "+" : "-"}${attendance.patient?.nickname}, ${attendance.healthPlan?.healthPlanType?.name}, ${attendance.patient?.phone}. ${attendance.professional?.nickname}, ${attendance.procedure?.name}.');
+                    '[${attendance.id}] (${attendance.confirmedPresence != null ? "+" : "-"}${attendance.patient?.nickname}, ${attendance.healthPlan?.healthPlanType?.name}, ${attendance.patient?.phone}) {${attendance.professional?.nickname}, ${attendance.procedure?.name}}');
                 texts.add('${attendance.professional?.nickname}');
               }
-              texts
-                  .add('\n$confirmedPresence / ${e.attendances!.length} P/A. ');
+              texts.add('\n$confirmedPresence / ${e.attendances!.length}');
+              texts.add('\n${e.id}');
               allConfirmedPresence =
                   confirmedPresence != e.attendances?.length ? false : true;
               // }
-              log('event.start!.hour: ${e.start!.hour}');
-              log('event.start!.minute: ${e.start!.minute}');
-              log('event.start-end: ${e.start!.minute}');
+              // log('event.start!.hour: ${e.start!.hour}');
+              // log('event.start!.minute: ${e.start!.minute}');
+              // log('event.start-end: ${e.start!.minute}');
               timePlannerTasks.add(
                 TimePlannerTask(
+                  key: ValueKey(const Uuid().v4()),
                   color: allConfirmedPresence ? Colors.green : Colors.black,
                   dateTime: TimePlannerDateTime(
                     day: day,
@@ -103,6 +121,7 @@ class SchedulePage extends ConsumerWidget {
                   //       'aaa bbb ccc ddd eee fff ggg hhh iii jjj kkk lll mmm nnn ooo ppp qqq rrr sss ttt'),
                   // ),
                   child: InkWell(
+                    key: ValueKey(const Uuid().v4()),
                     onTap: () async {
                       ref
                           .watch(attendancePresencFormProvider.notifier)
@@ -123,7 +142,7 @@ class SchedulePage extends ConsumerWidget {
                         MaterialPageRoute(
                             builder: (_) => EventSavePage(id: e.id)),
                       );
-                      ref.invalidate(scheduleProvider);
+                      // ref.invalidate(scheduleProvider);
                     },
                     child: Tooltip(
                         message: tooltipMsgs.join('\n'),
@@ -312,8 +331,8 @@ class SchedulePage extends ConsumerWidget {
         );
       }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
+        onPressed: () async {
+          await Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (_) => const EventSavePage(
                       id: null,

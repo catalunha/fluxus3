@@ -29,6 +29,7 @@ class AttendancePresencForm extends _$AttendancePresencForm {
       }
     }
     state = state.copyWith(confirmed: confirmeds);
+    log('AttendancePresencForm set ${values.length}');
   }
 
   bool contains(AttendanceModel value) {
@@ -37,6 +38,7 @@ class AttendancePresencForm extends _$AttendancePresencForm {
 
   void add(AttendanceModel value) {
     state = state.copyWith(confirmed: [...state.confirmed, value]);
+    log('AttendancePresencForm add ${value.id}');
   }
 
   void remove(AttendanceModel value) {
@@ -45,20 +47,23 @@ class AttendancePresencForm extends _$AttendancePresencForm {
     if (index >= 0) {
       final temp = [...state.confirmed];
       temp.removeAt(index);
-      state = state.copyWith(confirmed: temp);
+      state = state.copyWith(confirmed: [...temp]);
     }
+    log('AttendancePresencForm remove ${value.id}');
   }
 
   Future<void> confirm() async {
     state = state.copyWith(status: AttendancePresencFormStatus.loading);
 
     try {
+      log('AttendancePresencForm confirm ${state.all.length}');
+
       for (var attendance in state.all) {
         if (state.confirmed.contains(attendance)) {
-          if (attendance.confirmedPresence == null) {
-            final auth = ref.read(authChNotProvider);
+          // if (attendance.confirmedPresence == null) {
+          final auth = ref.read(authChNotProvider);
 
-            final history = '''
+          final history = '''
 +++
 Em: ${DateTime.now()}
 Usuário: ${auth.user?.userName}
@@ -66,37 +71,36 @@ Status: RnW37csoJU - presença confirmada
 history: presença confirmada
 ${attendance.history}
           ''';
-            final attendanceTemp = attendance.copyWith(
-              status: StatusModel(id: 'RnW37csoJU'),
-              history: history,
-            );
+          final attendanceTemp = attendance.copyWith(
+            status: StatusModel(id: 'RnW37csoJU'),
+            history: history,
+          );
 
-            await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
-            await ref
-                .read(attendanceRepositoryProvider)
-                .confirmPresence(attendance.id!);
-          }
+          await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
+          await ref
+              .read(attendanceRepositoryProvider)
+              .confirmPresence(attendance.id!);
+          // }
         } else {
           if (attendance.confirmedPresence != null) {
-            final auth = ref.read(authChNotProvider);
+//             final auth = ref.read(authChNotProvider);
 
-            final history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-Status: 9WGnM73WBI - Inserido num evento
-history: Inserido num evento
-${attendance.history}
-          ''';
+//             final history = '''
+// +++
+// Em: ${DateTime.now()}
+// Usuário: ${auth.user?.userName}
+// Status: 9WGnM73WBI - Inserido num evento
+// history: Inserido num evento
+// ${attendance.history}
+//           ''';
             final attendanceTemp = attendance.copyWith(
               status: StatusModel(id: '9WGnM73WBI'),
-              history: history,
             );
             await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
 
             await ref
                 .read(attendanceRepositoryProvider)
-                .unset(attendance.id!, AttendanceEntity.attendance);
+                .unset(attendance.id!, AttendanceEntity.confirmedPresence);
           }
         }
       }

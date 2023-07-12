@@ -189,7 +189,7 @@ class AttendancesSelected extends _$AttendancesSelected {
   }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 class EventForm extends _$EventForm {
   @override
   EventFormState build() {
@@ -202,7 +202,6 @@ class EventForm extends _$EventForm {
     state = state.copyWith(model: model);
   }
 
-  @riverpod
   Future<void> submitForm({required String history}) async {
     state = state.copyWith(status: EventFormStatus.loading);
     try {
