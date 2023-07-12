@@ -193,13 +193,16 @@ class AttendancesSelected extends _$AttendancesSelected {
 class EventForm extends _$EventForm {
   @override
   EventFormState build() {
+    log('====> build eventFormProvider');
     return EventFormState();
   }
 
   void setModel(EventModel? model) {
+    log('====> setModel eventFormProvider');
     state = state.copyWith(model: model);
   }
 
+  @riverpod
   Future<void> submitForm({required String history}) async {
     state = state.copyWith(status: EventFormStatus.loading);
     try {
@@ -235,7 +238,7 @@ class EventForm extends _$EventForm {
       ref.read(overbookListProvider.notifier).clear();
       if (state.model != null) {
         checked =
-            await checkOverBookOr(state.model!.id, dateStart, dateEnd, room);
+            await checkOverBook(state.model!.id, dateStart, dateEnd, room);
         // if (dateStart.compareTo(state.model!.start!) != 0 ||
         //     dateEnd.compareTo(state.model!.end!) != 0 ||
         //     room != state.model!.room) {
@@ -245,7 +248,7 @@ class EventForm extends _$EventForm {
         // }
       } else {
         log('new event checkOverBook');
-        checked = await checkOverBookOr(null, dateStart, dateEnd, room);
+        checked = await checkOverBook(null, dateStart, dateEnd, room);
       }
 
       if (checked) {

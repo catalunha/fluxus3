@@ -27,6 +27,8 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
           .toPointer());
   final list = await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
+      EventEntity.start,
+      EventEntity.end,
       EventEntity.room,
       EventEntity.status,
       EventEntity.attendances,
