@@ -146,6 +146,26 @@ class AttendancesOriginal extends _$AttendancesOriginal {
 }
 
 @riverpod
+class OverbookList extends _$OverbookList {
+  @override
+  List<String> build() {
+    return [];
+  }
+
+  void set(List<String> list) {
+    state = list;
+  }
+
+  void add(String value) {
+    state = [...state, value];
+  }
+
+  void clear() {
+    state = [];
+  }
+}
+
+@riverpod
 class AttendancesSelected extends _$AttendancesSelected {
   @override
   List<AttendanceModel> build() {
@@ -169,7 +189,7 @@ class AttendancesSelected extends _$AttendancesSelected {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class EventForm extends _$EventForm {
   @override
   EventFormState build() {
@@ -212,14 +232,17 @@ class EventForm extends _$EventForm {
 
       bool checked = false;
       log('Start checkOverBook');
+      ref.read(overbookListProvider.notifier).clear();
       if (state.model != null) {
-        if (dateStart.compareTo(state.model!.start!) != 0 ||
-            dateEnd.compareTo(state.model!.end!) != 0 ||
-            room != state.model!.room) {
-          log('eventId: ${state.model!.id}  checkOverBook');
-          checked =
-              await checkOverBookOr(state.model!.id, dateStart, dateEnd, room);
-        }
+        checked =
+            await checkOverBookOr(state.model!.id, dateStart, dateEnd, room);
+        // if (dateStart.compareTo(state.model!.start!) != 0 ||
+        //     dateEnd.compareTo(state.model!.end!) != 0 ||
+        //     room != state.model!.room) {
+        //   log('eventId: ${state.model!.id}  checkOverBook');
+        //   checked =
+        //       await checkOverBookOr(state.model!.id, dateStart, dateEnd, room);
+        // }
       } else {
         log('new event checkOverBook');
         checked = await checkOverBookOr(null, dateStart, dateEnd, room);
@@ -454,6 +477,8 @@ class EventForm extends _$EventForm {
     queryFinal.whereNotEqualTo(EventEntity.id, currentId);
 
     final result = await queryOverbook(queryFinal);
+    log('overbookOr: $result');
+
     if (result) {
       return true;
     }
@@ -554,13 +579,14 @@ class EventForm extends _$EventForm {
       // ]
     });
     for (final element in list) {
-      log('overbook: $element');
+      log('queryOverbook: $element');
+      ref.read(overbookListProvider.notifier).add(element.id!);
     }
     if (list.isEmpty) {
-      log('overbook: false');
+      log('queryOverbook: false');
       return false;
     } else {
-      log('overbook: true');
+      log('queryOverbook: true');
       return true;
     }
   }
