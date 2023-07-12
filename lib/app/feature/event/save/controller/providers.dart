@@ -218,11 +218,11 @@ class EventForm extends _$EventForm {
             room != state.model!.room) {
           log('eventId: ${state.model!.id}  checkOverBook');
           checked =
-              await checkOverBook(state.model!.id, dateStart, dateEnd, room);
+              await checkOverBookOr(state.model!.id, dateStart, dateEnd, room);
         }
       } else {
         log('new event checkOverBook');
-        checked = await checkOverBook(null, dateStart, dateEnd, room);
+        checked = await checkOverBookOr(null, dateStart, dateEnd, room);
       }
 
       if (checked) {
@@ -379,6 +379,85 @@ class EventForm extends _$EventForm {
             ),
           );
     }
+  }
+
+  Future<bool> checkOverBookOr(
+    String? currentId,
+    DateTime start,
+    DateTime end,
+    RoomModel room,
+  ) async {
+    //  BD------S----------E------
+    // 1 N---S------E-------------
+    // 2 N--------S------E--------
+    // 3 N--------------S------E--
+    // 4 N---S---------------E----
+    log('+++ overbookOr');
+    log('+++ overbook:$currentId');
+    log('+++ overbook:$start');
+    log('+++ overbook:$end');
+    log('+++ overbook:$room');
+    log('+++ overbook: Teste 1');
+    //  BD------S----------E------
+    // 1 N---S------E-------------
+    final QueryBuilder<ParseObject> query1 =
+        QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    // if (currentId != null) {
+    //   query1.whereNotEqualTo(EventEntity.id, currentId);
+    // }
+    query1.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query1.whereGreaterThanOrEqualsTo(EventEntity.start, start);
+    query1.whereLessThanOrEqualTo(EventEntity.start, end);
+
+    log('+++ overbook: Teste 2');
+    //  BD------S----------E------
+    // 2 N--------S------E--------
+    final QueryBuilder<ParseObject> query2 =
+        QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    // if (currentId != null) {
+    //   query2.whereNotEqualTo(EventEntity.id, currentId);
+    // }
+    query2.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query2.whereLessThanOrEqualTo(EventEntity.start, start);
+    query2.whereGreaterThanOrEqualsTo(EventEntity.end, end);
+
+    log('+++ overbook: Teste 3');
+    //  BD------S----------E------
+    // 3 N--------------S------E--
+    final QueryBuilder<ParseObject> query3 =
+        QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    // if (currentId != null) {
+    //   query3.whereNotEqualTo(EventEntity.id, currentId);
+    // }
+    query3.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query3.whereGreaterThanOrEqualsTo(EventEntity.end, start);
+    query3.whereLessThanOrEqualTo(EventEntity.end, end);
+
+    log('+++ overbook: Teste 4');
+    //  BD------S----------E------
+    // 4 N---S---------------E----
+    final QueryBuilder<ParseObject> query4 =
+        QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    // if (currentId != null) {
+    //   query4.whereNotEqualTo(EventEntity.id, currentId);
+    // }
+    query4.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query4.whereGreaterThanOrEqualsTo(EventEntity.start, start);
+    query4.whereLessThanOrEqualTo(EventEntity.end, end);
+
+    final QueryBuilder<ParseObject> queryFinal = QueryBuilder.or(
+        ParseObject(EventEntity.className), [query1, query2, query3, query4]);
+    queryFinal.whereNotEqualTo(EventEntity.id, currentId);
+
+    final result = await queryOverbook(queryFinal);
+    if (result) {
+      return true;
+    }
+    return false;
   }
 
   Future<bool> checkOverBook(
