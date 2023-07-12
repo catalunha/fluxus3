@@ -2,6 +2,10 @@
 
 cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define-from-file=lib/app/core/keys/keys.json && cd back4app/fluxus3 && b4a deploy
 
+Version | deploy
+---|---
+3.0.4 | 56
+
 # vscode
 
 cd ~/myapp/cemec.net.br/fluxus3 && flutter build web --dart-define=keyApplicationId=123 --dart-define=keyClientKey=456  && cd back4app/fluxus3 && b4a deploy
