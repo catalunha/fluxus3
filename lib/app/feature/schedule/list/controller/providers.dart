@@ -55,7 +55,7 @@ FutureOr<List<EventModel>> schedule(ScheduleRef ref) async {
 class FistDay extends _$FistDay {
   @override
   DateTime build() {
-    var firstDay = DateTime.now();
+    var firstDay = DateTime.now().subtract(const Duration(days: 3));
     firstDay = DateTime(firstDay.year, firstDay.month, firstDay.day);
     return firstDay;
   }
