@@ -442,16 +442,20 @@ class EventForm extends _$EventForm {
     if (result) {
       return true;
     }
-    //   log('+++ overbook: Teste 4');
-    //   //  BD------S----------E------
-    //   // 4 N---S---------------E----
-    //   final QueryBuilder<ParseObject> query =
-    //       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-    //   query.whereEqualTo(EventEntity.room,
-    //       (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
-    //   query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
-    //   query.whereLessThanOrEqualTo(EventEntity.end, end);
-    //   await queryOverbook(query);
+    log('+++ overbook: Teste 4');
+    //  BD------S----------E------
+    // 4 N---S---------------E----
+    query = QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
+    if (currentId != null) {
+      query.whereNotEqualTo(EventEntity.id, currentId);
+    }
+    query.whereEqualTo(EventEntity.room,
+        (ParseObject(RoomEntity.className)..objectId = room.id).toPointer());
+    query.whereGreaterThanOrEqualsTo(EventEntity.start, start);
+    query.whereLessThanOrEqualTo(EventEntity.end, end);
+    if (result) {
+      return true;
+    }
 
     return false;
   }
