@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/attendance_model.dart';
+import '../../../../core/models/log_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../../../data/b4a/entity/attendance_entity.dart';
@@ -60,48 +61,45 @@ class AttendancePresencForm extends _$AttendancePresencForm {
 
       for (var attendance in state.all) {
         if (state.confirmed.contains(attendance)) {
-          // if (attendance.confirmedPresence == null) {
-          final auth = ref.read(authChNotProvider);
-
-          final history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-Status: RnW37csoJU - presença confirmada
-history: presença confirmada
-${attendance.history}
-          ''';
           final attendanceTemp = attendance.copyWith(
             status: StatusModel(id: 'RnW37csoJU'),
-            history: history,
           );
+          //log
+          final logRepo = ref.read(logRepositoryProvider);
+          final auth = ref.read(authChNotProvider);
+          logRepo.save(LogModel(
+            userProfile: auth.user!.userProfile!.id,
+            table: 'Attendance',
+            tableId: attendance.id!,
+            action: 'Status: RnW37csoJU - presença confirmada. ',
+          ));
+          //log
 
           await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
           await ref
               .read(attendanceRepositoryProvider)
               .confirmPresence(attendance.id!);
-          // }
         } else {
-          if (attendance.confirmedPresence != null) {
-//             final auth = ref.read(authChNotProvider);
+          //log
+          final logRepo = ref.read(logRepositoryProvider);
+          final auth = ref.read(authChNotProvider);
+          logRepo.save(LogModel(
+            userProfile: auth.user!.userProfile!.id,
+            table: 'Attendance',
+            tableId: attendance.id!,
+            action:
+                '9WGnM73WBI - Inserido num evento. presença não confirmada. ',
+          ));
+          //log
 
-//             final history = '''
-// +++
-// Em: ${DateTime.now()}
-// Usuário: ${auth.user?.userName}
-// Status: 9WGnM73WBI - Inserido num evento
-// history: Inserido num evento
-// ${attendance.history}
-//           ''';
-            final attendanceTemp = attendance.copyWith(
-              status: StatusModel(id: '9WGnM73WBI'),
-            );
-            await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
+          final attendanceTemp = attendance.copyWith(
+            status: StatusModel(id: '9WGnM73WBI'),
+          );
+          await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
 
-            await ref
-                .read(attendanceRepositoryProvider)
-                .unset(attendance.id!, AttendanceEntity.confirmedPresence);
-          }
+          await ref
+              .read(attendanceRepositoryProvider)
+              .unset(attendance.id!, AttendanceEntity.confirmedPresence);
         }
       }
       ref.invalidate(scheduleProvider);

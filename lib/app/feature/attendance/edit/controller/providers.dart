@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/authentication/riverpod/auth_prov.dart';
 import '../../../../core/models/attendance_model.dart';
+import '../../../../core/models/log_model.dart';
 import '../../../../core/models/status_model.dart';
 import '../../../../core/repositories/providers.dart';
 import '../../search/controller/providers.dart';
@@ -89,26 +90,15 @@ class AttendanceForm extends _$AttendanceForm {
       final authorizationDateCreate = ref.read(authorizationDateCreateProvider);
       final authorizationDateLimit = ref.read(authorizationDateLimitProvider);
       final status = ref.read(statusSelectedProvider);
-      final auth = ref.read(authChNotProvider);
 
-      history = '''
-+++
-Em: ${DateTime.now()}
-Usuário: ${auth.user?.userName}
-AutCode.: $authorizationCode
-AutCreate.: $authorizationDateCreate
-AutLimite.: $authorizationDateLimit
-Status: ${status?.id}-${status?.name}
-Descrição: $history
-${state.model?.history}
-          ''';
       final attendanceTemp = state.model!.copyWith(
         authorizationCode: authorizationCode,
-        history: history,
         authorizationDateCreated: authorizationDateCreate,
         authorizationDateLimit: authorizationDateLimit,
         status: status,
       );
+      _savingLog('${attendanceTemp.toString()} | $history');
+
       await ref.read(attendanceRepositoryProvider).update(attendanceTemp);
       ref.invalidate(attendanceListProvider);
       state = state.copyWith(status: AttendanceFormStatus.success);
@@ -118,6 +108,18 @@ ${state.model?.history}
       state = state.copyWith(
           status: AttendanceFormStatus.error, error: 'Erro em editar cargo');
     }
+  }
+
+  void _savingLog(String action) {
+    //Salvando dados em log
+    final logRepo = ref.read(logRepositoryProvider);
+    final auth = ref.read(authChNotProvider);
+    logRepo.save(LogModel(
+      userProfile: auth.user!.userProfile!.id,
+      table: 'Attendance',
+      tableId: state.model != null ? state.model!.id! : 'new',
+      action: action,
+    ));
   }
 
   Future<void> delete() async {

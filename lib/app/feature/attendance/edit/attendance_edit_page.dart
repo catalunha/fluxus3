@@ -228,12 +228,7 @@ class _AttendanceEditPageState extends ConsumerState<AttendanceEditPage>
                           validator: Validatorless.required(
                               'Esta informação é obrigatória.'),
                         ),
-                        ExpansionTile(
-                          title: const Text('Histórico'),
-                          children: [
-                            Text('${formState.model?.history}'),
-                          ],
-                        ),
+
                         // AppDelete(
                         //   isVisible: data != null,
                         //   action: () {

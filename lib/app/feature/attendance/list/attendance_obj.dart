@@ -85,16 +85,6 @@ class AttendanceObj extends StatelessWidget {
               title: 'Status: ',
               value: model.status?.name,
             ),
-            ExpansionTile(
-              title: const Text('Histórico'),
-              children: [
-                AppTextTitleValue(
-                  title: 'Histórico: ',
-                  value: '\n${model.history}',
-                  // inColumn: true,
-                ),
-              ],
-            ),
             Center(
               child: Wrap(children: [
                 IconButton(
