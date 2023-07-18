@@ -229,9 +229,9 @@ class EventForm extends _$EventForm {
 
       final DateTime dateStart =
           DateTime(date.year, date.month, date.day, start.hour, start.minute);
-      final DateTime dateEnd =
+      final DateTime dateEndTemp =
           DateTime(date.year, date.month, date.day, end.hour, end.minute);
-
+      final DateTime dateEnd = dateEndTemp.subtract(const Duration(minutes: 5));
       bool checked = false;
       log('Start checkOverBook');
       ref.read(overbookListProvider.notifier).clear();

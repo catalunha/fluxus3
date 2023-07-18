@@ -23,68 +23,44 @@ part 'providers.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 FutureOr<List<EventModel>> eventList(EventListRef ref) async {
+  log('+++ eventList');
   QueryBuilder<ParseObject> query =
       QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
-  if (ref.read(dateSelectProvider)) {
-    final start = ref.read(startSearchProvider);
-    final end = ref.read(endSearchProvider);
-    query.whereGreaterThanOrEqualsTo(
-        EventEntity.start, DateTime(start.year, start.month, start.day));
-    query.whereLessThanOrEqualTo(
-        EventEntity.end, DateTime(end.year, end.month, end.day, 23, 59));
-  }
 
   if (ref.read(roomSelectProvider)) {
     query.whereEqualTo(
         EventEntity.room,
-        (ParseObject(RoomEntity.className)
-              ..objectId = ref.read(roomSelectedProvider)!.id)
-            .toPointer());
+        ParseObject(RoomEntity.className)
+          ..objectId = ref.read(roomSelectedProvider)!.id);
   }
   if (ref.read(statusSelectProvider)) {
     query.whereEqualTo(
         EventEntity.status,
-        (ParseObject(StatusEntity.className)
-              ..objectId = ref.read(statusSelectedProvider)!.id)
-            .toPointer());
+        ParseObject(StatusEntity.className)
+          ..objectId = ref.read(statusSelectedProvider)!.id);
   }
   if (ref.read(professionalSelectProvider)) {
-    log(ref.read(professionalSelectedProvider)!.id);
+    log('professionalSelectedProvider: ${ref.read(professionalSelectedProvider)!.id}');
     final QueryBuilder<ParseObject> queryAttendance =
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
         AttendanceEntity.professional,
-        (ParseObject(UserProfileEntity.className)
-              ..objectId = ref.read(professionalSelectedProvider)!.id)
-            .toPointer());
-    if (ref.read(dateSelectProvider)) {
-      final start = ref.read(startSearchProvider);
-      final end = ref.read(endSearchProvider);
-      queryAttendance.whereGreaterThanOrEqualsTo(
-          AttendanceEntity.authorizationDateCreated,
-          DateTime(start.year, start.month, start.day));
-      queryAttendance.whereLessThanOrEqualTo(
-          AttendanceEntity.authorizationDateCreated,
-          DateTime(end.year, end.month, end.day, 23, 59));
-    }
+        ParseObject(UserProfileEntity.className)
+          ..objectId = ref.read(professionalSelectedProvider)!.id);
+
     final list = await ref.read(attendanceRepositoryProvider).list(
       queryAttendance,
       cols: {
         '${AttendanceEntity.className}.cols': [AttendanceEntity.id]
       },
     );
-    // for (var element in list) {
-    //   print('${element.id}');
-    // }
-
     List<QueryBuilder<ParseObject>> listQueries = [];
     for (var element in list) {
       final QueryBuilder<ParseObject> queryTemp =
           QueryBuilder<ParseObject>(ParseObject(EventEntity.className));
       queryTemp.whereEqualTo(
         EventEntity.attendances,
-        (ParseObject(AttendanceEntity.className)..objectId = element.id)
-            .toPointer(),
+        ParseObject(AttendanceEntity.className)..objectId = element.id,
       );
 
       listQueries.add(queryTemp);
@@ -94,14 +70,14 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
       listQueries,
     );
 
-    // if (ref.read(dateSelectProvider)) {
+    // // if (ref.read(dateSelectProvider)) {
     //   final start = ref.read(startSearchProvider);
     //   final end = ref.read(endSearchProvider);
     //   query.whereGreaterThanOrEqualsTo(
-    //       EventEntity.day, DateTime(start.year, start.month, start.day));
+    //       EventEntity.start, DateTime(start.year, start.month, start.day));
     //   query.whereLessThanOrEqualTo(
-    //       EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
-    // }
+    //       EventEntity.start, DateTime(end.year, end.month, end.day, 23, 59));
+    // // }
   }
   // if (ref.read(procedureSelectProvider)) {
   //   final QueryBuilder<ParseObject> queryAttendance =
@@ -119,20 +95,8 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
         AttendanceEntity.procedure,
-        (ParseObject(ProcedureEntity.className)
-              ..objectId = ref.read(procedureSelectedProvider)!.id)
-            .toPointer());
-
-    if (ref.read(dateSelectProvider)) {
-      final start = ref.read(startSearchProvider);
-      final end = ref.read(endSearchProvider);
-      queryAttendance.whereGreaterThanOrEqualsTo(
-          AttendanceEntity.authorizationDateCreated,
-          DateTime(start.year, start.month, start.day));
-      queryAttendance.whereLessThanOrEqualTo(
-          AttendanceEntity.authorizationDateCreated,
-          DateTime(end.year, end.month, end.day, 23, 59));
-    }
+        ParseObject(ProcedureEntity.className)
+          ..objectId = ref.read(procedureSelectedProvider)!.id);
     final list = await ref.read(attendanceRepositoryProvider).list(
       queryAttendance,
       cols: {
@@ -157,7 +121,8 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
         (ParseObject(AttendanceEntity.className)..objectId = element.id)
             .toPointer(),
       );
-      if (index > 60) {
+      if (index > 50) {
+        log('Stop search in Procedure $index');
         break;
       } else {
         index++;
@@ -195,19 +160,8 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
         QueryBuilder<ParseObject>(ParseObject(AttendanceEntity.className));
     queryAttendance.whereEqualTo(
         AttendanceEntity.patient,
-        (ParseObject(PatientEntity.className)
-              ..objectId = ref.read(patientSelectedProvider)!.id)
-            .toPointer());
-    if (ref.read(dateSelectProvider)) {
-      final start = ref.read(startSearchProvider);
-      final end = ref.read(endSearchProvider);
-      queryAttendance.whereGreaterThanOrEqualsTo(
-          AttendanceEntity.authorizationDateCreated,
-          DateTime(start.year, start.month, start.day));
-      queryAttendance.whereLessThanOrEqualTo(
-          AttendanceEntity.authorizationDateCreated,
-          DateTime(end.year, end.month, end.day, 23, 59));
-    }
+        ParseObject(PatientEntity.className)
+          ..objectId = ref.read(patientSelectedProvider)!.id);
     final list = await ref.read(attendanceRepositoryProvider).list(
       queryAttendance,
       cols: {
@@ -246,8 +200,20 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
     //       EventEntity.day, DateTime(end.year, end.month, end.day, 23, 59));
     // }
   }
+  // if (ref.read(dateSelectProvider)) {
+  final start = ref.read(startSearchProvider);
+  final end = ref.read(endSearchProvider);
+  log('start: $start');
+  log('end: $end');
+  query.whereGreaterThanOrEqualsTo(
+      EventEntity.start, DateTime(start.year, start.month, start.day));
+  query.whereLessThanOrEqualTo(
+      EventEntity.start, DateTime(end.year, end.month, end.day, 23, 59));
+  // }
 
-  query.orderByAscending(EventEntity.start); //out of issue 21
+  query.orderByAscending(EventEntity.start);
+  log('--- eventList');
+
   return await ref.read(eventRepositoryProvider).list(query, cols: {
     '${EventEntity.className}.cols': [
       EventEntity.start,
@@ -263,23 +229,23 @@ FutureOr<List<EventModel>> eventList(EventListRef ref) async {
   });
 }
 
-@riverpod
-class DateSelect extends _$DateSelect {
-  @override
-  bool build() {
-    return false;
-  }
+// @riverpod
+// class DateSelect extends _$DateSelect {
+//   @override
+//   bool build() {
+//     return false;
+//   }
 
-  void set(bool value) {
-    state = value;
-  }
-}
+//   void set(bool value) {
+//     state = value;
+//   }
+// }
 
 @riverpod
 class StartSearch extends _$StartSearch {
   @override
   DateTime build() {
-    return DateTime.now().subtract(const Duration(days: 7));
+    return DateTime.now().subtract(const Duration(days: 15));
   }
 
   void set(DateTime value) {
@@ -291,7 +257,7 @@ class StartSearch extends _$StartSearch {
 class EndSearch extends _$EndSearch {
   @override
   DateTime build() {
-    return DateTime.now().add(const Duration(days: 15));
+    return DateTime.now().add(const Duration(days: 7));
   }
 
   void set(DateTime value) {

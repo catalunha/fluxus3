@@ -43,11 +43,11 @@ class EventSearchPage extends ConsumerWidget {
                     const Text('Data do evento:'),
                     Row(
                       children: [
-                        Switch(
-                            value: ref.watch(dateSelectProvider),
-                            onChanged: (value) {
-                              ref.read(dateSelectProvider.notifier).set(value);
-                            }),
+                        // Switch(
+                        //     value: ref.watch(dateSelectProvider),
+                        //     onChanged: (value) {
+                        //       ref.read(dateSelectProvider.notifier).set(value);
+                        //     }),
                         Expanded(
                           child: Wrap(
                             children: [

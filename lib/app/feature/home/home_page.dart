@@ -32,7 +32,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Text('Fluxus versão: 3.0.4'),
+              const Text('Fluxus versão: 3.0.5'),
               Wrap(
                 children: [
                   HomeModule(
