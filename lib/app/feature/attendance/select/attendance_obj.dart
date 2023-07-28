@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/attendance_model.dart';
+import '../../utils/app_datetime_format.dart';
 import '../../utils/app_text_title_value.dart';
 import 'controller/providers.dart';
 
@@ -44,6 +45,10 @@ class AttendanceObj extends ConsumerWidget {
               AppTextTitleValue(
                 title: 'Paciente: ',
                 value: model.patient?.name,
+              ),
+              AppTextTitleValue(
+                title: 'Data da criação da autorização: ',
+                value: appDateFormat(model.authorizationDateCreated),
               ),
             ],
           ),
