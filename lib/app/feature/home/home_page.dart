@@ -32,7 +32,7 @@ class HomePage extends ConsumerWidget with Loader, Messages {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Text('Fluxus versão: 3.0.6'),
+              const Text('Fluxus versão: 3.0.7'),
               Wrap(
                 children: [
                   HomeModule(
@@ -235,48 +235,51 @@ class HomePage extends ConsumerWidget with Loader, Messages {
                       ),
                     ],
                   ),
-                  HomeModule(
-                    access: const ['admin'],
-                    title: 'Anamnese - Grupos',
-                    icon: Icons.question_answer,
-                    color: Colors.black,
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                          context.goNamed(AppPage.anamneseGroupList.name);
-                        },
-                        icon: const Icon(Icons.list),
-                      ),
-                    ],
-                  ),
-                  HomeModule(
-                    access: const ['admin'],
-                    title: 'Anamnese - Perguntas',
-                    icon: Icons.question_mark,
-                    color: Colors.black,
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                          context.goNamed(AppPage.anamneseQuestionList.name);
-                        },
-                        icon: const Icon(Icons.list),
-                      ),
-                    ],
-                  ),
-                  HomeModule(
-                    access: const ['prof'],
-                    title: 'Anamnese - Respostas',
-                    icon: Icons.receipt_long,
-                    color: Colors.black,
-                    actions: [
-                      IconButton(
-                        onPressed: () {
-                          context.goNamed(AppPage.anamnesePeopleList.name);
-                        },
-                        icon: const Icon(Icons.list),
-                      ),
-                    ],
-                  ),
+                  //Temporariamente no Fluxus 4
+                  //Temporariamente no Fluxus 4
+                  //Temporariamente no Fluxus 4
+                  // HomeModule(
+                  //   access: const ['admin'],
+                  //   title: 'Anamnese - Grupos',
+                  //   icon: Icons.question_answer,
+                  //   color: Colors.black,
+                  //   actions: [
+                  //     IconButton(
+                  //       onPressed: () {
+                  //         context.goNamed(AppPage.anamneseGroupList.name);
+                  //       },
+                  //       icon: const Icon(Icons.list),
+                  //     ),
+                  //   ],
+                  // ),
+                  // HomeModule(
+                  //   access: const ['admin'],
+                  //   title: 'Anamnese - Perguntas',
+                  //   icon: Icons.question_mark,
+                  //   color: Colors.black,
+                  //   actions: [
+                  //     IconButton(
+                  //       onPressed: () {
+                  //         context.goNamed(AppPage.anamneseQuestionList.name);
+                  //       },
+                  //       icon: const Icon(Icons.list),
+                  //     ),
+                  //   ],
+                  // ),
+                  // HomeModule(
+                  //   access: const ['prof'],
+                  //   title: 'Anamnese - Respostas',
+                  //   icon: Icons.receipt_long,
+                  //   color: Colors.black,
+                  //   actions: [
+                  //     IconButton(
+                  //       onPressed: () {
+                  //         context.goNamed(AppPage.anamnesePeopleList.name);
+                  //       },
+                  //       icon: const Icon(Icons.list),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ],
